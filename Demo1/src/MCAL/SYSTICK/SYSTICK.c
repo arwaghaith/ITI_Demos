@@ -148,7 +148,7 @@ SYSTICK_ErrorStatus SYSTICK_START(void)
 }
 void SYSTICK_DISABLE_INT(void)
 {
-     SYSTICK_Ptr->STK_CTRL  = SYSTICK_EDIT_Bit_Reg(SYSTICK_Ptr->STK_CTRL,SYSTICK_MASK_TICKINT,SYSTICK_CLEAR);
+     SYSTICK_Ptr->STK_CTRL  = SYSTICK_EDIT_REG_MASK(SYSTICK_Ptr->STK_CTRL,SYSTICK_MASK_TICKINT,SYSTICK_CLEAR);
 
 }
 SYSTICK_ErrorStatus SYTK_STOP(void)
@@ -198,7 +198,8 @@ SYSTICK_ErrorStatus SYSTICK_SetFrequencyHZ(uint32_t SYSTICK_Frequency_hz)
     return SYSTICK_Local_status;
 
 }
-SYSTICK_ErrorStatus SYTK_SetTimeMS(uint32_t SYSTICK_TIME_MS)
+
+SYSTICK_ErrorStatus SYSTICK_SetTimeMS(uint32_t SYSTICK_TIME_MS)
 {
     SYSTICK_ErrorStatus SYSTICK_Local_status = SYSTICK_NOK;
 
@@ -244,7 +245,7 @@ SYSTICK_ErrorStatus SYSTICK_SetCallBack(SYSTICK_Callback Input_callback)
 {
     SYSTICK_ErrorStatus SYSTICK_Local_status = SYSTICK_NOK;
    
-   if( (SYSTICK_CallBack == NULL))
+   if( (Input_callback == NULL))
    {
       SYSTICK_Local_status = SYSTICK_ERROR;
    }
