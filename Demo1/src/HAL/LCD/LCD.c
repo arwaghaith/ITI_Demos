@@ -2,7 +2,6 @@
 #include "LCD.h"
 #include "../../LIB/STD_TYPES.h"
 #include "../../LIB/STD_MATH.h"
-#include "../../SERVICE/Sched/Sched.h"
 #include "../../MCAL/GPIO/GPIO.h"
 #include "LCD_cfg.h"
 /***************************************************************************************************************************/
@@ -749,7 +748,7 @@ static void Write_proc()
 
         loc_write_idx = 0;
         LCD_user_request.state = READY;
-        LCD_user_request.type = IDLE;
+        LCD_user_request.type = LCD_IDLE;
     }
 }
 static void clear_proc()
@@ -765,7 +764,7 @@ static void clear_proc()
     {
         loc_command_counter = 0;
         LCD_user_request.state = READY;
-        LCD_user_request.type = IDLE;
+        LCD_user_request.type = LCD_IDLE;
     }
 }
 static void setPos_Proc()
@@ -791,6 +790,6 @@ static void setPos_Proc()
     {
         loc_command_counter = 0;
         LCD_user_request.state = READY;
-        LCD_user_request.type = IDLE;
+        LCD_user_request.type = LCD_IDLE;
     }
 }

@@ -1,25 +1,14 @@
 #include "../HAL/LCD/LCD.h"
 #include "../LIB/STD_TYPES.h"
 #include "../HAL/HSWITCH/HSWITCH.h"
+#include  "DEMO.h"
+extern uint8_t DISPLAY_MODE;
 
-extern uint8_t MODE;
- typedef struct 
 
-
-{
-
-    uint8_t hours;
-    uint8_t minutes;
-    uint8_t seconds;
-    uint8_t milliseconds;
-
-}stopwatch_time;
-
-G_stopwatch_time=
+stopwatch_time G_stopwatch_current_time=
 
 {
-
-    0,0,0,0
+0,0,0,0
 };
 uint16_t readSwitches_Buffer=0;
 
@@ -42,7 +31,7 @@ void stopwatch()
 
 
 
-    #if MODE== STOPWATCH
+    #if DISPLAY_MODE== STOPWATCH
 
     if(readSwitches_Buffer &(1<<START_STOP))
     {
@@ -68,16 +57,16 @@ void stopwatch()
 
     {
 
-        G_stopwatch_time.hours=0;
-        G_stopwatch_time.minutes=0;
-        G_stopwatch_time.seconds=0;
-        G_stopwatch_time.milliseconds=0;
+        G_stopwatch_current_time.hours=0;
+        G_stopwatch_current_time.minutes=0;
+        G_stopwatch_current_time.seconds=0;
+        G_stopwatch_current_time.milliseconds=0;
         start_flag=0;
         stop_flag=0;
         pause_flag=0;
         continue_flag=0;
 
-        MODE!=MODE;
+        DISPLAY_MODE!=DISPLAY_MODE;
         return;
     }
     
@@ -88,25 +77,25 @@ void stopwatch()
 
     if(start_flag==1  ||continue_flag==1)
     {
-        G_stopwatch_time.milliseconds++;
+        G_stopwatch_current_time.milliseconds++;
     }
 
-    if(G_stopwatch_time.milliseconds==1000)
+    if(G_stopwatch_current_time.milliseconds==1000)
     {
-        G_stopwatch_time.milliseconds=0;
-        G_stopwatch_time.seconds++;
+        G_stopwatch_current_time.milliseconds=0;
+        G_stopwatch_current_time.seconds++;
     }
 
-    if(G_stopwatch_time.seconds==60)
+    if(G_stopwatch_current_time.seconds==60)
     {
-        G_stopwatch_time.seconds=0;
-        G_stopwatch_time.minutes++;
+        G_stopwatch_current_time.seconds=0;
+        G_stopwatch_current_time.minutes++;
     }
 
-    if(G_stopwatch_time.minutes==60)
+    if(G_stopwatch_current_time.minutes==60)
     {
-        G_stopwatch_time.minutes=0;
-        G_stopwatch_time.hours++;
+        G_stopwatch_current_time.minutes=0;
+        G_stopwatch_current_time.hours++;
     }
 
    

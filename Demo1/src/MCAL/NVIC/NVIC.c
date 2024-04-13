@@ -1,7 +1,7 @@
 /********************************************************************************************************/
 /************************************************Includes************************************************/
 /********************************************************************************************************/
-
+#include"../../LIB/STD_TYPES.h"
 #include"NVIC.h"
 
 /********************************************************************************************************/
@@ -14,15 +14,15 @@
 /********************************************************************************************************/
 typedef struct
 {
-	u32 ISER[32];
-	u32 ICER[32];
-	u32 ISPR[32];
-	u32 ICPR[32];
-    u32 IABR[32];
-	u32 reserved[32];
-    u8 IPR[60];          /**< Interrupt Priority Registers (0-59) - Byte Accessible */
-    u32 RESERVED5[644];    /**< Reserved space */
-    u32 STIR;              /**< Software Trigger Interrupt Register */
+	uint32_t ISER[32];
+	uint32_t ICER[32];
+	uint32_t ISPR[32];
+	uint32_t ICPR[32];
+    uint32_t IABR[32];
+	uint32_t reserved[32];
+    uint8_t IPR[60];          /**< Interrupt Priority Registers (0-59) - Byte Accessible */
+    uint32_t RESERVED5[644];    /**< Reserved space */
+    uint32_t STIR;              /**< Software Trigger Interrupt Register */
 }NVIC_t;
 
 
@@ -41,8 +41,8 @@ typedef struct
 /********************************************************************************************************/
 /******************************************* Static Functions *******************************************/
 /********************************************************************************************************/
-static u8 GetPriorityAndGroupConfig(u8  local_u8Group  ,u8  local_u8SubGroup ){
-		u8 localconfigReturnValue = 0 ;
+static uint8_t GetPriorityAndGroupConfig(uint8_t  local_u8Group  ,uint8_t  local_u8SubGroup ){
+		uint8_t localconfigReturnValue = 0 ;
 		#if  GROUP_SUB_PRIORITY  == GROUP_16_SUB_0
 		localconfigReturnValue = local_u8Group ;
 		#elif GROUP_SUB_PRIORITY == GROUP_8_SUB_2
@@ -63,7 +63,7 @@ static u8 GetPriorityAndGroupConfig(u8  local_u8Group  ,u8  local_u8SubGroup ){
 /********************************************************************************************************/
 
 /* Enables the given interrupt */
-E_ErrorStatus_t NVIC_EnableInterrupt(u8 NVIC_InterruptID)
+E_ErrorStatus_t NVIC_EnableInterrupt(uint8_t NVIC_InterruptID)
 {
     E_ErrorStatus_t NVIC_E_ErrorStatus_t = E_NOK;
     if (NVIC_InterruptID >= 240) {
@@ -82,7 +82,7 @@ E_ErrorStatus_t NVIC_EnableInterrupt(u8 NVIC_InterruptID)
 
 
 /*Disables the given interrupt*/
-E_ErrorStatus_t NVIC_DisableInterrupt(u8 NVIC_InterruptID)
+E_ErrorStatus_t NVIC_DisableInterrupt(uint8_t NVIC_InterruptID)
 {
 
     E_ErrorStatus_t NVIC_E_ErrorStatus_t = E_NOK;
@@ -104,7 +104,7 @@ E_ErrorStatus_t NVIC_DisableInterrupt(u8 NVIC_InterruptID)
 
 
 /*Sets the pending state for the given interrupt*/
-E_ErrorStatus_t NVIC_SetPending(u8 NVIC_InterruptID)
+E_ErrorStatus_t NVIC_SetPending(uint8_t NVIC_InterruptID)
 {
     E_ErrorStatus_t NVIC_E_ErrorStatus_t = E_NOK;
     if(NVIC_InterruptID <0 || NVIC_InterruptID > 240){
@@ -126,7 +126,7 @@ E_ErrorStatus_t NVIC_SetPending(u8 NVIC_InterruptID)
 
 
 /*Clears the pending state for the given interrupt*/
-E_ErrorStatus_t NVIC_ClearPending(u8 NVIC_InterruptID)
+E_ErrorStatus_t NVIC_ClearPending(uint8_t NVIC_InterruptID)
 {
      E_ErrorStatus_t NVIC_E_ErrorStatus_t = E_NOK;
     if(NVIC_InterruptID <0 || NVIC_InterruptID > 240){
@@ -147,7 +147,7 @@ E_ErrorStatus_t NVIC_ClearPending(u8 NVIC_InterruptID)
 
 
 /* Returns wether the given interrupt is pending or not*/
-E_ErrorStatus_t NVIC_GetPending(u8 NVIC_InterruptID, u8 *Add_ReturnPending)
+E_ErrorStatus_t NVIC_GetPending(uint8_t NVIC_InterruptID, uint8_t *Add_ReturnPending)
 {
     
     E_ErrorStatus_t NVIC_E_ErrorStatus_t = E_NOK;
@@ -168,13 +168,13 @@ E_ErrorStatus_t NVIC_GetPending(u8 NVIC_InterruptID, u8 *Add_ReturnPending)
 
 
 /*Returns wether the given interrupt is active or not*/
-E_ErrorStatus_t NVIC_GetActive(u8 NVIC_InterruptID, u8* Add_ReturnActive)
+E_ErrorStatus_t NVIC_GetActive(uint8_t NVIC_InterruptID, uint8_t* Add_ReturnActive)
 {    
     E_ErrorStatus_t NVIC_E_ErrorStatus_t = E_NOK;
     if(NVIC_InterruptID <0 || NVIC_InterruptID > 240){
         return NVIC_E_ErrorStatus_t;
     }
-    else if (*Add_ReturnActive == NULL_PTR){
+    else if (*Add_ReturnActive == NULL){
         NVIC_E_ErrorStatus_t =  E_NULL_PTR; 
         return NVIC_E_ErrorStatus_t;
     }
@@ -192,7 +192,7 @@ E_ErrorStatus_t NVIC_GetActive(u8 NVIC_InterruptID, u8* Add_ReturnActive)
 
 
 /*Gets the priority for the given interrupt*/
-E_ErrorStatus_t NVIC_GetPeriority(u8 NVIC_InterruptID, u8 *NVIC_Periority)
+E_ErrorStatus_t NVIC_GetPeriority(uint8_t NVIC_InterruptID, uint8_t *NVIC_Periority)
 {
     
     E_ErrorStatus_t NVIC_E_ErrorStatus_t = E_NOK;
@@ -203,7 +203,7 @@ E_ErrorStatus_t NVIC_GetPeriority(u8 NVIC_InterruptID, u8 *NVIC_Periority)
     else
     {
        
-       *NVIC_Periority = ( NVIC_Core_peripheral->IPR[(u8)(((float)NVIC_InterruptID / 240.00f) * 60)]) >> ((NVIC_InterruptID % 4) );
+       *NVIC_Periority = ( NVIC_Core_peripheral->IPR[(uint8_t)(((float)NVIC_InterruptID / 240.00f) * 60)]) >> ((NVIC_InterruptID % 4) );
         NVIC_E_ErrorStatus_t = E_OK;
     }
 
@@ -213,7 +213,7 @@ E_ErrorStatus_t NVIC_GetPeriority(u8 NVIC_InterruptID, u8 *NVIC_Periority)
 
 
 /*Sets the priority for the given interrupt*/
-E_ErrorStatus_t NVIC_SetPeriority(u8 NVIC_InterruptID, u8 NVIC_Periority)
+E_ErrorStatus_t NVIC_SetPeriority(uint8_t NVIC_InterruptID, uint8_t NVIC_Periority)
 {
     E_ErrorStatus_t NVIC_E_ErrorStatus_t = E_NOK;
     if(NVIC_InterruptID <0 || NVIC_InterruptID > 240){
@@ -223,8 +223,8 @@ E_ErrorStatus_t NVIC_SetPeriority(u8 NVIC_InterruptID, u8 NVIC_Periority)
     else
     {
        
-          NVIC_Core_peripheral->IPR[(u8)(((float)NVIC_InterruptID / 240.00f) * 60)] &= ~(0xFF << (NVIC_InterruptID % 4));
-          NVIC_Core_peripheral->IPR[(u8)(((float)NVIC_InterruptID / 240.00f) * 60)] |= (NVIC_Periority << (NVIC_InterruptID % 4));
+          NVIC_Core_peripheral->IPR[(uint8_t)(((float)NVIC_InterruptID / 240.00f) * 60)] &= ~(0xFF << (NVIC_InterruptID % 4));
+          NVIC_Core_peripheral->IPR[(uint8_t)(((float)NVIC_InterruptID / 240.00f) * 60)] |= (NVIC_Periority << (NVIC_InterruptID % 4));
 
         NVIC_E_ErrorStatus_t = E_OK;
     }

@@ -1,13 +1,18 @@
 /********************************************************************************************************/
 /************************************************Includes************************************************/
 /********************************************************************************************************/
-#include"SCHED.h"
-#include"APP_/APP.h"
+#include "SCHED.h"
 
 /********************************************************************************************************/
 /************************************************Defines*************************************************/
 /********************************************************************************************************/
+extern void LCD_TASK(void);
+extern void Switch_GetInstant(void);
+extern void Display(void);
+extern void updateSwitch(void);
+extern void stopwatch(void);
 
+extern void Clock(void);
 
 
 /********************************************************************************************************/
@@ -24,23 +29,19 @@
 const runnable_t RunnableList[ _NUM_OF_Runnables ] = 
 {
 
-		[  toggleLed_2ms_task] = { 
-				
-                .runnable_name="toggleLed_2ms_task",
-                .periodicity =200,
-                .priority=0,
-                .CallBack = toggleLed_2ms,
 
-	       },
+        {"LCD_TASK", 2, 1, LCD_TASK},
+        {"Switch_GetInstant", 5, 2, Switch_GetInstant},
+        {"Display", 10, 3, Display},
+        {"CLOCK",10,4,Clock},
+        {"updateSwitch", 10, 5, updateSwitch},
+        {"stopwatch", 10, 6, stopwatch}
 
-             [toggleLed_4ms_task] = {
-				
-                .runnable_name="toggleLed_4ms_task",
-                .periodicity =600,
-                .priority=1,
-                .CallBack =toggleLed_4ms,
 
-	       },
+
+
+
+		
 
 };
 

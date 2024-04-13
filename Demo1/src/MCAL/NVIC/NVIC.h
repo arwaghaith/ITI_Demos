@@ -9,9 +9,8 @@
 /********************************************************************************************************/
 
 #include"interrupts.h"
-#include"LIB\Error_Status.h"
-#include"LIB\Std_Types.h"
-#include"LIB\Bit_Mask.h"
+#include"../../LIB/Error_Status.h"
+#include"../../LIB/STD_TYPES.h"
 
 /********************************************************************************************************/
 /************************************************Defines*************************************************/
@@ -30,35 +29,35 @@
 /********************************************************************************************************/
 
 /*Enables the given interrupt*/
-E_ErrorStatus_t NVIC_EnableInterrupt(u8 NVIC_InterruptID);
+E_ErrorStatus_t NVIC_EnableInterrupt(uint8_t NVIC_InterruptID);
 
 
 /*Disables the given interrupt*/
-E_ErrorStatus_t NVIC_DisableInterrupt(u8 NVIC_InterruptID);
+E_ErrorStatus_t NVIC_DisableInterrupt(uint8_t NVIC_InterruptID);
 
 
 /*Sets the pending state for the given interrupt*/
-E_ErrorStatus_t NVIC_SetPending(u8 NVIC_InterruptID);
+E_ErrorStatus_t NVIC_SetPending(uint8_t NVIC_InterruptID);
 
 
 /*Clears the pending state for the given interrupt*/
-E_ErrorStatus_t NVIC_ClearPending(u8 NVIC_InterruptID);
+E_ErrorStatus_t NVIC_ClearPending(uint8_t NVIC_InterruptID);
 
 
 /* Returns wether the given interrupt is pending or not*/
-E_ErrorStatus_t NVIC_GetPending(u8 NVIC_InterruptID, u8 *Add_ReturnPending);
+E_ErrorStatus_t NVIC_GetPending(uint8_t NVIC_InterruptID, uint8_t *Add_ReturnPending);
 
 
 /*Returns wether the given interrupt is active or not*/
-E_ErrorStatus_t NVIC_GetActive(u8 NVIC_InterruptID, u8* Add_ReturnActive);
+E_ErrorStatus_t NVIC_GetActive(uint8_t NVIC_InterruptID, uint8_t* Add_ReturnActive);
 
 
 /*Sets the priority for the given interrupt*/
-E_ErrorStatus_t NVIC_SetPeriority(u8 NVIC_InterruptID, u8 NVIC_Periority);
+E_ErrorStatus_t NVIC_SetPeriority(uint8_t NVIC_InterruptID, uint8_t NVIC_Periority);
 
 
 /*Gets the priority for the given interrupt*/
-E_ErrorStatus_t NVIC_GetPeriority(u8 NVIC_InterruptID, u8 *NVIC_Periority);
+E_ErrorStatus_t NVIC_GetPeriority(uint8_t NVIC_InterruptID, uint8_t *NVIC_Periority);
 
 
 

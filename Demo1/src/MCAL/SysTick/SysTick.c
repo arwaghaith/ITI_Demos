@@ -2,9 +2,8 @@
 /********************************************************************************************************/
 /************************************************Includes************************************************/
 /********************************************************************************************************/
-#include"LIB\Error_Status.h"
-#include"LIB\Std_Types.h"
-#include"LIB\Bit_Mask.h"
+#include"../../LIB/Error_Status.h"
+#include"../../LIB/STD_TYPES.h"
 #include"SysTick.h"
 
 
@@ -13,7 +12,7 @@
 /************************************************Defines*************************************************/
 /********************************************************************************************************/
 
-#define   SYSTICK_BASE_ADDRESS           (u32)(0xE000E010)
+#define   SYSTICK_BASE_ADDRESS           (uint32_t)(0xE000E010)
 
 /********************************************************************************************************/
 /************************************************Types***************************************************/
@@ -21,10 +20,10 @@
 
 
 typedef struct{
-	u32 STK_CTRL;
-	u32 STK_LOAD;
-	u32 STK_VAL;
-	u32 STK_CALIB;
+	uint32_t STK_CTRL;
+	uint32_t STK_LOAD;
+	uint32_t STK_VAL;
+	uint32_t STK_CALIB;
 }Systick_t;
 
 /********************************************************************************************************/
@@ -49,7 +48,7 @@ static Systick_t * const Systick = ( Systick_t * const ) SYSTICK_BASE_ADDRESS;
 
 void Systick_vidInit()
 {
-	u32 Loc_u32reg;
+	uint32_t Loc_u32reg;
 
 	Loc_u32reg = Systick -> STK_CTRL ;
 	Loc_u32reg &= ~(SYSTICK_u32TICKINT_MASK ); //clearing the CTRL register "TICKINT"
@@ -61,10 +60,10 @@ void Systick_vidInit()
 }
 
 
-E_ErrorStatus_t Systick_SetTicTime_ms(u32 Copy_u32TimeMs)
+E_ErrorStatus_t Systick_SetTicTime_ms(uint32_t Copy_u32TimeMs)
 {
     E_ErrorStatus_t Systick_ErrorStatus_t = E_OK;
-    u32 timeInTicks;
+    uint32_t timeInTicks;
 
     if (Copy_u32TimeMs > MAX_ALLOWED_TIME_MS)
     {
@@ -102,7 +101,7 @@ E_ErrorStatus_t Systick_RegisterCbf(SystickCbf_t Copy_Cbf)
 
 void Systick_vidStart()
 {
-	u32 Loc_u32reg;
+	uint32_t Loc_u32reg;
 
 	Loc_u32reg = Systick -> STK_CTRL;
 
@@ -114,7 +113,7 @@ void Systick_vidStart()
 void Systick_vidStop()
 {
 
-		u32 Loc_u32reg;
+		uint32_t Loc_u32reg;
 
 	Loc_u32reg = Systick -> STK_CTRL;
 

@@ -1,5 +1,7 @@
 #include"DEMO.h"
 
+#include "../HAL/HSWITCH/HSWITCH.h"
+
 
 
 #define start_Edit_pos_inLCD     4 

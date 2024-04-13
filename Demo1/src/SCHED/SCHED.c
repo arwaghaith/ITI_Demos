@@ -3,7 +3,8 @@
 /********************************************************************************************************/
 
 
-#include"SCHED.h"
+#include "SCHED.h"
+#include "../LIB/STD_TYPES.h"
 
 
 /********************************************************************************************************/
@@ -26,7 +27,7 @@
 /********************************************************************************************************/
 extern runnable_t RunnableList[ _NUM_OF_Runnables ];
 
- volatile u32 PendingTicks;
+ volatile uint32_t PendingTicks;
 
 /********************************************************************************************************/
 /*****************************************Static Functions Prototype*************************************/
@@ -69,13 +70,13 @@ while (1)
 
 static void Sched(void)
 {
-	static u32 SCHED_u32TimeSTAMP_ms=0; 
-	u32 SCHED_u32Idx ;
+	static uint32_t SCHED_u32TimeSTAMP_ms=0; 
+	uint32_t SCHED_u32Idx ;
  
 	for( SCHED_u32Idx = 0 ; SCHED_u32Idx <  _NUM_OF_Runnables ; SCHED_u32Idx++ )
 	{
 		
-        if((RunnableList[SCHED_u32Idx].CallBack != NULL_PTR)&& (SCHED_u32TimeSTAMP_ms%RunnableList[SCHED_u32Idx].periodicity ==0))
+        if((RunnableList[SCHED_u32Idx].CallBack != NULL)&& (SCHED_u32TimeSTAMP_ms%RunnableList[SCHED_u32Idx].periodicity ==0))
 		{
 			RunnableList[SCHED_u32Idx].CallBack();
 		}

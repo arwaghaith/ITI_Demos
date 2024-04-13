@@ -6,11 +6,10 @@
 /********************************************************************************************************/
 
 
-#include"LIB\Error_Status.h"
-#include"LIB\Std_Types.h"
-#include"LIB\Bit_Mask.h"
+#include"LIB/Error_Status.h"
+#include"LIB/STD_TYPES.h"
 
-#include"MCAL/SysTick/SysTick.h"
+#include "../MCAL/SysTick/SysTick.h"
 /********************************************************************************************************/
 /************************************************Defines*************************************************/
 /********************************************************************************************************/
@@ -27,8 +26,8 @@ typedef struct
 {
     /* data */
     char * runnable_name; 
-    u32 periodicity;
-    u32 priority;
+    uint32_t periodicity;
+    uint32_t priority;
     runnableCallBack_t CallBack;
 
 }runnable_t;

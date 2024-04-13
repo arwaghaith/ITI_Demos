@@ -7,17 +7,11 @@
 #define  STOPWATCH 1
 
 
-uint8_t MODE=STOPWATCH;
+uint8_t DISPLAY_MODE=STOPWATCH;
 extern Clk_t current_time;
 extern Date_t current_date;
 extern stopwatch_time G_stopwatch_current_time;
-uint8_t stopWtach_arr[]=
 
-{
-
-
-
-};
 
 
 
@@ -31,7 +25,7 @@ void Display()
 static uint8_t loc_visit_counter=0;
 
    
-    #if MODE==CLOCK
+    #if DISPLAY_MODE==CLOCK
      static uint8_t date[16];
      static uint8_t time[16];
      // 1- print the date
@@ -109,18 +103,10 @@ static uint8_t loc_visit_counter=0;
     }
 
     else 
-    {
-          loc_visit_counter=0;
+                    loc_visit_counter=0;
+       // Add a closing brace here
 
-    }
-
-
-
-
-
-
-        
-    #else if MODE==STOPWATCH
+      #elif DISPLAY_MODE==STOPWATCH // Replace #else if with #elif
 
     uint8_t STOPWATCH="StopWatch";
     uint8_t time[16];
@@ -177,12 +163,16 @@ static uint8_t loc_visit_counter=0;
 
     }
 
+    
+
 
     
        
 
 
     #endif
+}
+
 
     
 

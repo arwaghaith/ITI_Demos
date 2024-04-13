@@ -1,8 +1,9 @@
 /********************************************************************************************************/
 /************************************************Includes************************************************/
 /********************************************************************************************************/
-#include"UART.h"
-#include"MCAL/GPIO/GPIO.h"
+#include "UART.h"
+#include "../GPIO/GPIO.h"
+#include  "../../LIB/STD_TYPES.h"
 
 /********************************************************************************************************/
 /************************************************Defines*************************************************/
@@ -40,22 +41,22 @@ E_ErrorStatus_t USART_Init(const USART_Config *Copy_addCFG)
 { 
     E_ErrorStatus_t UART_ErrorStatus_t = E_NOK;
 
-    if (Copy_addCFG == NULL_PTR) {return UART_ErrorStatus_t;}
+    if (Copy_addCFG == NULL) {return UART_ErrorStatus_t;}
 
  
     /*clac Baud Rate */
  float USARTDIV = (float)SYS_FREQUENCY / (Copy_addCFG->BaudRate * (16 * (2 - 1)));
 
- u16 mantissa = (u16)USARTDIV;
+ uint16_t mantissa = (uint16_t)USARTDIV;
 
 USARTDIV -=mantissa;
 USARTDIV *= (16 * (2 - Copy_addCFG->OVER8));
-u8 fraction=0;
+uint8_t fraction=0;
 //Check if the fractional part needs rounding
-if ((USARTDIV - (u16)USARTDIV) >= 0.5) {
-    fraction = (u16)USARTDIV + 1;
+if ((USARTDIV - (uint16_t)USARTDIV) >= 0.5) {
+    fraction = (uint16_t)USARTDIV + 1;
 } else {
-    fraction = (u16)USARTDIV;
+    fraction = (uint16_t)USARTDIV;
 }
 
 
@@ -111,10 +112,10 @@ static void configure_USART_registers(USART_t *USART, const USART_Config *config
 
 
 
-E_ErrorStatus_t USART_SendByteSynchronous(USART_Channel Copy_enuChannel, u8 Copy_u8Data)
+E_ErrorStatus_t USART_SendByteSynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_u8Data)
   
 {      E_ErrorStatus_t UART_ErrorStatus_t = E_NOK;
-        u16  TimeOut = 6000;
+        uint16_t  TimeOut = 6000;
     switch (Copy_enuChannel)
     { 
       case USART_Channel_1:
@@ -155,9 +156,9 @@ return UART_ErrorStatus_t;
 
 
 
-E_ErrorStatus_t USART_GetByteSynchronous(USART_Channel Copy_enuChannel, u8 Copy_u8Data)
+E_ErrorStatus_t USART_GetByteSynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_u8Data)
 {  E_ErrorStatus_t UART_ErrorStatus_t = E_NOK;
-        u16  TimeOut = 60000;
+        uint16_t  TimeOut = 60000;
         Copy_u8Data =0;
     switch (Copy_enuChannel)
     { 
