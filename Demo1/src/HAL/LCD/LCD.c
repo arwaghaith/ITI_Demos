@@ -90,7 +90,8 @@
 
 /*****************************************Static Functions Prototype*************************************/
  static void InitSM(void);
- static ProcState_t Write_Proc(uint8_t Copy_u8CMD, uint8_t LCD_WRITE_TYPE);
+ static void OperationalSM(void);
+ static ProcState_t Write_Proc(uint8_t Copy_u8Val, uint8_t LCD_WRITE_TYPE);
  static ProcState_t WriteDataHelper_Proc(void);
  static void HW_Init(void);
 /********************************************************************************************************/
@@ -411,7 +412,7 @@
  }
 
 
- static ProcState_t Write_Proc(uint8_t Copy_u8CMD, uint8_t LCD_WRITE_TYPE)
+ static ProcState_t Write_Proc(uint8_t Copy_u8Val, uint8_t LCD_WRITE_TYPE)
  {
     static ProcState_t ProcState = ProcState_Done;
     uint32_t Loc_u32Counter = 0;
@@ -423,7 +424,7 @@
 
         for(Loc_u32Counter = 0; Loc_u32Counter < _DataPins_num; Loc_u32Counter++)
         {
-            GPIO_SetPinValue(LCD_DataPins[Loc_u32Counter].Pin, LCD_DataPins[Loc_u32Counter].Port, ((Copy_u8CMD>>Loc_u32Counter) & 1));
+            GPIO_SetPinValue(LCD_DataPins[Loc_u32Counter].Pin, LCD_DataPins[Loc_u32Counter].Port, ((Copy_u8Val>>Loc_u32Counter) & 1));
         }
 
         GPIO_SetPinValue(LCD_ControlPins[Enable_Pin].Pin, LCD_ControlPins[Enable_Pin].Port, PIN_VALUE_HIGH);
