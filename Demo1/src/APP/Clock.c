@@ -1,6 +1,6 @@
 #include"DEMO.h"
 
-#include "../HAL/HSWITCH/HSWITCH.h"
+
 
 
 
@@ -26,6 +26,9 @@ uint8_t arr[9]= {1,1,0,1,0,1,0,1,};
 Clk_t current_time = {0, 0, 0};
 Date_t current_date = {11, 4, 2024};
 
+uint8_t isLeapYear(uint16_t year) {
+    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
 
 
 uint8_t daysInMonth(uint8_t month, uint16_t year) {
@@ -56,19 +59,54 @@ static void updateDate() {
 void Clock(void) {
 
     uint8_t current_X = 0; // rows
-    uint8_t Current_Y = start_Edit_pos_inLCD  ; // cols  start
+    uint8_t Current_Y = start_Edit_pos_inLCD  ; // cols  start 4 :
+
     uint8_t current_edit_position = hr_pos ; 
 
 
 if (arr[MODE] == 1) { //default mode 
+
+
+      current_time.seconds++;
+    if (current_time.seconds == 60) {
+        current_time.seconds = 0;
+        current_time.minutes++;
+    }
+    if (current_time.minutes == 60) {
+        current_time.minutes = 0;
+        current_time.hours++;
+    }
+    if (current_time.hours == 24) 
+    {
+        current_time.hours = 0;
+        current_date.day++;
+        int daysInCurrMonth = daysInMonth(current_date.month, current_date.year);
+        // Check if the current day exceeds the maximum days in the current month
+        if (current_date.day >= daysInCurrMonth) 
+        {
+            // Move to the next month
+            current_date.day = 1;
+            current_date.month++;
+
+            // If the month exceeds 12, reset to 1 and increment the year
+            if (current_date.month > 12) 
+            {
+                current_date.month = 1;
+                current_date.year++;
+            }
+         
+        }
+    
+    }
+
         
      if (arr[EDIT] == 0)
       { //edit mode 
            LCD_SET_CURSOR_POS_ASYNC(1, Current_Y); // sec row "the clock"  hours / min / sec 
            
            if(arr[RIGHT] ==0){
-             LCD_SET_CURSOR_POS_ASYNC(1, Current_Y+1);
-             current_edit_position++;
+             LCD_SET_CURSOR_POS_ASYNC(1, Current_Y+1); 
+             //current_edit_position++;
            }
            if(arr[LEFT] ==0)
            {
@@ -98,20 +136,17 @@ if (arr[MODE] == 1) { //default mode
                 }
             }
         }
-        else
-         {
-            
-            // show current time
-        }
-    } 
+
+     
+}
+
 else 
     {
         return;
     }
+
+
 }
-
-
-
 
 
 
