@@ -129,7 +129,10 @@
  */
  enuErrorStatus_t LCD_SetCursorAsynch(uint8_t ROW, uint8_t CULOMN, NotificationCBF_t Add_CallBack);
 
- //NOTE : Change this function to take the char to be displayed not the address
+ enuErrorStatus_t LCD_DisplayCursorAsynch(NotificationCBF_t Add_CallBack);
+
+ enuErrorStatus_t LCD_HideCursorAsynch(NotificationCBF_t Add_CallBack);
+
  /**
  * @brief   : Asynchronous Function to display Data to the LCD (Single Charachter) 
  * @param   : Add_u8pData is The address of the string to be displayed

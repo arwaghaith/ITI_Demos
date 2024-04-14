@@ -22,6 +22,8 @@
  #define CMD_RETURN_HOME               0x02
  #define CMD_DISP_SHIFT_LEFT           0x18
  #define CMD_DISP_SHIFT_RIGHT          0x1C
+ #define CMD_DISPLAY_CURSOR            0x0f
+ #define CMD_HIDE_CURSOR               0x0c
 
  #define REQ_TYPE_NONE                 0x00
  #define REQ_TYPE_CMD                  0x01
@@ -133,6 +135,45 @@
 
     return Ret_enuErrorStatus;
  }
+
+ 
+  enuErrorStatus_t LCD_DisplayCursorAsynch(NotificationCBF_t Add_CallBack)
+ {
+    enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
+    if(/*(LCDState == LCDState_Operational) &&*/ (UserReq.State == ReqState_Ready))
+    {
+        UserReq.State     = ReqState_Busy;
+        UserReq.Type      = REQ_TYPE_CMD;
+        UserReq.CMD       = CMD_DISPLAY_CURSOR;
+        WriteProgress.CB  = Add_CallBack;
+    }
+    else
+    {
+        Ret_enuErrorStatus = enuErrorStatus_NotOk;
+    }
+
+    return Ret_enuErrorStatus;
+ }
+
+
+ enuErrorStatus_t LCD_HideCursorAsynch(NotificationCBF_t Add_CallBack)
+ {
+    enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
+    if(/*(LCDState == LCDState_Operational) &&*/ (UserReq.State == ReqState_Ready))
+    {
+        UserReq.State     = ReqState_Busy;
+        UserReq.Type      = REQ_TYPE_CMD;
+        UserReq.CMD       = CMD_HIDE_CURSOR;
+        WriteProgress.CB  = Add_CallBack;
+    }
+    else
+    {
+        Ret_enuErrorStatus = enuErrorStatus_NotOk;
+    }
+
+    return Ret_enuErrorStatus;
+ }
+
 
 
  enuErrorStatus_t LCD_SetCursorAsynch(uint8_t ROW, uint8_t COLUMN, NotificationCBF_t Add_CallBack)
