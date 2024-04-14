@@ -136,10 +136,9 @@
  * @param   : Add_CallBack is the address of a call back function (Notification) to call it after finishing this request (optional, pass a null if you don't want a notification function)
  * @return  : It returns a variable of type enuErrorStatus_t with one of these values: 
  *            enuErrorStatus_Ok                 : Successful Operation
- *            enuErrorStatus_NULLPointer        : The address of the Data to be dispalyed is NULL
  *            enuErrorStatus_NotOk              : The LCD is currently busy serving another request, and can't take any requests right now.
  */
- enuErrorStatus_t LCD_WriteDataAsynch(char * Add_u8pData, NotificationCBF_t Add_CallBack);
+ enuErrorStatus_t LCD_WriteDataAsynch(uint8_t Copy_u8Data, NotificationCBF_t Add_CallBack);
 
  /**
  * @brief   : Asynchronous Function to display a string to the LCD 

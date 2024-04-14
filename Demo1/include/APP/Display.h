@@ -1,4 +1,11 @@
-
+/**
+* 
+* @file    : Display Module Header File (App)
+* @author  : Alaa Ghita
+* @date    : April 2024
+* @version : 0.1v
+* 
+*/
 
 #ifndef	 _DISPLAY_H_
 #define	 _DISPLAY_H_

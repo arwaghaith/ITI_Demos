@@ -1,4 +1,11 @@
-
+/**
+* 
+* @file    : Clock Module Source File (App)
+* @author  : Alaa Ghita & Nour Abdelaziz
+* @date    : April 2024
+* @version : 0.1v
+* 
+*/
 
 /************************************************Includes************************************************/
  #include "Clock.h"
@@ -32,74 +39,73 @@ volatile Date_t Date = {17, 4, 2024};
 /*Should come every 500ms*/
 void Clock_Runnable(void)
 {
-  static uint32_t counter;
-  counter++;
-  if(counter % 2 == 0)
-  {
-    Clock.Sec++;
-    if(Clock.Sec == 60)
+    static uint32_t counter;
+    counter++;
+    if(counter % 2 == 0)
     {
-      Clock.Min++;
-      Clock.Sec = 0;
-    }
-    if(Clock.Min == 60)
-    {
-      Clock.Hours++;
-      Clock.Min = 0;
-    }
-    if(Clock.Hours == 24)
-    {
-      Date.Days++;
-      Clock.Sec = 0;
-      Clock.Min = 0;
-      Clock.Hours = 0;
-    }
-    if(Date.Days >= 29)
-    {
-      if((Date.Months==4) || (Date.Months==6)
-        ||(Date.Months==9) || (Date.Months==11))
-      {
-        if(Date.Days > 30)
+        Clock.Sec++;
+        if(Clock.Sec == 60)
         {
-          Date.Days = 0;
-          Date.Months++;
+            Clock.Min++;
+            Clock.Sec = 0;
         }
-      }
-      else if((Date.Months==1) || (Date.Months==3)
-            || (Date.Months==5) || (Date.Months==7)
-            || (Date.Months==8) || (Date.Months==10)
-            || (Date.Months==12))
-      {
-        if(Date.Days > 31)
+        if(Clock.Min == 60)
         {
-          Date.Days = 0;
-          Date.Months++;
+            Clock.Hours++;
+            Clock.Min = 0;
         }
-      }
-      else /*(Date.Months=2)*/
-      {
-        if((Date.Years%4)!=0)
+        if(Clock.Hours == 24)
         {
-          Date.Days = 0;
-          Date.Months++;
+            Date.Days++;
+            Clock.Sec = 0;
+            Clock.Min = 0;
+            Clock.Hours = 0;
         }
-        else
+        if(Date.Days >= 29)
         {
-          if(Date.Days > 29)
-          {
-            Date.Days = 0;
-            Date.Months++;
-          }
+            if((Date.Months==4) || (Date.Months==6)
+             ||(Date.Months==9) || (Date.Months==11))
+            {
+                if(Date.Days > 30)
+                {
+                    Date.Days = 1;
+                    Date.Months++;
+                }
+            }
+            else if((Date.Months==1) || (Date.Months==3)
+                  ||(Date.Months==5) || (Date.Months==7)
+                  ||(Date.Months==8) || (Date.Months==10)
+                  ||(Date.Months==12))
+            {
+                if(Date.Days > 31)
+                {
+                    Date.Days = 1;
+                    Date.Months++;
+                }
+            }
+            else /*(Date.Months=2)*/
+            {
+                if((Date.Years%4)!=0)
+                {
+                    Date.Days = 1;
+                    Date.Months++;
+                }
+                else
+                {
+                    if(Date.Days > 29)
+                    {
+                        Date.Days = 1;
+                        Date.Months++;
+                    }
+                }
+            }
+        } 
+        if(Date.Months > 12)
+        {
+            Date.Years++;
+            Date.Months = 1;
         }
-      }
     }
-
-    if(Date.Months > 12)
-    {
-      Date.Years++;
-      Date.Months = 1;
-    }
-  }
 }
 
 /********************************************************************************************************/

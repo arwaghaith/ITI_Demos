@@ -1,4 +1,11 @@
-
+/**
+* 
+* @file    : StopWatch Module Source File (App)
+* @author  : Alaa Ghita
+* @date    : April 2024
+* @version : 0.1v
+* 
+*/
 
 /************************************************Includes************************************************/
 #include "StopWatch.h"
@@ -31,14 +38,14 @@ volatile StopWatch_Control_t SWcontrol = SWcontrol_StopSignal;
 
 /*********************************************APIs Implementation****************************************/
 
-/*This runnable comes every 50ms*/
+/*This runnable comes every 100ms*/
 void StopWatch_Runnable(void)
 {
     static StopWatch_State_t SW_State = SWstate_Initial;
-    static uint32_t counter = 0;
-    counter ++;
-    if(counter % 2 == 0)
-    {
+    //static uint32_t counter = 0;
+    //counter ++;
+    //if(counter % 2 == 0)
+    //{
         switch(SW_State)
         {
             case(SWstate_Initial):
@@ -99,7 +106,7 @@ void StopWatch_Runnable(void)
                 /*Do Nothing*/
                 break;
         }
-    }
+    //}
 }
 /********************************************************************************************************/
 

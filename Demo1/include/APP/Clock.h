@@ -1,4 +1,11 @@
-
+/**
+* 
+* @file    : Clock Module Header File (App)
+* @author  : Alaa Ghita & Nour Abdelaziz
+* @date    : April 2024
+* @version : 0.1v
+* 
+*/
 
 #ifndef	 _CLOCK_H_
 #define	 _CLOCK_H_

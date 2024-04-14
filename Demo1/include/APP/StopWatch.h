@@ -1,3 +1,11 @@
+/**
+* 
+* @file    : StopWatch Module Header File (App)
+* @author  : Alaa Ghita
+* @date    : April 2024
+* @version : 0.1v
+* 
+*/
 
 #ifndef	 _STOPWATCH_H_
 #define	 _STOPWATCH_H_
