@@ -78,16 +78,8 @@ static uint8_t loc_visit_counter=0;
     else if (loc_visit_counter==1)
     {
 
-            clearScreenAsync();
 
-          loc_visit_counter++;
-
-    }
-    else if (loc_visit_counter==2  || loc_visit_counter==3)
-    {
         
-
-
 
 
     LCD_Write_String_POS_ASYNC(date, 16, 1, 0);
@@ -95,7 +87,7 @@ static uint8_t loc_visit_counter=0;
 
     }
 
-    else if (loc_visit_counter==4 || loc_visit_counter==5)
+    else if (loc_visit_counter==2)
     {
         
     LCD_Write_String_POS_ASYNC(time, 16, 2, 0);
@@ -103,7 +95,11 @@ static uint8_t loc_visit_counter=0;
     }
 
     else 
-                    loc_visit_counter=0;
+
+            { loc_visit_counter=0;
+
+            }
+            
        // Add a closing brace here
 
       #elif DISPLAY_MODE==STOPWATCH // Replace #else if with #elif
@@ -130,15 +126,8 @@ static uint8_t loc_visit_counter=0;
     loc_visit_counter++;
      }
 
+  
     else if (loc_visit_counter==1)
-    {
-
-            clearScreenAsync();
-
-          loc_visit_counter++;
-
-    }
-    else if (loc_visit_counter==2  || loc_visit_counter==3)
     {
         
 
@@ -150,7 +139,7 @@ static uint8_t loc_visit_counter=0;
 
     }
 
-    else if (loc_visit_counter==4 || loc_visit_counter==5)
+    else if (loc_visit_counter==2)
     {
         
     LCD_Write_String_POS_ASYNC(time, 16, 2, 0);
@@ -171,7 +160,9 @@ static uint8_t loc_visit_counter=0;
 
 
     #endif
-}
+
+    }
+
 
 
     

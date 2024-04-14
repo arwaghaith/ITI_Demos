@@ -15,7 +15,7 @@
 #define READY                                      0
 #define BUSY                                       1
 #define     BAUD_RATE                              9600
-#define     SYS_FREQUENCY                          16000000
+#define     SYS_FREQUENCY_UART                         16000000
 //#define     SYS_FREQUENCY                        25000000UL
 
 #define USART_1_BaseAddress                    ((volatile USART_t*)0x40011000)

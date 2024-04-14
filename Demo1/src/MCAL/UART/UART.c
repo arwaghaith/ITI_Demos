@@ -45,7 +45,7 @@ E_ErrorStatus_t USART_Init(const USART_Config *Copy_addCFG)
 
  
     /*clac Baud Rate */
- float USARTDIV = (float)SYS_FREQUENCY / (Copy_addCFG->BaudRate * (16 * (2 - 1)));
+ float USARTDIV = (float)SYS_FREQUENCY_UART / (Copy_addCFG->BaudRate * (16 * (2 - 1)));
 
  uint16_t mantissa = (uint16_t)USARTDIV;
 

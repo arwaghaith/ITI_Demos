@@ -14,6 +14,7 @@ extern void stopwatch(void);
 
 extern void Clock(void);
 
+extern void LCD_APP();
 
 /********************************************************************************************************/
 /************************************************Types***************************************************/
@@ -30,12 +31,14 @@ const runnable_t RunnableList[ _NUM_OF_Runnables ] =
 {
 
 
-        {"LCD_TASK", 2, 1, LCD_TASK},
-        {"Switch_GetInstant", 5, 2, Switch_GetInstant},
-        {"Display", 10, 3, Display},
-        {"CLOCK",10,4,Clock},
-        {"updateSwitch", 10, 5, updateSwitch},
-        {"stopwatch", 10, 6, stopwatch}
+        {LCD_TASK_fun, 2, 1, LCD_TASK},
+        {lcd_pp,130,2,LCD_APP}
+
+        //{Switch_GetInstant_fun, 10, 2, Switch_GetInstant},
+        //{Display_fun, 50, 5, Display},
+        //{CLOCK_fun,50,3,Clock},
+        //{updateSwitch_fun, 10, 5, updateSwitch},
+        //{stopwatch_fun, 50, 4, stopwatch}
 
 
 

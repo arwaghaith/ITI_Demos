@@ -80,6 +80,15 @@ void stopwatch()
         G_stopwatch_current_time.milliseconds++;
     }
 
+    else if (stop_flag ==1)
+    {
+        G_stopwatch_current_time.milliseconds=0;
+        G_stopwatch_current_time.seconds=0;
+        G_stopwatch_current_time.minutes=0;
+        G_stopwatch_current_time.hours=0;
+        
+    }
+
     if(G_stopwatch_current_time.milliseconds==1000)
     {
         G_stopwatch_current_time.milliseconds=0;
