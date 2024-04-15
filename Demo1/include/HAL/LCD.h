@@ -72,16 +72,16 @@
 
  typedef enum
  {
-    ReqState_Ready,
-    ReqState_Busy,
-    ReqState_Done
+   ReqState_Ready,
+   ReqState_Busy,
+   ReqState_Done
  }ReqState_t;
  
  typedef enum
  {
-    LCDState_Init,
-    LCDState_Operational,
-    LCDState_OFF,
+   LCDState_Init,
+   LCDState_Operational,
+   LCDState_OFF,
  }LCDState_t;
 
  typedef void (*NotificationCBF_t) (void);
@@ -106,7 +106,7 @@
  * @param   : The mode of the SysTick To Start (Use the Options declared above)
  * @return  :  It returns a variable of type ReqState_t indicating to the current State of the request 
  */
- ReqState_t LCD_GetRequestState(void);
+ //ReqState_t LCD_GetRequestState(void);
 
  /**
  * @brief   : Asynchronous Function to Clear the LCD screen

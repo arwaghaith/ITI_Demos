@@ -1,7 +1,7 @@
 /**
 * 
 * @file    : Clock Module Header File (App)
-* @author  : Alaa Ghita & Nour Abdelaziz
+* @author  : Alaa Ghita
 * @date    : April 2024
 * @version : 0.1v
 * 

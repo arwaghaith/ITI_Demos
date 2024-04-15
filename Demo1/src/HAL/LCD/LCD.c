@@ -60,7 +60,8 @@
     uint8_t Data;
     uint8_t CMD;
     ReqState_t State;
-    uint8_t Type; 
+    uint8_t Type;
+    NotificationCBF_t CB;
  }UserReq_t;
 
  typedef struct
@@ -81,8 +82,12 @@
 
 /************************************************Variables***********************************************/
  static LCDState_t LCDState = LCDState_OFF;
- static UserReq_t UserReq = {.State = ReqState_Ready, .Type = REQ_TYPE_NONE};
- static WriteProgress_t WriteProgress = {.CurrentPos = 0, .CB = NULL};
+ //static UserReq_t UserReq = {.State = ReqState_Ready, .Type = REQ_TYPE_NONE};
+ //static WriteProgress_t WriteProgress = {.CurrentPos = 0, .CB = NULL};
+ static UserReq_t UserReqs_Buffer[REQUESTS_BUFFER_SIZE];
+ static WriteProgress_t WriteProgress_Buffer[REQUESTS_BUFFER_SIZE];
+ static BufferCapacity_t Buffer_Head = 0;
+ static BufferCapacity_t Buffer_Tail = 0;
 
  extern const LCDPins_t LCD_ControlPins[_ControlPins_num];
  extern const LCDPins_t LCD_DataPins[_DataPins_num];
@@ -112,21 +117,22 @@
     return LCDState;
  }
 
- ReqState_t LCD_GetRequestState(void)
+ /*ReqState_t LCD_GetRequestState(void)
  {
     return UserReq.State;
- }
+ }*/
 
 
  enuErrorStatus_t LCD_ClearScreanAsynch(NotificationCBF_t Add_CallBack)
  {
     enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
-    if(/*(LCDState == LCDState_Operational) &&*/ (UserReq.State == ReqState_Ready))
+    if(/*(LCDState == LCDState_Operational) &&*/ (UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State     = ReqState_Busy;
-        UserReq.Type      = REQ_TYPE_CMD;
-        UserReq.CMD       = CMD_CLEAR;
-        WriteProgress.CB  = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State   = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type    = REQ_TYPE_CMD;
+        UserReqs_Buffer[Buffer_Head].CMD     = CMD_CLEAR;
+        WriteProgress_Buffer[Buffer_Head].CB = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -140,12 +146,13 @@
   enuErrorStatus_t LCD_DisplayCursorAsynch(NotificationCBF_t Add_CallBack)
  {
     enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
-    if(/*(LCDState == LCDState_Operational) &&*/ (UserReq.State == ReqState_Ready))
+    if(/*(LCDState == LCDState_Operational) &&*/ (UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State     = ReqState_Busy;
-        UserReq.Type      = REQ_TYPE_CMD;
-        UserReq.CMD       = CMD_DISPLAY_CURSOR;
-        WriteProgress.CB  = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type  = REQ_TYPE_CMD;
+        UserReqs_Buffer[Buffer_Head].CMD   = CMD_DISPLAY_CURSOR;
+        WriteProgress_Buffer[Buffer_Head].CB    = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -159,12 +166,13 @@
  enuErrorStatus_t LCD_HideCursorAsynch(NotificationCBF_t Add_CallBack)
  {
     enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
-    if(/*(LCDState == LCDState_Operational) &&*/ (UserReq.State == ReqState_Ready))
+    if(/*(LCDState == LCDState_Operational) &&*/ (UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State     = ReqState_Busy;
-        UserReq.Type      = REQ_TYPE_CMD;
-        UserReq.CMD       = CMD_HIDE_CURSOR;
-        WriteProgress.CB  = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State  = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type   = REQ_TYPE_CMD;
+        UserReqs_Buffer[Buffer_Head].CMD    = CMD_HIDE_CURSOR;
+        WriteProgress_Buffer[Buffer_Head].CB     = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -184,13 +192,14 @@
     {
         Ret_enuErrorStatus = enuErrorStatus_InvalidParameter;
     }
-    else if(/*(LCDState == LCDState_Operational) && */(UserReq.State == ReqState_Ready))
+    else if(/*(LCDState == LCDState_Operational) && */(UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State     = ReqState_Busy;
-        UserReq.Type      = REQ_TYPE_CMD;
-        Loc_u8Location    = COLUMN + (LCD_SECOND_ROW * ROW);
-        UserReq.CMD       = Loc_u8Location + LCD_DDRAM_START_ADD;
-        WriteProgress.CB  = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type  = REQ_TYPE_CMD;
+        Loc_u8Location                     = COLUMN + (LCD_SECOND_ROW * ROW);
+        UserReqs_Buffer[Buffer_Head].CMD   = Loc_u8Location + LCD_DDRAM_START_ADD;
+        WriteProgress_Buffer[Buffer_Head].CB    = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -204,12 +213,13 @@
  enuErrorStatus_t LCD_WriteDataAsynch(uint8_t Copy_u8Data, NotificationCBF_t Add_CallBack)
  {
     enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
-    if(/*(LCDState == LCDState_Operational) && */(UserReq.State == ReqState_Ready))
+    if(/*(LCDState == LCDState_Operational) && */(UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State = ReqState_Busy;
-        UserReq.Type = REQ_TYPE_DATA;
-        UserReq.Data = Copy_u8Data;
-        WriteProgress.CB  = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type  = REQ_TYPE_DATA;
+        UserReqs_Buffer[Buffer_Head].Data  = Copy_u8Data;
+        WriteProgress_Buffer[Buffer_Head].CB    = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -227,14 +237,15 @@
     {
         Ret_enuErrorStatus = enuErrorStatus_NULLPointer;
     }
-    else if(/*(LCDState == LCDState_Operational) && */(UserReq.State == ReqState_Ready))
+    else if(/*(LCDState == LCDState_Operational) && */(UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State = ReqState_Busy;
-        UserReq.Type = REQ_TYPE_STRING;
-        UserReq.S = Add_u8pString;
-        UserReq.Length = Copy_u16Length;
-        WriteProgress.CurrentPos = 0;
-        WriteProgress.CB  = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type = REQ_TYPE_STRING;
+        UserReqs_Buffer[Buffer_Head].S = Add_u8pString;
+        UserReqs_Buffer[Buffer_Head].Length = Copy_u16Length;
+        WriteProgress_Buffer[Buffer_Head].CurrentPos = 0;
+        WriteProgress_Buffer[Buffer_Head].CB  = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -248,12 +259,13 @@
  enuErrorStatus_t LCD_ReturnHomeAsynch(NotificationCBF_t Add_CallBack)
  {
     enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
-    if(/*(LCDState == LCDState_Operational) && */(UserReq.State == ReqState_Ready))
+    if(/*(LCDState == LCDState_Operational) && */(UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State      = ReqState_Busy;
-        UserReq.Type       = REQ_TYPE_CMD;
-        UserReq.CMD        = CMD_RETURN_HOME;
-        WriteProgress.CB   = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State      = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type       = REQ_TYPE_CMD;
+        UserReqs_Buffer[Buffer_Head].CMD        = CMD_RETURN_HOME;
+        WriteProgress_Buffer[Buffer_Head].CB   = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -267,12 +279,13 @@
  enuErrorStatus_t LCD_DisplayShiftLeftAsynch(NotificationCBF_t Add_CallBack)
  {
     enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
-    if(/*(LCDState == LCDState_Operational) && */(UserReq.State == ReqState_Ready))
+    if(/*(LCDState == LCDState_Operational) && */(UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State      = ReqState_Busy;
-        UserReq.Type       = REQ_TYPE_CMD;
-        UserReq.CMD        = CMD_DISP_SHIFT_LEFT;
-        WriteProgress.CB   = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State      = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type       = REQ_TYPE_CMD;
+        UserReqs_Buffer[Buffer_Head].CMD        = CMD_DISP_SHIFT_LEFT;
+        WriteProgress_Buffer[Buffer_Head].CB   = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -286,12 +299,13 @@
  enuErrorStatus_t LCD_DisplayShiftRightAsynch(NotificationCBF_t Add_CallBack)
  {
     enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
-    if(/*(LCDState == LCDState_Operational) && */(UserReq.State == ReqState_Ready))
+    if(/*(LCDState == LCDState_Operational) && */(UserReqs_Buffer[Buffer_Head].State == ReqState_Ready))
     {
-        UserReq.State      = ReqState_Busy;
-        UserReq.Type       = REQ_TYPE_CMD;
-        UserReq.CMD        = CMD_DISP_SHIFT_RIGHT;
-        WriteProgress.CB   = Add_CallBack;
+        UserReqs_Buffer[Buffer_Head].State      = ReqState_Busy;
+        UserReqs_Buffer[Buffer_Head].Type       = REQ_TYPE_CMD;
+        UserReqs_Buffer[Buffer_Head].CMD        = CMD_DISP_SHIFT_RIGHT;
+        WriteProgress_Buffer[Buffer_Head].CB   = Add_CallBack;
+        Buffer_Head++;
     }
     else
     {
@@ -387,29 +401,29 @@
     static uint32_t Loc_u32Counter = 0;
     static ProcState_t CurrProcState = ProcState_Done;
     Loc_u32Counter++;
-    if(UserReq.State == ReqState_Busy)
+    if(UserReqs_Buffer[Buffer_Tail].State == ReqState_Busy)
     {
-        switch (UserReq.Type)
+        switch (UserReqs_Buffer[Buffer_Tail].Type)
         {
             case (REQ_TYPE_CMD):
-                CurrProcState = Write_Proc(UserReq.CMD, LCD_WRITE_TYPE_CMD);
+                CurrProcState = Write_Proc(UserReqs_Buffer[Buffer_Tail].CMD, LCD_WRITE_TYPE_CMD);
                 if(CurrProcState == ProcState_Done)
                 {
-                    UserReq.State = ReqState_Done;
+                    UserReqs_Buffer[Buffer_Tail].State = ReqState_Done;
                 }
                 break;
             case (REQ_TYPE_DATA):
-                CurrProcState = Write_Proc(UserReq.Data, LCD_WRITE_TYPE_DATA);
+                CurrProcState = Write_Proc(UserReqs_Buffer[Buffer_Tail].Data, LCD_WRITE_TYPE_DATA);
                 if(CurrProcState == ProcState_Done)
                 {
-                    UserReq.State = ReqState_Done;
+                    UserReqs_Buffer[Buffer_Tail].State = ReqState_Done;
                 }
                 break;
             case (REQ_TYPE_STRING):
                 CurrProcState = WriteDataHelper_Proc();
                 if(CurrProcState == ProcState_Done)
                 {
-                    UserReq.State = ReqState_Done;
+                    UserReqs_Buffer[Buffer_Tail].State = ReqState_Done;
                 }
                 break;
             case (REQ_TYPE_NONE):
@@ -420,11 +434,12 @@
                 break;
         }
     }
-    else if (UserReq.State == ReqState_Done)
+    else if (UserReqs_Buffer[Buffer_Tail].State == ReqState_Done)
     {
-        UserReq.State = ReqState_Ready;
-        if(WriteProgress.CB)
-            WriteProgress.CB();
+        UserReqs_Buffer[Buffer_Tail].State = ReqState_Ready;
+        Buffer_Tail++;
+        if(WriteProgress_Buffer[Buffer_Tail].CB)
+            WriteProgress_Buffer[Buffer_Tail].CB();
     }
  }
  
@@ -486,13 +501,13 @@
     static ProcState_t ProcState = ProcState_Done;
     static ProcState_t ThreadProcState = ProcState_Done;
 
-    if(IS_NOT_NULL(UserReq.S) && (UserReq.Length > WriteProgress.CurrentPos))
+    if(IS_NOT_NULL(UserReqs_Buffer[Buffer_Tail].S) && (UserReqs_Buffer[Buffer_Tail].Length > WriteProgress_Buffer[Buffer_Tail].CurrentPos))
     {
         ProcState = ProcState_Busy;
-        ThreadProcState = Write_Proc(UserReq.S[WriteProgress.CurrentPos],LCD_WRITE_TYPE_DATA);
+        ThreadProcState = Write_Proc(UserReqs_Buffer[Buffer_Tail].S[WriteProgress_Buffer[Buffer_Tail].CurrentPos],LCD_WRITE_TYPE_DATA);
         if(ThreadProcState == ProcState_Done)
         {
-            WriteProgress.CurrentPos++;
+            WriteProgress_Buffer[Buffer_Tail].CurrentPos++;
         }   
     }
     else 
