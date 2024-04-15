@@ -10,9 +10,17 @@
 /*************************************************************************************/
 /********************         Scheduler  DRIVER        *******************************/
 /*************************************************************************************/
+
+/*************************************************************************************/
+/********************         Scheduler  includes      *******************************/
+/*************************************************************************************/
 #include "SCHED.h"
 #include "RUNNABLE_CFG.h"
 #include "SYSTICK.h"
+/*************************************************************************************/
+/********************         Scheduler  defines       *******************************/
+/*************************************************************************************/
+
 /**************************************************************************************/
 /*
 ** options : 1 - SYTK_AHB_8_CLK
@@ -20,8 +28,14 @@
   
 */
 #define SCHED_SYSTICK_CLK SYSTICK_AHB_8_CLK
+
 /*************************************************************************************/
-/*struct editable features by developers */
+/********************         Scheduler  datatypes     *******************************/
+/*************************************************************************************/
+
+/*************************************************************************************/
+                  /*struct editable features by developers */
+/*************************************************************************************/
 typedef struct 
 {
    SCHED_runnable_t* myrunnable;
@@ -29,7 +43,7 @@ typedef struct
 
 }SCHED_runnable_Info_t;
 
-const uint32_t SCHED_TICK_TIME_ms = 1000;
+const uint32_t SCHED_TICK_TIME_ms = 500;
 
 typedef enum
 {
@@ -39,7 +53,7 @@ typedef enum
 }Runnable_ptr_list;
 
 extern SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables];
-static uint32_t SCHED_PendingTicks = 0;
+static volatile uint32_t SCHED_PendingTicks = 0;
 static SCHED_runnable_Info_t SCHED_Runables_INFO[__SCHED_MAX_Runnables_ptr];
 
 /*****************************************************************************************************/
@@ -51,7 +65,7 @@ static void SCHED_PendingTicksCB(void);
 
 void SCHED_Init()
 {
-    uint32_t local_runn_iterator=0;
+    uint32_t local_runn_iterator = 0;
     /*select clk for systick timer  */
     SYSTICK_SELECT_CLKSRC(SCHED_SYSTICK_CLK);
     /*how often scheduler will be called*/
@@ -105,7 +119,7 @@ static void SCHED(void)
         if((SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_Runnable_CBF)&&(!(SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_periodicity_ms)))
         {
            // SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_Runnable_CBF;
-            SCHED_Runables_INFO[Current_Runnable_idx].runnable_remaing_time= SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_periodicity_ms;
+            SCHED_Runables_INFO[Current_Runnable_idx].runnable_remaing_time = SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_periodicity_ms;
 
         }
     }

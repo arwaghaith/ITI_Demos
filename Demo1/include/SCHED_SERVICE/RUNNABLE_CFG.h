@@ -12,7 +12,7 @@
 #define RUNNABLE_CFG_H_
 
 /*************************************************************************************/
-/********************         Scheduler  DRIVER        *******************************/
+/********************         Runnables  list          *******************************/
 /*************************************************************************************/
 
 
@@ -21,8 +21,14 @@
 
 typedef enum
 {
-    runn,
+    //TRAFFIC_LIGHT,
+    APP_UPDATESWITCH_STATE,
+    APP_READSWITCH,
+    Clock_Runnable,
+    Display_Runnable,
+
     __SCHED_MAX_Runnables
+
 }SCHED_runnables_list_t;
 
 

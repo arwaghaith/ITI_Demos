@@ -134,13 +134,14 @@ USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
 	int DIV_Mantissa;
 
     USART_ErrorStatus_t USART_Local_error = USART_INIT_OK;
+
     if(!USART_Cfg)
     {
         USART_Local_error = USART_INIT_ERROR;
     }
     else
     {
-         USART_Reg_ptr = (USART_Registers_t*)USART_Cfg->USART_Number;
+        USART_Reg_ptr = (USART_Registers_t*)USART_Cfg->USART_Number;
 
         USART_local_mask         = USART_Cfg->USART_Sampling_rate | USART_Cfg->USART_Parity_mode | USART_Cfg->USART_Device_mode | USART_Cfg->USART_wordlength;
         USART_Reg_ptr->USART_CR1 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR1,USART_CFG_MASK,USART_CLEAR);

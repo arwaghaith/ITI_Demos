@@ -14,11 +14,11 @@
 /*************************************************************************************/
 
 /*************************************************************************************/
-/********************          Includes Region         *******************************/
+/********************      SYSTICK Includes Region       *****************************/
 /*************************************************************************************/
 #include "SYSTICK.h"
 /*************************************************************************************/
-/********************          Defines  Region         *******************************/
+/********************      SYSTICK Defines  Region         ***************************/
 /*************************************************************************************/
 #define SYSTICK_type            volatile SYSTICK_reg_t * const 
 #define NULL                    (void*)0
@@ -49,6 +49,9 @@
 #define SYSTICK_CHECK_INT_MODE(INT)  ((INT==SYSTICK_INT_ENABLE) || (INT==SYSTICK_INT_DISABLE))
 #define SYSTICK_CHECK_RELOAD(VAL)  ((VAL >= SYSTICK_Min_LoadValue) && (VAL <= SYSTICK_Max_LoadValue))
 
+/******************************************************************************************/
+/********************             SYSTICK  Datatypes        *******************************/
+/******************************************************************************************/
 
 typedef unsigned int uint32_t;
 typedef unsigned int long uint64_t;
@@ -84,7 +87,7 @@ static SYSTICK_CLKSRC_t SYSTICK_SystemClock_Global;
 /*********************************************         Static Functions Prototypes Region        *****************************************************/
 /*****************************************************************************************************************************************************/
 static uint32_t SYSTICK_EDIT_REG_MASK    (uint32_t SYSTICK_REG_EDIT,uint32_t STK_MASK, SYSTICK_REG_OPER OPERA);
-static uint32_t SYSTICK_EDIT_Bit_Reg     (uint32_t SYSTICK_REG_EDIT,uint32_t BIT_NUM,SYSTICK_REG_OPER OPERA);
+//static uint32_t SYSTICK_EDIT_Bit_Reg     (uint32_t SYSTICK_REG_EDIT,uint32_t BIT_NUM,SYSTICK_REG_OPER OPERA);
 /*static uint32_t SYSTICK_CONTROL_INTERRUPT(SYSTICK_INT_MODE SYSTICK_INT_INPUT);*/
 /******************************************************************************************************************************************************/
 
@@ -256,44 +259,9 @@ SYSTICK_ErrorStatus SYSTICK_SetCallBack(SYSTICK_Callback Input_callback)
    
     return SYSTICK_Local_status;
 }
-/************************************** SYSTICK_EDIT_Bit_Reg **********************************/
-
-/* 
-   
-   * Functionality    : EDIT bit in register
-   * Input Parameters : 1- Register you want to EDIT 
-   *                    2- Number of Bit you want to EDIT
-   *                    3- Select Operation you want to apply.
-   *                       (options : CLEAR , SET , TOGGLE) 	
-   
-   * NOTE             :   
- 
- */
-
-static uint32_t SYSTICK_EDIT_Bit_Reg(uint32_t SYSTICK_REG_EDIT,uint32_t BIT_NUM,SYSTICK_REG_OPER OPERA)
-{
-	uint32_t SYSTICK_Local_Var =0;
-	switch (OPERA)
-	{
-	
-	case SYSTICK_CLEAR :
-		{
-			SYSTICK_Local_Var  = SYSTICK_REG_EDIT ;
-			SYSTICK_Local_Var &= ~(1<<BIT_NUM);
-			
-		}
-		break;
-	case SYSTICK_SET :
-		{
-			SYSTICK_Local_Var  = SYSTICK_REG_EDIT ;
-			SYSTICK_Local_Var |= (1<<BIT_NUM); 
-		}break;
-
-	default:
-		break;
-	}
-	return SYSTICK_Local_Var;
-}
+/*********************************************************************************************************/
+/***********************        SYSTICK Static Functions implmentation Region    *************************/
+/*********************************************************************************************************/
 
 
 /************************************** SYSTICK_EDIT_REG_MASK **********************************/
