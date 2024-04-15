@@ -22,6 +22,11 @@
 
 
 /************************************************Types***************************************************/
+typedef enum
+{
+	Display_Row1,
+	Display_Row2
+}DisplayState_t;
 /********************************************************************************************************/
 
 
@@ -30,10 +35,12 @@
 extern volatile Time_t Clock;
 extern volatile Date_t Date;
 extern volatile Time_t StopWatch;
-extern volatile EditState_t Edit_State = EditState_Done;
-extern volatile EditControl_t Edit_Signal = EditControl_NoSignal;
-extern volatile uint8_t Edit_Position = 1; 
-volatile DispalyMode_t DisplayMode = Clock_Mode;
+extern volatile EditState_t Edit_State;
+extern volatile EditControl_t Edit_Signal;
+extern volatile uint8_t Edit_Position;
+volatile DispalyMode_t DisplayMode = StopWatch_Mode;
+static DisplayState_t Display_State = Display_Row1;
+static char * ClockString;
 /********************************************************************************************************/
 
 
@@ -50,73 +57,70 @@ void Display_Init(void)
     LCD_HideCursorAsynch(NULL);
 }
 
-void Display_Num(uint32_t num)
-{
-	uint32_t temp =  num;
-	uint32_t NumOfDigits = 1, Digit = 0;
-	while (temp >= 10) {
-		temp /= 10;
-		NumOfDigits *= 10;
-	}
-	while(NumOfDigits)
-	{
-		Digit = num / NumOfDigits;
-		LCD_WriteDataAsynch(Digit+48,NULL);
-		num = num%NumOfDigits;
-		NumOfDigits /= 10;
-	}
-	
-}
-
-/*This Runnable should come every: 4*Number of requstes made to the LCD (at least!!!!!!)*/
+/*This Runnable should come every: 4*Number of requests made to the LCD (at least!!!!!!)*/
  /*Comes every 85ms تقريباً*/
 void Display_Runnable(void)
 {
-    LCD_ClearScreanAsynch(NULL);
+    //LCD_ClearScreanAsynch(NULL);
     if(DisplayMode == Clock_Mode)
     {
-        LCD_SetcursorAsynch(0,0,NULL);
-        LCD_WriteStringAsynch("Date:",5,NULL);
-        Display_Num(Date.Days);
-        LCD_WriteDataAsynch(":",NULL);
-        Display_Num(Date.Months);
-        LCD_WriteDataAsynch(":",NULL);
-        Display_Num(Date.Years);    
-        
-        LCD_SetcursorAsynch(1,0,NULL);
-        LCD_WriteStringAsynch("Time:",5,NULL);
-        Display_Num(Clock.Hours);
-        LCD_WriteDataAsynch(":",NULL);
-        Display_Num(Clock.Min);
-        LCD_WriteDataAsynch(":",NULL);
-        Display_Num(Clock.Sec);
+    	switch (Display_State)
+    	{
+    		case(Display_Row1):
+    			LCD_SetCursorAsynch(ROW_1,COLUMN_1,NULL);
+        		LCD_WriteStringAsynch("Date:",5,NULL);
+        		LCD_WriteDataAsynch((Date.Days/10)+48,NULL);
+        		LCD_WriteDataAsynch((Date.Days%10)+48,NULL);
+        		LCD_WriteDataAsynch('/',NULL);
+        		LCD_WriteDataAsynch((Date.Months/10)+48,NULL);
+        		LCD_WriteDataAsynch((Date.Months%10)+48,NULL);
+        		LCD_WriteDataAsynch('/',NULL);
+        		LCD_WriteDataAsynch((Date.Years/10)+48,NULL);
+        		LCD_WriteDataAsynch((Date.Years%10)+48,NULL);
+        		Display_State = Display_Row2;
+        		break;
+    		case(Display_Row2):
+				//ClockString[0]
+				LCD_SetCursorAsynch(ROW_2,COLUMN_1,NULL);
+    			LCD_WriteStringAsynch("Time:",5,NULL);
+				LCD_WriteDataAsynch((Clock.Hours/10)+48,NULL);
+		   		LCD_WriteDataAsynch((Clock.Hours%10)+48,NULL);
+	 			LCD_WriteDataAsynch(':',NULL);
+		    	LCD_WriteDataAsynch((Clock.Min/10)+48,NULL);
+		    	LCD_WriteDataAsynch((Clock.Min%10)+48,NULL);
+		    	LCD_WriteDataAsynch(':',NULL);
+		    	LCD_WriteDataAsynch((Clock.Sec/10)+48,NULL);
+		    	LCD_WriteDataAsynch((Clock.Sec%10)+48,NULL);
+        		Display_State = Display_Row1;
+        		break;
+    	}
 
         if(Edit_State == EditState_Editing)
         {
             switch(Edit_Position)
             {
                 case 1:
-                    LCD_SetcursorAsynch(0,6,NULL);
+                    LCD_SetCursorAsynch(ROW_1,COLUMN_7,NULL);
                     LCD_DisplayCursorAsynch(NULL);
                     break;
                 case 2:
-                    LCD_SetCursorAsynch(0,9,NULL);
+                    LCD_SetCursorAsynch(ROW_1,COLUMN_10,NULL);
                     LCD_DisplayCursorAsynch(NULL);
                     break;
                 case 3:
-                    LCD_SetcursorAsynch(0,14,NULL);
+                    LCD_SetCursorAsynch(ROW_1,COLUMN_15,NULL);
                     LCD_DisplayCursorAsynch(NULL);
                     break;
                 case 4:
-                    LCD_SetcursorAsynch(1,6,NULL);
+                    LCD_SetCursorAsynch(ROW_2,COLUMN_7,NULL);
                     LCD_DisplayCursorAsynch(NULL);
                     break;
                 case 5:
-                    LCD_SetcursorAsynch(1,9,NULL);
+                    LCD_SetCursorAsynch(1,COLUMN_10,NULL);
                     LCD_DisplayCursorAsynch(NULL);
                     break;
                 case 6:
-                    LCD_SetcursorAsynch(1,12,NULL);
+                    LCD_SetCursorAsynch(1,COLUMN_13,NULL);
                     LCD_DisplayCursorAsynch(NULL);
                     break;
                 default:
@@ -130,17 +134,29 @@ void Display_Runnable(void)
     }
     else if(DisplayMode == StopWatch_Mode)
     {
-        LCD_SetcursorAsynch(0,0,NULL);
-        LCD_WriteStringAsynch("StopWatch",9,NULL);
-
-        LCD_SetcursorAsynch(1,0,NULL);
-        Display_Num(Clock.Hours);
-        LCD_WriteDataAsynch(":",NULL);    
-        Display_Num(Clock.Min);
-        LCD_WriteDataAsynch(":",NULL);
-        Display_Num(Clock.Sec);
-        LCD_WriteDataAsynch(":",NULL);
-        Display_Num(Clock._100ms);
+    	switch (Display_State)
+    	{
+    		case(Display_Row1):
+        		LCD_SetCursorAsynch(ROW_1,COLUMN_1,NULL);
+    			LCD_WriteStringAsynch("StopWatch",9,NULL);
+    			Display_State = Display_Row2;
+    			break;
+    		case(Display_Row2):
+        		LCD_SetCursorAsynch(ROW_2,COLUMN_1,NULL);
+    			LCD_WriteDataAsynch((StopWatch.Hours/10)+48,NULL);
+    			LCD_WriteDataAsynch((StopWatch.Hours%10)+48,NULL);
+    			LCD_WriteDataAsynch(':',NULL);
+    			LCD_WriteDataAsynch((StopWatch.Min/10)+48,NULL);
+    			LCD_WriteDataAsynch((StopWatch.Min%10)+48,NULL);
+    			LCD_WriteDataAsynch(':',NULL);
+    			LCD_WriteDataAsynch((StopWatch.Sec/10)+48,NULL);
+    			LCD_WriteDataAsynch((StopWatch.Sec%10)+48,NULL);
+    			LCD_WriteDataAsynch(':',NULL);
+    			LCD_WriteDataAsynch((StopWatch._100ms/10)+48,NULL);
+    			LCD_WriteDataAsynch((StopWatch._100ms%10)+48,NULL);
+    			Display_State = Display_Row1;
+    			break;
+    	}
     }
 
 }

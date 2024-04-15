@@ -40,7 +40,7 @@ volatile uint8_t Edit_Position = 1;
 
 /*********************************************APIs Implementation****************************************/
 /*Should come every 500ms*/
-/*NOTE: This Runnable sould come when recieving a new signal from the uart to be able to serve that signal before it's changed by another signal*/
+/*NOTE: This Runnable should come when receiving a new signal from the uart to be able to serve that signal before it's changed by another signal*/
 /*I think maybe 1 sec will be enough*/
 void Clock_Runnable(void)
 {

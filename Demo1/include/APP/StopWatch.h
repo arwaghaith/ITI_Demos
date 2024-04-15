@@ -1,29 +1,44 @@
 /**
 * 
-* @file    : LCD Driver Header Configuration File (HAL)
+* @file    : StopWatch Module Header File (App)
 * @author  : Alaa Ghita
 * @date    : April 2024
 * @version : 0.1v
 * 
 */
 
-#ifndef	 _LCD_CFG_H_
-#define	 _LCD_CFG_H_
+#ifndef	 _STOPWATCH_H_
+#define	 _STOPWATCH_H_
 
 /************************************************Includes************************************************/
  #include "Typedefs.h"
+ #include "ErrorStatus.h"
+ #include "Clock.h"
 /********************************************************************************************************/
 
 
 
 /************************************************Defines*************************************************/
- #define REQUESTS_BUFFER_SIZE           50
- typedef uint8_t                       BufferCapacity_t;
 /********************************************************************************************************/
 
 
 
 /************************************************Types***************************************************/
+
+typedef enum
+{
+    SWstate_Initial,
+    SWstate_Running,
+    SWstate_Paused
+}StopWatch_State_t;
+
+typedef enum
+{
+    SWcontrol_StartSignal,
+    SWcontrol_PauseSignal,
+    SWcontrol_ContinueSignal,
+    SWcontrol_StopSignal
+}StopWatch_Control_t;
 /********************************************************************************************************/
 
 
@@ -34,4 +49,4 @@
 
 
 
-#endif /*_LCD_CFG_H_*/
+#endif /*_STOPWATCH_H_*/

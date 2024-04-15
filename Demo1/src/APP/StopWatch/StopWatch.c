@@ -41,7 +41,7 @@ volatile StopWatch_Control_t SWcontrol = SWcontrol_StopSignal;
 /*This runnable comes every 100ms*/
 void StopWatch_Runnable(void)
 {
-    static StopWatch_State_t SW_State = SWstate_Initial;
+    static StopWatch_State_t SW_State = SWstate_Running;
     //static uint32_t counter = 0;
     //counter ++;
     //if(counter % 2 == 0)
@@ -60,22 +60,22 @@ void StopWatch_Runnable(void)
                 break;
             case(SWstate_Running):
                 StopWatch._100ms++;
-                if(StopWatch._100ms == 10)
+                if(StopWatch._100ms >= 10)
                 {
                     StopWatch.Sec++;
                     StopWatch._100ms = 0;
                 }
-                if(StopWatch.Sec == 60)
+                if(StopWatch.Sec >= 60)
                 {
                     StopWatch.Min++;
                     StopWatch.Sec = 0;
                 }
-                if(StopWatch.Min == 60)
+                if(StopWatch.Min >= 60)
                 {
                     StopWatch.Hours++;
                     StopWatch.Min = 0;
                 }
-                if(StopWatch.Hours == 24)
+                if(StopWatch.Hours >= 24)
                 {
                     StopWatch._100ms = 0;
                     StopWatch.Sec = 0;
