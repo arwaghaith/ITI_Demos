@@ -10,10 +10,10 @@ stopwatch_time G_stopwatch_current_time=
 {
 0,0,0,0
 };
-uint16_t readSwitches_Buffer=0;
+volatile static uint16_t readSwitches_Buffer=1;
 
 uint8_t start_flag=0;
-uint8_t stop_flag=0;
+uint8_t stop_flag=1;
 uint8_t pause_flag=0;
 uint8_t continue_flag=0;
 
@@ -31,13 +31,15 @@ void stopwatch()
 
 
 
+
+
     #if DISPLAY_MODE== STOPWATCH
+
 
     if(readSwitches_Buffer &(1<<START_STOP))
     {
-      start_flag!=start_flag;
-      stop_flag!=stop_flag;
-
+    start_flag^=1;
+      stop_flag^=1;;
        
     }
 
@@ -77,7 +79,7 @@ void stopwatch()
 
     if(start_flag==1  ||continue_flag==1)
     {
-        G_stopwatch_current_time.milliseconds++;
+        G_stopwatch_current_time.milliseconds+=100;
     }
 
     else if (stop_flag ==1)
@@ -111,7 +113,9 @@ void stopwatch()
 
     
 
-    #endif
+  
+
+#endif
 
 
 

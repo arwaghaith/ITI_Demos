@@ -140,7 +140,10 @@ static uint8_t row2[16];
      row2[5]=':';
      row2[6]=G_stopwatch_current_time.seconds/10+'0';
      row2[7]=G_stopwatch_current_time.seconds%10+'0';
-     row2[8]='\0';
+      row2[8]=':';
+     row2[9]=G_stopwatch_current_time.milliseconds/10+'0';
+     row2[10]=G_stopwatch_current_time.milliseconds%10+'0';
+     row2[11]='\0';
 
 
 
@@ -167,7 +170,7 @@ static uint8_t row2[16];
     else if (loc_visit_counter==2)
     {
         
-    LCD_Write_String_POS_ASYNC(row2, 12, 2, 4);
+    LCD_Write_String_POS_ASYNC(row2, 12, 2, 3);
     loc_visit_counter++;
     }
 
