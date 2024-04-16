@@ -15,6 +15,8 @@
 #ifndef APP_UPDATESWITCH_H_
 #define APP_UPDATESWITCH_H_
 
+#include "Typedefs.h"
+
 /**************************************************/
 /**             APP_READSWITCH APIs              **/
 /**************************************************/

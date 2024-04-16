@@ -27,10 +27,10 @@ int main(void)
     USART_TX_CONFIG.USART_BaudRate = 9600;
     USART_TX_CONFIG.USART_wordlength = USART_WORD_LENGTH_9;
     USART_TX_CONFIG.USART_StopBitsNum = USART_StopBits_2;
-    GPIO_InitPin_v2(&USART_TX_PIN);
+    GPIO_InitPin(&USART_TX_PIN);
     USART_Init(&USART_TX_CONFIG);
     USART_Request_t USART_TxRequest;
-    uint8_t *NAME = "nOUR";
+    char *NAME = "Ac";
     USART_TxRequest.USART_Data = NAME;
     USART_TxRequest.USART_DataArraySize = 2;
     USART_TxRequest.USART_ID = USART1_ID;

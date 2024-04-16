@@ -1,7 +1,7 @@
 #include "RCC.h"
-#include "DISPLAY/Display.h"
-#include "SCHED_SERVICE/SCHED.h"
-
+#include "Display.h"
+#include "SCHED.h"
+/*
 int main(int argc, char* argv[])
 {
     RCC_AHB1DisablePeri(PERI_AHB1_GPIOA);
@@ -9,4 +9,4 @@ int main(int argc, char* argv[])
     Display_Init();
     SCHED_Init();
     SCHED_Start();
-}
+}*/

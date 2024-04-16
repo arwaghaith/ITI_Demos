@@ -52,7 +52,7 @@
 /***************************************************/
 /*               Datatypes Region                  */
 /***************************************************/
-typedef unsigned char uint8_t;
+
 uint8_t SW_Pressed_ID = NO_SW_PRESSED;
 USART_Request_t SW_update_RX_Request;
 uint16_t SW_RX_Message;

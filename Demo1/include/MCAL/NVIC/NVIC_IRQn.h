@@ -1,3 +1,9 @@
+
+#ifndef	 _NVIC_IRQN_H_
+#define	 _NVIC_IRQN_H_
+
+#include "Typedefs.h"
+
 typedef enum 
 {
     NVIC_WWDG = 0,                        /* Window WatchDog Interrupt */
@@ -59,3 +65,5 @@ typedef enum
     _NVIC_IRQn                           /* num of IRQs */
 
 } NVIC_IRQn_Type;
+
+#endif /*_NVIC_IRQN_H_*/
