@@ -8,10 +8,10 @@
 */
 
 /************************************************Includes************************************************/
-#include "Display.h"
+#include "DISPLAY/Display.h"
 #include "LCD.h"
-#include "Clock.h"
-#include "StopWatch.h"
+#include "CLOCK/Clock.h"
+#include "STOPWATCH/StopWatch.h"
 /********************************************************************************************************/
 
 
@@ -39,8 +39,9 @@ extern volatile EditState_t Edit_State;
 extern volatile EditControl_t Edit_Signal;
 extern volatile uint8_t Edit_Position;
 volatile DispalyMode_t DisplayMode = StopWatch_Mode;
+volatile DispalyMode_t Prev_DisplayMode;
 static DisplayState_t Display_State = Display_Row1;
-static char * ClockString;
+//static char * ClockString;
 /********************************************************************************************************/
 
 
@@ -57,11 +58,15 @@ void Display_Init(void)
     LCD_HideCursorAsynch(NULL);
 }
 
-/*This Runnable should come every: 4*Number of requests made to the LCD (at least!!!!!!)*/
+
  /*Comes every 85ms تقريباً*/
 void Display_Runnable(void)
 {
-    //LCD_ClearScreanAsynch(NULL);
+	if(DisplayMode != Prev_DisplayMode)
+	{
+    	LCD_ClearScreanAsynch(NULL);
+	}
+
     if(DisplayMode == Clock_Mode)
     {
     	switch (Display_State)
@@ -158,14 +163,15 @@ void Display_Runnable(void)
     			break;
     	}
     }
-
+	Prev_DisplayMode = DisplayMode;
 }
 
 /*
-__________________
+------------------
 |Date:00/00/0000 |
+------------------
 |Time:00:00:00   |
-|_______________|
+------------------
 */
 /********************************************************************************************************/
 
