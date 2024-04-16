@@ -1,10 +1,10 @@
 /***********************************/
 /*	Author 	  : Nour Abd-elaziz    */
 /*	Swc		  : APP_UPDATESWITCH   */
-/*	Layer	     : APP                */
-/*	Version    : 1.0                */
-/*	Date	     : April 14 , 2024    */
-/*	Last Edit  : N/A                */
+/*	Layer	     : APP             */
+/*	Version    : 1.0               */
+/*	Date	     : April 14 , 2024 */
+/*	Last Edit  : N/A               */
 /***********************************/
 
 
