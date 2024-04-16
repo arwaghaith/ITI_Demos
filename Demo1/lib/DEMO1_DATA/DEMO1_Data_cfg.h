@@ -17,8 +17,8 @@ Only send at the end
 #ifndef DEMO1_DATA_CFG_H_
 #define DEMO1_DATA_CFG_H_
 
+#include "Typedefs.h"
 
-typedef unsigned short uint16_t;
  typedef enum
  {
     SW_MODE,
@@ -32,7 +32,7 @@ typedef unsigned short uint16_t;
     SW_OK,
    _DEMO_SW_NUM           /*MUST KEEP IT AS IT IS*/
 
- }HSwitches_t;
+ }Switches_t;
 
 
  #endif

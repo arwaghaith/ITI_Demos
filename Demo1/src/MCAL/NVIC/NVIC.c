@@ -23,7 +23,7 @@
 
 #define NVIC_typedef             volatile NVIC_registers_t* const
 #define NVIC_BASEADD		     0xE000E100
-#define NULL		             (void*)0
+
 #define NVIC_NONIMPLEMENTED_BITS 4
 
 /*******************************************/
@@ -54,8 +54,6 @@
 /****************************************     Typedef Region      ****************************************/
 /*********************************************************************************************************/
 
-typedef unsigned int uint32_t;
-typedef unsigned char uint8_t;
 typedef volatile unsigned int vuint32_t;
 
 typedef struct 

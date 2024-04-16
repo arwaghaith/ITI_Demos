@@ -1,5 +1,6 @@
 #include "RCC.h"
 #include "DISPLAY/Display.h"
+#include "SCHED_SERVICE/SCHED.h"
 
 int main(int argc, char* argv[])
 {

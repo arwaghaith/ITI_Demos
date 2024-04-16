@@ -16,9 +16,6 @@
 /******************************************************************************************************************************************/
 #include "NVIC_IRQn.h"
 
-typedef unsigned int uint32_t;
-typedef unsigned char uint8_t;
-
 
 typedef enum 
 {

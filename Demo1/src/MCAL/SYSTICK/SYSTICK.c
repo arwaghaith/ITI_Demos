@@ -21,7 +21,7 @@
 /********************      SYSTICK Defines  Region         ***************************/
 /*************************************************************************************/
 #define SYSTICK_type            volatile SYSTICK_reg_t * const 
-#define NULL                    (void*)0
+
 #define SYSTICK_BASEADD         0xE000E010
  
 #define SYSTICK_MIN_LOAD_VAL    0x00000001UL
@@ -53,9 +53,7 @@
 /********************             SYSTICK  Datatypes        *******************************/
 /******************************************************************************************/
 
-typedef unsigned int uint32_t;
-typedef unsigned int long uint64_t;
-typedef unsigned char uint8_t;
+
 typedef volatile unsigned int vuint32_t;
 
 typedef void (*SYSTICK_Callback)(void);
