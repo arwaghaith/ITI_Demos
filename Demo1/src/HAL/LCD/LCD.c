@@ -132,14 +132,14 @@
         UserReqs_Buffer[Buffer_Head].Type    = REQ_TYPE_CMD;
         UserReqs_Buffer[Buffer_Head].CMD     = CMD_CLEAR;
         WriteProgress_Buffer[Buffer_Head].CB = Add_CallBack;
-        if(Buffer_Head >= 49)
-                {
-                	Buffer_Head = 0;
-                }
-                else
-                {
-                	Buffer_Head++;
-                }
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
+        {
+        	Buffer_Head = 0;
+        }
+        else
+        {
+        	Buffer_Head++;
+        }
     }
     else
     {
@@ -159,14 +159,14 @@
         UserReqs_Buffer[Buffer_Head].Type  = REQ_TYPE_CMD;
         UserReqs_Buffer[Buffer_Head].CMD   = CMD_DISPLAY_CURSOR;
         WriteProgress_Buffer[Buffer_Head].CB    = Add_CallBack;
-        if(Buffer_Head >= 49)
-                {
-                	Buffer_Head = 0;
-                }
-                else
-                {
-                	Buffer_Head++;
-                }
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
+        {
+        	Buffer_Head = 0;
+        }
+        else
+        {
+        	Buffer_Head++;
+        }
     }
     else
     {
@@ -186,14 +186,14 @@
         UserReqs_Buffer[Buffer_Head].Type   = REQ_TYPE_CMD;
         UserReqs_Buffer[Buffer_Head].CMD    = CMD_HIDE_CURSOR;
         WriteProgress_Buffer[Buffer_Head].CB     = Add_CallBack;
-        if(Buffer_Head >= 49)
-                {
-                	Buffer_Head = 0;
-                }
-                else
-                {
-                	Buffer_Head++;
-                }
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
+        {
+        	Buffer_Head = 0;
+        }
+        else
+        {
+        	Buffer_Head++;
+        }
     }
     else
     {
@@ -220,14 +220,14 @@
         Loc_u8Location                       = COLUMN + (LCD_SECOND_ROW * ROW);
         UserReqs_Buffer[Buffer_Head].CMD     = Loc_u8Location + LCD_DDRAM_START_ADD;
         WriteProgress_Buffer[Buffer_Head].CB = Add_CallBack;
-        if(Buffer_Head >= 49)
-                {
-                	Buffer_Head = 0;
-                }
-                else
-                {
-                	Buffer_Head++;
-                }
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
+        {
+        	Buffer_Head = 0;
+        }
+        else
+        {
+        	Buffer_Head++;
+        }
     }
     else
     {
@@ -247,7 +247,7 @@
         UserReqs_Buffer[Buffer_Head].Type    = REQ_TYPE_DATA;
         UserReqs_Buffer[Buffer_Head].Data    = Copy_u8Data;
         WriteProgress_Buffer[Buffer_Head].CB = Add_CallBack;
-        if(Buffer_Head >= 49)
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
         {
         	Buffer_Head = 0;
         }
@@ -280,14 +280,14 @@
         UserReqs_Buffer[Buffer_Head].Length = Copy_u16Length;
         WriteProgress_Buffer[Buffer_Head].CurrentPos = 0;
         WriteProgress_Buffer[Buffer_Head].CB  = Add_CallBack;
-        if(Buffer_Head >= 49)
-                {
-                	Buffer_Head = 0;
-                }
-                else
-                {
-                	Buffer_Head++;
-                }
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
+        {
+        	Buffer_Head = 0;
+        }
+        else
+        {
+        	Buffer_Head++;
+        }
     }
     else
     {
@@ -307,14 +307,14 @@
         UserReqs_Buffer[Buffer_Head].Type       = REQ_TYPE_CMD;
         UserReqs_Buffer[Buffer_Head].CMD        = CMD_RETURN_HOME;
         WriteProgress_Buffer[Buffer_Head].CB   = Add_CallBack;
-        if(Buffer_Head >= 49)
-                {
-                	Buffer_Head = 0;
-                }
-                else
-                {
-                	Buffer_Head++;
-                }
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
+        {
+        	Buffer_Head = 0;
+        }
+        else
+        {
+        	Buffer_Head++;
+        }
     }
     else
     {
@@ -334,14 +334,14 @@
         UserReqs_Buffer[Buffer_Head].Type       = REQ_TYPE_CMD;
         UserReqs_Buffer[Buffer_Head].CMD        = CMD_DISP_SHIFT_LEFT;
         WriteProgress_Buffer[Buffer_Head].CB   = Add_CallBack;
-        if(Buffer_Head >= 49)
-                {
-                	Buffer_Head = 0;
-                }
-                else
-                {
-                	Buffer_Head++;
-                }
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
+        {
+        	Buffer_Head = 0;
+        }
+        else
+        {
+        	Buffer_Head++;
+        }
     }
     else
     {
@@ -361,14 +361,14 @@
         UserReqs_Buffer[Buffer_Head].Type       = REQ_TYPE_CMD;
         UserReqs_Buffer[Buffer_Head].CMD        = CMD_DISP_SHIFT_RIGHT;
         WriteProgress_Buffer[Buffer_Head].CB   = Add_CallBack;
-        if(Buffer_Head >= 49)
-                {
-                	Buffer_Head = 0;
-                }
-                else
-                {
-                	Buffer_Head++;
-                }
+        if(Buffer_Head >= (REQUESTS_BUFFER_SIZE-1))
+        {
+        	Buffer_Head = 0;
+        }
+        else
+        {
+        	Buffer_Head++;
+        }
     }
     else
     {
@@ -500,7 +500,7 @@
     else if (UserReqs_Buffer[Buffer_Tail].State == ReqState_Done)
     {
         UserReqs_Buffer[Buffer_Tail].State = ReqState_Ready;
-        if(Buffer_Tail >= 49)
+        if(Buffer_Tail >= (REQUESTS_BUFFER_SIZE-1))
         {
         	Buffer_Tail = 0;
         }
