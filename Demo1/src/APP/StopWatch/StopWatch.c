@@ -9,6 +9,8 @@
 
 /************************************************Includes************************************************/
 #include "StopWatch.h"
+#include "Typedefs.h"
+#include "DEMO1_Data_cfg.h"
 
 /********************************************************************************************************/
 
@@ -27,6 +29,7 @@
 /************************************************Variables***********************************************/
 volatile Time_t StopWatch;
 volatile StopWatch_Control_t SWcontrol = SWcontrol_StopSignal;
+extern uint8_t  Received_SW_Pressed_ID;
 /********************************************************************************************************/
 
 
@@ -37,28 +40,38 @@ volatile StopWatch_Control_t SWcontrol = SWcontrol_StopSignal;
 
 
 /*********************************************APIs Implementation****************************************/
-
-/*This runnable comes every 100ms*/
-void StopWatch_Runnable(void)
-{
-    static StopWatch_State_t SW_State = SWstate_Running;
-    //static uint32_t counter = 0;
+//static uint32_t counter = 0;
     //counter ++;
     //if(counter % 2 == 0)
     //{
+/*This runnable comes every 100ms*/
+void StopWatch_Runnable(void)
+{
+        static StopWatch_State_t SW_State = SWstate_Initial;
+        static StopWatch_State_t SW_PREV_STATE    = SWstate_Initial;
+
+
         switch(SW_State)
         {
             case(SWstate_Initial):
+            {
                 StopWatch.Hours = 0;
                 StopWatch.Min = 0;
                 StopWatch.Sec = 0;
                 StopWatch._100ms = 0;
-                if(SWcontrol == SWcontrol_StartSignal)
+                
+                if ((Received_SW_Pressed_ID == SW_Start_Stop ))
                 {
-                    SW_State = SWstate_Running;
+                    SW_PREV_STATE = SWstate_Initial ;
+                    SW_State      = SWstate_Running  ;
                 }
-                break;
+                
+
+            } break;
+
             case(SWstate_Running):
+            {
+                SW_FLAG = 2;
                 StopWatch._100ms++;
                 if(StopWatch._100ms >= 10)
                 {
@@ -82,26 +95,35 @@ void StopWatch_Runnable(void)
                     StopWatch.Min = 0;
                     StopWatch.Hours = 0;
                 }
-                if(SWcontrol == SWcontrol_PauseSignal)
+                if( Received_SW_Pressed_ID == SW_Start_Stop ) 
                 {
-                    SW_State = SWstate_Paused;
+                    SW_PREV_STATE = SWstate_Running ;
+                    SW_State      = SWstate_Initial;
                 }
-                else if(SWcontrol == SWcontrol_StopSignal)
+                else if ( Received_SW_Pressed_ID == SW_Pause_Continue  ) 
                 {
-                    SW_State = SWstate_Initial;
+                    SW_PREV_STATE = SWstate_Running ;
+                    SW_State      = SWstate_Paused;
                 }
-                break;
+  
+
+            } break;
             case(SWstate_Paused):
-                /*Do Nothing*/
-                if(SWcontrol == SWcontrol_ContinueSignal)
+            {
+               
+
+                if(Received_SW_Pressed_ID == SW_Pause_Continue  )
                 {
-                    SW_State = SWstate_Running;
+                    SW_PREV_STATE = SWstate_Paused ;
+                    SW_State      = SWstate_Running;
                 }
-                else if(SWcontrol == SWcontrol_StopSignal)
+                else if (Received_SW_Pressed_ID == SW_Start_Stop  )
                 {
-                    SW_State = SWstate_Initial;
+                    SW_PREV_STATE = SWstate_Paused ;
+                    SW_State      = SWstate_Initial;
                 }
-                break;
+
+            } break;
             default:
                 /*Do Nothing*/
                 break;
@@ -109,5 +131,3 @@ void StopWatch_Runnable(void)
     //}
 }
 /********************************************************************************************************/
-
-

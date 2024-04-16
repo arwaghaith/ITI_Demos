@@ -16,8 +16,6 @@
 #include "APP_UPDATESWITCH.h"
 #include "USART.h"
 
-
-
 /***************************************************/
 /*               Macros Region                     */
 /***************************************************/
@@ -30,9 +28,9 @@
     USART_ID            : USART1_ID - USART2_ID -
                                 USART6_ID.
 *****************************************************/
-#define SW_USART_CHANNEL      USART1
-#define SW_USART_CHANNEL_ID   USART1_ID
-
+#define SW_USART_CHANNEL_TX      USART1
+#define SW_USART_CHANNEL_ID_TX   USART1_ID
+#define NO_SW_PRESSED         0xFF
 
 
 /***************************************************/
@@ -44,6 +42,7 @@
     */
 extern uint16_t SW_Pressed_ID;
 uint8_t SW_Message = 0;
+USART_Request_t SW_update_TX_Request;
 
 
 /*
@@ -67,7 +66,7 @@ ID OF MCU PASSED IN START BYTE
    | 0 |  1 | 0  | 1 |
    -------------------
 1 - my MCU Number is 1 [7 : 6]
-2 - Check number
+2 - Check number   1
                                                 0XAID 
 --------------------------------------------------------------------------------------------------
 |        password  [4 bits ]  2 bits ID      |                    ID                             |
@@ -75,14 +74,19 @@ ID OF MCU PASSED IN START BYTE
 |          "5"   check  password             |     0     |     0       |     0       |    0      |
 --------------------------------------------------------------------------------------------------
 */ 
+void APP_TX_MSG_Init(void)
+{
+   
+   SW_update_TX_Request.USART_DataArraySize = sizeof(SW_Message);
+   SW_update_TX_Request.USART_ID            = SW_USART_CHANNEL_ID_TX;
+   SW_update_TX_Request.USART_Number        = SW_USART_CHANNEL_TX ;
+   SW_update_TX_Request.USART_CBFunc        = SW_TX_Done_CB ;
+
+}
 void APP_UPDATESWITCH_STATE(void)
 {
+   USART_ErrorStatus_t USART_CHECK;
 
-   USART_Request_t SW_update_TX_Request;
-   SW_update_TX_Request.USART_DataArraySize = sizeof(SW_Message);
-   SW_update_TX_Request.USART_ID            = SW_USART_CHANNEL_ID;
-   SW_update_TX_Request.USART_Number        = SW_USART_CHANNEL ;
-   SW_update_TX_Request.USART_CBFunc        = SW_TX_Done_CB ;
 
    /*Filter ID part*/
    SW_Message = 0X0F & SW_Pressed_ID;
@@ -93,19 +97,23 @@ void APP_UPDATESWITCH_STATE(void)
       SW_Message |= SW_PASSWORD_CHECK ;
       /*Assign Tx Request*/
       SW_update_TX_Request.USART_Data = &SW_Message;
-      USART_ErrorStatus_t USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
+      USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
 
 
    }
-   else if(SW_Pressed_ID == -1)
+   else if(SW_Pressed_ID == NO_SW_PRESSED)
    {
-      /*Zeros ID part means NO sw pressed all in released MODE*/
-      SW_Message = SW_Pressed_ID & 0x00;
+      /* F "1111" ID part means NO sw pressed all in released MODE*/
+      SW_Message = SW_Pressed_ID & 0x0F;
       /*Assign Password Check bits */
       SW_Message |= SW_PASSWORD_CHECK ;
       /*Assign Tx Request*/
       SW_update_TX_Request.USART_Data = &SW_Message;
-      USART_ErrorStatus_t USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
+       USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
+   }
+   if(USART_CHECK)
+   {
+
    }
    
   

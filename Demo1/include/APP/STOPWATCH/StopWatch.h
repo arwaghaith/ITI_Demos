@@ -30,6 +30,7 @@ typedef enum
     SWstate_Initial,
     SWstate_Running,
     SWstate_Paused
+
 }StopWatch_State_t;
 
 typedef enum
@@ -38,6 +39,7 @@ typedef enum
     SWcontrol_PauseSignal,
     SWcontrol_ContinueSignal,
     SWcontrol_StopSignal
+
 }StopWatch_Control_t;
 /********************************************************************************************************/
 

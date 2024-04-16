@@ -16,5 +16,6 @@
 #define APP_UPDATESWITCH_H_
 
 void APP_UPDATESWITCH_STATE(void);
-
+void SW_TX_Done_CB(void);
+void APP_TX_MSG_Init(void);
 #endif
