@@ -1,19 +1,22 @@
 /***********************************/
 /*	Author 	  : Nour Abd-elaziz    */
 /*	Swc		  : APP_UPDATESWITCH   */
-/*	Layer	     : APP             */
-/*	Version    : 1.0               */
-/*	Date	     : April 14 , 2024 */
-/*	Last Edit  : N/A               */
+/*	Layer	     : APP                */
+/*	Version    : 1.0                */
+/*	Date	     : April 14 , 2024    */
+/*	Last Edit  : N/A                */
 /***********************************/
 
 
-/**************************************************/
-/**          APP_UPDATESWITCH driver             **/
-/**************************************************/
-
+                           /**************************************************/
+                           /**          APP_UPDATESWITCH driver             **/
+                           /**************************************************/
+                           
+/***************************************************/
+/*                Includes Region                  */
+/***************************************************/
 #include "DEMO1_Data_cfg.h"
-#include "UPDATE_SW/APP_UPDATESWITCH.h"
+#include "APP_UPDATESWITCH.h"
 #include "USART.h"
 
 /***************************************************/
@@ -74,6 +77,11 @@ ID OF MCU PASSED IN START BYTE
 |          "5"   check  password             |     0     |     0       |     0       |    0      |
 --------------------------------------------------------------------------------------------------
 */ 
+
+               /***************************************************/
+               /*       Functions Implementation Region           */
+               /***************************************************/
+
 void APP_TX_MSG_Init(void)
 {
    
@@ -85,7 +93,7 @@ void APP_TX_MSG_Init(void)
 }
 void APP_UPDATESWITCH_STATE(void)
 {
-   USART_ErrorStatus_t USART_CHECK = 0;
+   USART_ErrorStatus_t USART_CHECK;
 
 
    /*Filter ID part*/

@@ -18,7 +18,7 @@
 #include "RCC.h"
 
 
-#define USART_CLK_Frequency      5113
+#define USART_CLK_Frequency      16000000UL
 #define NULL                     (void *)0
 #define USART_DIV_MANTISSA_POS   4U
 #define USART_Init_BufferIdx     0
@@ -80,8 +80,8 @@ typedef enum
 
 typedef enum
 {
-	USART_TxRequest_busy,
 	USART_TxRequest_Ready,
+	USART_TxRequest_busy,
 	USART_RxRequest_busy,
 	USART_RxRequest_Ready
 
@@ -159,8 +159,8 @@ USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
 
         */
 
-		USARTDIV     =  (USART_CLK_Frequency )/(8*(2-((USART_Reg_ptr->USART_CR1)>>OVER8 &1))*USART_Cfg->USART_BaudRate);
-		DIV_FRACTION =  (((int)(USARTDIV*1000))%1000)/1000.0;
+		USARTDIV     =  ((float) USART_CLK_Frequency )/(float)(8*(2-((USART_Reg_ptr->USART_CR1)>>OVER8 &1))*USART_Cfg->USART_BaudRate);
+		DIV_FRACTION =  (float)(((int)(USARTDIV*1000))%1000)/1000.0;
 		DIV_Mantissa =  USARTDIV - DIV_FRACTION;
         
 		if(USART_Cfg->USART_Sampling_rate == USART_OVERSAPMLING_16)

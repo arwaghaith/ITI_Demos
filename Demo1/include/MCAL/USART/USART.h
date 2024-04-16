@@ -13,7 +13,6 @@
 /**************************      USART   DRIVER         *****************************/
 /************************************************************************************/
 #include"NVIC_IRQn.h"
-#include "Typedefs.h"
 
 /*UART_NUMBER*/
 
@@ -50,6 +49,7 @@
 
 
 
+typedef unsigned int uint32_t;
 typedef enum
 {
     USART_Asynchronous_mode,
@@ -142,6 +142,7 @@ typedef enum
 
 typedef enum
 {
+    USART_NO_BD      = 0,
     USART_LBDL_10    = (0<<LBDL),
     USART_LBDL_11    = (1<<LBDL)
 
