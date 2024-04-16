@@ -13,7 +13,7 @@
 /**************************************************/
 
 #include "DEMO1_Data_cfg.h"
-#include "APP_UPDATESWITCH.h"
+#include "UPDATE_SW/APP_UPDATESWITCH.h"
 #include "USART.h"
 
 /***************************************************/
@@ -85,7 +85,7 @@ void APP_TX_MSG_Init(void)
 }
 void APP_UPDATESWITCH_STATE(void)
 {
-   USART_ErrorStatus_t USART_CHECK;
+   USART_ErrorStatus_t USART_CHECK = 0;
 
 
    /*Filter ID part*/
