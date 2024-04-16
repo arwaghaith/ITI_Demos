@@ -66,6 +66,7 @@
  #define GPIO_OSPEED_VERYHIGH              (uint32_t)0x00000003
 
  /*GPIO Alternate Function Options*/
+ #define GPIO_AF_NONE                      (uint32_t)0xff
  #define GPIO_AF_0                         (uint32_t)0x00
  #define GPIO_AF_1                         (uint32_t)0x01
  #define GPIO_AF_2                         (uint32_t)0x02
@@ -102,6 +103,7 @@
    uint32_t GPIO_MODE;
    uint32_t GPIO_PUPD;
    uint32_t GPIO_OSPEED;
+   uint32_t GPIO_AF;
 
  }GPIO_PinCfg_t;
 

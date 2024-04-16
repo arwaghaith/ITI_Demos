@@ -131,6 +131,26 @@ typedef struct
       Loc_u32GPIO_Temp_Value |= ((Pin_Cfg->GPIO_OSPEED)<<(Pin_Cfg->GPIO_PIN * 2));
       GPIO->OSPEEDR           = Loc_u32GPIO_Temp_Value;
 
+      if(Pin_Cfg->GPIO_PIN != GPIO_AF_NONE)
+      {
+        switch(Pin_Cfg->GPIO_PIN)
+        {
+          case GPIO_AF_0 ... GPIO_AF_7:
+            Loc_u32GPIO_Temp_Value  = GPIO->AFRL;
+            Loc_u32GPIO_Temp_Value &= ~(MASK_4BITS<<(Pin_Cfg->GPIO_PIN * 4));
+            Loc_u32GPIO_Temp_Value |= ((Pin_Cfg->GPIO_AF)<<(Pin_Cfg->GPIO_PIN * 4));
+            GPIO->AFRL              = Loc_u32GPIO_Temp_Value;
+            break;
+          case GPIO_AF_8 ... GPIO_AF_15:
+            Loc_u32GPIO_Temp_Value  = GPIO->AFRH;
+            Loc_u32GPIO_Temp_Value &= ~(MASK_4BITS<<(Pin_Cfg->GPIO_PIN * 4));
+            Loc_u32GPIO_Temp_Value |= ((Pin_Cfg->GPIO_AF)<<(Pin_Cfg->GPIO_PIN * 4));
+            GPIO->AFRH              = Loc_u32GPIO_Temp_Value;
+            break;
+          default:
+            break;
+        }
+      }
     }
 
    return Ret_enuErrorStatus;
