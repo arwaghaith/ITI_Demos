@@ -13,7 +13,7 @@
 /**************************************************/
 
 #include "DEMO1_Data_cfg.h"
-#include "APP_READSWITCH.h"
+#include "READ_SW/APP_READSWITCH.h"
 #include "USART.h"
 #include "HSwitch.h"
 
@@ -99,7 +99,7 @@ void APP_RX_MSG_Init(void)
 }
 void READ_RX_SWITCH_CB(void)
 {
-  uint8_t EXTRACTED_ID;
+  uint8_t EXTRACTED_ID = 0;
   /*filter data to get ID ->STILL NOT HANDLED */
   //SW_update_RX_Request.USART_Data -> EXTRACTED ID;
   Received_SW_Pressed_ID = EXTRACTED_ID;

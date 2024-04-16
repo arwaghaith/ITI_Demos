@@ -15,5 +15,7 @@
 #define APP_READSWITCH_H_
 
 void APP_READSWITCH(void);
+void APP_RX_MSG_Init(void);
+void READ_RX_SWITCH_CB(void);
 
 #endif

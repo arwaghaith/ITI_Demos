@@ -8,13 +8,10 @@
 */
 
 /************************************************Includes************************************************/
-<<<<<<< HEAD
-#include "StopWatch.h"
+
 #include "Typedefs.h"
 #include "DEMO1_Data_cfg.h"
-=======
 #include "STOPWATCH/StopWatch.h"
->>>>>>> f23f54b52c6a2d91877f8d933b7f13ed4e02bf8f
 
 /********************************************************************************************************/
 
@@ -75,7 +72,6 @@ void StopWatch_Runnable(void)
 
             case(SWstate_Running):
             {
-                SW_FLAG = 2;
                 StopWatch._100ms++;
                 if(StopWatch._100ms >= 10)
                 {
