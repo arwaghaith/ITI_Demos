@@ -8,7 +8,7 @@
 */
 
 /************************************************Includes************************************************/
- #include "Clock.h"
+ #include "CLOCK/Clock.h"
 /********************************************************************************************************/
 
 
@@ -85,6 +85,7 @@ void Clock_Runnable(void)
                             if(Date.Days == 1)
                             {
                                 Date.Days = 31;
+                                Date.Months--;
                             }
                             else
                             {
@@ -95,6 +96,7 @@ void Clock_Runnable(void)
                             if(Date.Months == 1)
                             {
                                 Date.Months = 12;
+                                Date.Years--;
                             }
                             else
                             {
@@ -102,7 +104,7 @@ void Clock_Runnable(void)
                             }
                             break;
                         case 3:
-                            if(Date.Years == 1)
+                            if(Date.Years == 0)
                             {
                                 Date.Years = 9999;
                             }
@@ -115,6 +117,7 @@ void Clock_Runnable(void)
                             if(Clock.Hours == 0)
                             {
                                 Clock.Hours = 23;
+                                Date.Days--;
                             }
                             else
                             {
@@ -124,7 +127,8 @@ void Clock_Runnable(void)
                         case 5:
                             if(Clock.Min == 0)
                             {
-                                Clock.Min = 60;
+                                Clock.Min = 59;
+                                Clock.Hours--;
                             }
                             else
                             {
@@ -134,7 +138,8 @@ void Clock_Runnable(void)
                         case 6:
                             if(Clock.Sec == 0)
                             {
-                                Clock.Sec = 60;
+                                Clock.Sec = 59;
+                                Clock.Min--;
                             }
                             else
                             {
