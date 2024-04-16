@@ -44,14 +44,14 @@ typedef enum
     EditState_Done,   /*When an OK signal comes to the MC the Edit_State will be updated to be EditState_Done*/
 }EditState_t;
 
-typedef enum
+/*typedef enum
 {
     EditControl_NoSignal,
-    EditControl_IncreaseSignal,         /*When the Up arrow is pressed*/
-    EditControl_DecreaseSignal,         /*When the Down arrow is pressed*/
-    EditControl_RightSignal,
+    EditControl_IncreaseSignal,    */     /*When the Up arrow is pressed*/
+    //EditControl_DecreaseSignal,         /*When the Down arrow is pressed*/
+    /*EditControl_RightSignal,
     EditControl_LeftSignal
-}EditControl_t;
+}EditControl_t;*/
 /********************************************************************************************************/
 
 

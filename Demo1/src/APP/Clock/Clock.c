@@ -9,6 +9,7 @@
 
 /************************************************Includes************************************************/
  #include "CLOCK/Clock.h"
+ #include "DEMO1_Data_cfg.h"
 /********************************************************************************************************/
 
 
@@ -27,8 +28,9 @@
 volatile Time_t Clock;
 volatile Date_t Date = {17, 4, 2024};
 volatile EditState_t Edit_State = EditState_Done;
-volatile EditControl_t Edit_Signal = EditControl_NoSignal;
+//volatile EditControl_t Edit_Signal = EditControl_NoSignal;
 volatile uint8_t Edit_Position = 1;
+extern uint8_t Received_SW_Pressed_ID;
 /********************************************************************************************************/
 
 
@@ -49,11 +51,23 @@ void Clock_Runnable(void)
     //if(counter % 2 == 0)
     //{
         /*Clock Editing Code*/
+        switch(Received_SW_Pressed_ID)
+        {
+            case(SW_Edit):
+                Edit_State = EditState_Editing;
+                break;
+            case(SW_OK):
+                Edit_State = EditState_Done;
+                break;
+            default:
+                break;
+        }
+
         if(Edit_State == EditState_Editing)
         {
-            switch(Edit_Signal)
+            switch(Received_SW_Pressed_ID)
             {
-                case(EditControl_IncreaseSignal):
+                case(SW_Up):
                     switch(Edit_Position)
                     {
                         case 1:
@@ -78,7 +92,7 @@ void Clock_Runnable(void)
                             break;
                     }
                     break;
-                case(EditControl_DecreaseSignal):
+                case(SW_Down):
                     switch(Edit_Position)
                     {
                         case 1:
@@ -150,7 +164,7 @@ void Clock_Runnable(void)
                             break;
                     }
                     break;
-                case(EditControl_RightSignal):
+                case(SW_Right):
                     if(Edit_Position < 6)
                     {
                         Edit_Position++;
@@ -160,7 +174,7 @@ void Clock_Runnable(void)
                         Edit_Position = 1;    
                     }
                     break;
-                case(EditControl_LeftSignal):
+                case(SW_Left):
                     if(Edit_Position > 1)
                     {
                         Edit_Position--;
@@ -176,7 +190,7 @@ void Clock_Runnable(void)
         }
         else
         {
-            Edit_Signal = EditControl_NoSignal;
+            //Edit_Signal = EditControl_NoSignal;
             Edit_Position = 1;
         }
 
@@ -247,10 +261,11 @@ void Clock_Runnable(void)
 }
 
 /*
-__________________
+------------------
 |Date:00/00/0000 |
+------------------
 |Time:00:00:00   |
-|_______________|
+------------------
 */
 /********************************************************************************************************/
 

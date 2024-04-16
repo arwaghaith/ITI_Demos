@@ -12,6 +12,7 @@
 #include "LCD.h"
 #include "CLOCK/Clock.h"
 #include "STOPWATCH/StopWatch.h"
+#include "DEMO1_Data_cfg.h"
 /********************************************************************************************************/
 
 
@@ -36,7 +37,7 @@ extern volatile Time_t Clock;
 extern volatile Date_t Date;
 extern volatile Time_t StopWatch;
 extern volatile EditState_t Edit_State;
-extern volatile EditControl_t Edit_Signal;
+extern uint8_t Received_SW_Pressed_ID;
 extern volatile uint8_t Edit_Position;
 volatile DispalyMode_t DisplayMode = StopWatch_Mode;
 volatile DispalyMode_t Prev_DisplayMode;
@@ -85,7 +86,6 @@ void Display_Runnable(void)
         		Display_State = Display_Row2;
         		break;
     		case(Display_Row2):
-				//ClockString[0]
 				LCD_SetCursorAsynch(ROW_2,COLUMN_1,NULL);
     			LCD_WriteStringAsynch("Time:",5,NULL);
 				LCD_WriteDataAsynch((Clock.Hours/10)+48,NULL);
