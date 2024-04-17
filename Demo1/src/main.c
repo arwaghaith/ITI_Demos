@@ -60,7 +60,7 @@
 
 
 //extern void Toggle_LED_GREEN(void);
-extern user_request_t LCD_user_requests;
+//extern user_request_t LCD_user_requests;
 
 int main()
 {
@@ -71,74 +71,85 @@ int main()
   RCC_ControlPeripheralClock(RCC_AHB1,GPIOCEN,CLK_ON);
   RCC_ControlPeripheralClock(RCC_AHB1,GPIOAEN,CLK_ON);
 
-  GPIO_PIN_t GPIO_TX=
+//   GPIO_PIN_t GPIO_TX=
 
-  {
+//   {
 
-    GPIO_PORTA,
-    GPIO_PIN9,
-    GPIO_MODE_ALTERNATE,
-    GPIO_SPEED_HIGH,
+//     GPIO_PORTA,
+//     GPIO_PIN9,
+//     GPIO_MODE_ALTERNATE,
+//     GPIO_SPEED_HIGH,
     
     
-    AF7,
-    0
+//     AF7,
+//     0
 
 
-  };
+//   };
   
-  GPIO_PIN_t GPIO_RX=
+//   GPIO_PIN_t GPIO_RX=
 
-  {
+//   {
 
-    GPIO_PORTA,
-    GPIO_PIN10,
-    GPIO_MODE_ALTERNATE,
-    GPIO_SPEED_HIGH,
+//     GPIO_PORTA,
+//     GPIO_PIN10,
+//     GPIO_MODE_ALTERNATE,
+//     GPIO_SPEED_HIGH,
     
     
-    AF7,
-    0
+//     AF7,
+//     0
 
 
-  };
+//   };
   
 
-  GPIO_Init(&GPIO_TX);
-  GPIO_Init(&GPIO_RX);
-   RCC_ControlPeripheralClock(RCC_APB2,USART1RST,CLK_ON);
+//   GPIO_Init(&GPIO_TX);
+//   GPIO_Init(&GPIO_RX);
+//    RCC_ControlPeripheralClock(RCC_APB2,USART1RST,CLK_ON);
 
-  Switch_Init();
-  LCD_INIT_PINS();
-USART_Config Copy_addCFG=
+//   Switch_Init();
+//   LCD_INIT_PINS();
+// USART_Config Copy_addCFG=
 
-{
+// {
 
 
-    USART_Channel_1,
-    0,
-    1,
-    0,
-    0,
-    0,
-    0,
-    1,
-    9600
+//     USART_Channel_1,
+//     0,
+//     1,
+//     0,
+//     0,
+//     0,
+//     0,
+//     1,
+//     9600
+// };
+
+//  USART_Init(&Copy_addCFG);
+ 
+
+
+
+    
+//  Sched_Init();
+//  Sched_Start ();
+
+
+GPIO_PIN_t GPIO_PIN={
+
+
+GPIO_PORTA, GPIO_PIN5, GPIO_MODE_OUTPUT, GPIO_SPEED_HIGH, GPIO_OUTPUT_TYPE_PUSH_PULL, GPIO_LOW
+
+
+
 };
-
- USART_Init(&Copy_addCFG);
  
-
-
-
-    
- Sched_Init();
- Sched_Start ();
- 
-
+GPIO_Init(&GPIO_PIN);
   while(1)
   {
 
+GPIO_SET_PIN_VALUE(GPIO_PORTA,GPIO_PIN5,GPIO_HIGH);
   
 
   }
