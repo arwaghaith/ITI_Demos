@@ -54,7 +54,7 @@ user_request_t LCD_user_request =
         "LCD", /**< The name of the LCD module. */
         3,     /**< The number of lines in the LCD display. */
         BUSY, /**< The readiness state of the LCD module. */
-        WRITE, /**< The write mode of the LCD module. */
+        CLEAR, /**< The write mode of the LCD module. */
         {
             1, 1 /**< The initial position of the LCD cursor. */
         }};

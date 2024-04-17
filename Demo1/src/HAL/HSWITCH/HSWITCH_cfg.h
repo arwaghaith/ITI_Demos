@@ -6,12 +6,11 @@
 
 /******************************************************/
 /*               Switch Names                */
-#define  Switch_NUM 9
+#define  Switch_NUM 8
 typedef enum
 {
   START_STOP,
   PAUSE_CONT,
-  OK,
   EDIT,
   MODE,
   UP,

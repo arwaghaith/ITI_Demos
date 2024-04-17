@@ -155,6 +155,7 @@
 #define TIM4LPEN 2
 #define TIM3LPEN 1
 #define TIM2LPEN 0
+#define USART2RST 17
 /*****************************************************************************************/
 
 /*RCC_APB2 peripheral register*/

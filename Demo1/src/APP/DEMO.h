@@ -29,7 +29,7 @@
  {
     uint8_t day;
     uint8_t month;
-    uint8_t year;
+    uint16_t year;
 
  }Date_t;
 
@@ -41,7 +41,7 @@
     uint8_t hours;
     uint8_t minutes;
     uint8_t seconds;
-    uint8_t milliseconds;
+    uint16_t milliseconds;
 
 }stopwatch_time;
 

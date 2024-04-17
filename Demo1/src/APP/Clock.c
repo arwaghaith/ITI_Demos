@@ -1,6 +1,6 @@
 #include"DEMO.h"
-#include "../HAL/HSWITCH/HSWITCH.h"
 
+#include "../HAL/HSWITCH/HSWITCH.h"
 
 
 
@@ -48,7 +48,7 @@ uint8_t daysInMonth(uint8_t month, uint16_t year) {
 static void updateDate() {
     // Increment day and check for month 
     current_date.day++;
-    if (current_date.day > (daysInMonth(current_date.month, current_date.year))) {
+    if (current_date.day >= (daysInMonth(current_date.month, current_date.year))) {
         current_date.day = 1;
         if (current_date.month > 12) {
             current_date.month = 1;
@@ -150,3 +150,13 @@ else
 }
 
 
+
+void LCD_APP()
+
+{
+
+
+LCD_Write_String_POS_ASYNC("ARWA",4,1,1);
+
+
+}

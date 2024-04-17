@@ -10,7 +10,7 @@ stopwatch_time G_stopwatch_current_time=
 {
 0,0,0,0
 };
-volatile static uint16_t readSwitches_Buffer=1;
+extern uint16_t buttonConditions;
 
 uint8_t start_flag=0;
 uint8_t stop_flag=1;
@@ -36,14 +36,14 @@ void stopwatch()
     #if DISPLAY_MODE== STOPWATCH
 
 
-    if(readSwitches_Buffer &(1<<START_STOP))
+    if(buttonConditions &(1<<START_STOP))
     {
     start_flag^=1;
       stop_flag^=1;;
        
     }
 
-    else if(readSwitches_Buffer &(1<<PAUSE_CONT))
+    else if(buttonConditions &(1<<PAUSE_CONT))
 
     {
         pause_flag!=pause_flag;
@@ -52,7 +52,7 @@ void stopwatch()
 
     }
 
-    else if(readSwitches_Buffer &(1<<MODE))
+    else if(buttonConditions &(1<<MODE))
     
 
 
