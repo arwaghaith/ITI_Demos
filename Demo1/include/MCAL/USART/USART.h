@@ -12,8 +12,7 @@
 /************************************************************************************/
 /**************************      USART   DRIVER         *****************************/
 /************************************************************************************/
-#include "NVIC_IRQn.h"
-#include "Typedefs.h"
+#include"NVIC_IRQn.h"
 
 /*UART_NUMBER*/
 
@@ -50,6 +49,7 @@
 
 
 
+typedef unsigned int uint32_t;
 typedef enum
 {
     USART_Asynchronous_mode,
@@ -211,7 +211,7 @@ typedef struct
 */
 typedef struct
 {
-	char*            USART_Data;
+	uint8_t*            USART_Data;
 	uint32_t            USART_DataArraySize;
 	void*               USART_Number;
 	USART_ID_t          USART_ID;

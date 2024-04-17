@@ -16,7 +16,6 @@
 #include "USART.h"
 #include "GPIO.h"
 #include "RCC.h"
-#include "Typedefs.h"
 
 
 #define USART_CLK_Frequency      16000000UL
@@ -91,7 +90,7 @@ typedef enum
 
 typedef struct 
 {
-	char *  USART_ByteBufferPtr;
+	uint8_t *  USART_ByteBufferPtr;
 	uint32_t   USART_BufferSize;
 	uint32_t   USART_BufferCurrentIdx;
 
@@ -124,14 +123,14 @@ USART_TxRxRequest_t USART_RxRequests[USART_NUM]={0};
 /*********************************************         Static Functions Prototypes Region        *****************************************************/
 /*****************************************************************************************************************************************************/
 static uint32_t USART_EDIT_REG_MASK    (uint32_t USART_REG_EDIT,uint32_t USART_MASK, USART_REG_OPER OPERA);
-static uint32_t USART_EDIT_Bit_Reg     (uint32_t SYSTICK_REG_EDIT,uint32_t BIT_NUM,USART_REG_OPER OPERA);
+//static uint32_t USART_EDIT_Bit_Reg     (uint32_t SYSTICK_REG_EDIT,uint32_t BIT_NUM,USART_REG_OPER OPERA);
 /******************************************************************************************************************************************************/
 
 
 USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
 {
-    uint32_t USART_local_mask = 0x00000000,USART_local_mask2 = 0x00000000;
-	float USARTDIV,DIV_FRACTION=0.0;
+    uint32_t USART_local_mask   = 0x00000000,USART_local_mask2 = 0x00000000;
+	float USARTDIV,DIV_FRACTION = 0.0;
 	int DIV_Mantissa;
 
     USART_ErrorStatus_t USART_Local_error = USART_INIT_OK;
@@ -149,7 +148,7 @@ USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
         USART_Reg_ptr->USART_CR1 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR1,USART_local_mask,USART_SET);
 		USART_Reg_ptr->USART_CR2 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR2,USART_STOP_MASK,USART_CLEAR);
 		USART_Reg_ptr->USART_CR2 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR2,USART_Cfg->USART_StopBitsNum,USART_SET);
-
+        /*Enable USART*/
 		USART_Reg_ptr->USART_CR1 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR1,USART_UE_MASK,USART_SET);
         
 
@@ -508,7 +507,7 @@ USART_ErrorStatus_t USART_TxByte_Async(USART_Request_t USART_TxRequest)
 		}
 	else
 		{
-			char N =0XFF;
+			
 			/*Assign USART based on Argument USART ID with its request buffer data size and state of this request */
 			USART_TxRequests[USART_TxRequest.USART_ID].USART_RequestState                  = USART_TxRequest_busy ;
 			USART_TxRequests[USART_TxRequest.USART_ID].USART_Buffer.USART_ByteBufferPtr    = USART_TxRequest.USART_Data;
@@ -619,7 +618,11 @@ void USART1_IRQHandler(void)
 			USART_TxRequests[USART1_ID].USART_Buffer.USART_BufferCurrentIdx++;
 
 		}
-		else
+		else if (USART_GetTC(USART1))
+		{
+			/* code */
+		}
+		
 		{
 			/*Finished and become ready for another tranfer request*/
 			USART_TxRequests[USART1_ID].USART_RequestState = USART_TxRequest_Ready;
@@ -666,7 +669,7 @@ void USART2_IRQHandler(void)
 			USART_TxRequests[USART2_ID].USART_Buffer.USART_BufferCurrentIdx++;
 
 		}
-		else
+		else if (USART_GetTC(USART2))
 		{
 			/*Finished and become ready for another tranfer request*/
 			USART_TxRequests[USART2_ID].USART_RequestState = USART_TxRequest_Ready;
@@ -713,7 +716,7 @@ void USART6_IRQHandler(void)
 				USART_TxRequests[USART6_ID].USART_Buffer.USART_BufferCurrentIdx++;
 
 			}
-			else
+			else if (USART_GetTC(USART6))
 			{
 				/*Finished and become ready for another tranfer request*/
 				USART_TxRequests[USART6_ID].USART_RequestState = USART_TxRequest_Ready;
@@ -763,6 +766,7 @@ void USART6_IRQHandler(void)
    * NOTE             :   
  
  */
+/*
 static uint32_t USART_EDIT_Bit_Reg(uint32_t USART_REG_EDIT,uint32_t BIT_NUM,USART_REG_OPER OPERA)
 {
 	uint32_t USART_Local_Var =0;
@@ -788,7 +792,7 @@ static uint32_t USART_EDIT_Bit_Reg(uint32_t USART_REG_EDIT,uint32_t BIT_NUM,USAR
 	return USART_Local_Var;
 }
 
-
+*/
 /************************************** USART_EDIT_REG_MASK **********************************/
 
 /* 
