@@ -143,8 +143,8 @@ typedef struct
             break;
           case GPIO_AF_8 ... GPIO_AF_15:
             Loc_u32GPIO_Temp_Value  = GPIO->AFRH;
-            Loc_u32GPIO_Temp_Value &= ~(MASK_4BITS<<((Pin_Cfg->GPIO_PIN-7) * 4));
-            Loc_u32GPIO_Temp_Value |= ((Pin_Cfg->GPIO_AF)<<((Pin_Cfg->GPIO_PIN-7) * 4));
+            Loc_u32GPIO_Temp_Value &= ~(MASK_4BITS<<((Pin_Cfg->GPIO_PIN-8) * 4));
+            Loc_u32GPIO_Temp_Value |= ((Pin_Cfg->GPIO_AF)<<((Pin_Cfg->GPIO_PIN-8) * 4));
             GPIO->AFRH              = Loc_u32GPIO_Temp_Value;
             break;
           default:

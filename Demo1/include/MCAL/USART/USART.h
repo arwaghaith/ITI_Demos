@@ -211,7 +211,7 @@ typedef struct
 */
 typedef struct
 {
-	uint8_t*            USART_Data;
+	char*            USART_Data;
 	uint32_t            USART_DataArraySize;
 	void*               USART_Number;
 	USART_ID_t          USART_ID;

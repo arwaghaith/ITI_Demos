@@ -44,7 +44,7 @@
   SW_Pause_Continue -> pressed
     */
 extern uint16_t SW_Pressed_ID;
-uint8_t SW_Message = 0;
+char SW_Message = 0;
 USART_Request_t SW_update_TX_Request;
 
 

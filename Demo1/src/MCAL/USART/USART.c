@@ -89,7 +89,7 @@ typedef enum
 
 typedef struct 
 {
-	uint8_t *  USART_ByteBufferPtr;
+	char *  USART_ByteBufferPtr;
 	uint32_t   USART_BufferSize;
 	uint32_t   USART_BufferCurrentIdx;
 
@@ -168,7 +168,8 @@ USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
 			
 			if(((int)(DIV_FRACTION*10))%10 >5)
 			{
-				DIV_FRACTION =(int)(++DIV_FRACTION);
+				DIV_FRACTION += 1;
+				DIV_FRACTION =(int)(DIV_FRACTION);
 			}
 			else
 			{
@@ -189,7 +190,8 @@ USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
 			
 			if(((int)(DIV_FRACTION*10))%10 >5)
 			{
-				DIV_FRACTION =(int)(++DIV_FRACTION);
+				DIV_FRACTION += 1;
+				DIV_FRACTION =(int)(DIV_FRACTION);
 			}
 			else
 			{
@@ -307,6 +309,7 @@ USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
 USART_ErrorStatus_t USART_ENABLE_TXE_INT(void* USART_Number)
 {
 	USART_ErrorStatus_t USART_Local_error = USART_INT_Enabled;
+	USART_Reg_ptr =  (USART_Registers_t*) USART_Number;
 	if (!USART_CHECK_Number(USART_Number))
 	{
 		USART_Local_error = USART_ERROR;
@@ -336,6 +339,7 @@ USART_ErrorStatus_t USART_ENABLE_TC_INT(void* USART_Number)
 {
 
 	USART_ErrorStatus_t USART_Local_error = USART_INT_Enabled;
+	USART_Reg_ptr =  (USART_Registers_t*) USART_Number;
 	if (!USART_CHECK_Number(USART_Number))
 	{
 		USART_Local_error = USART_ERROR;
@@ -357,6 +361,7 @@ USART_ErrorStatus_t USART_DISABLE_TC_INT(void* USART_Number)
 {
 	
 	USART_ErrorStatus_t USART_Local_error = USART_INT_Disabled;
+	USART_Reg_ptr =  (USART_Registers_t*) USART_Number;
 	if (!USART_CHECK_Number(USART_Number))
 	{
 		USART_Local_error = USART_ERROR;
@@ -364,7 +369,7 @@ USART_ErrorStatus_t USART_DISABLE_TC_INT(void* USART_Number)
 	}
 	else
 	{
-			USART_Reg_ptr->USART_CR1 =USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR1 , USART_TCIE_MASK , USART_SET);
+			USART_Reg_ptr->USART_CR1 =USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR1 , USART_TCIE_MASK , USART_CLEAR);
             USART_Local_error = USART_OK;
 
 	}
@@ -375,6 +380,7 @@ USART_ErrorStatus_t USART_DISABLE_TC_INT(void* USART_Number)
 USART_ErrorStatus_t USART_ENABLE_RXEIE_INT(void* USART_Number)
 {
 	USART_ErrorStatus_t USART_Local_error = USART_INT_Disabled;
+	USART_Reg_ptr =  (USART_Registers_t*) USART_Number;
 	if (!USART_CHECK_Number(USART_Number))
 	{
 		USART_Local_error = USART_ERROR;
@@ -395,6 +401,7 @@ USART_ErrorStatus_t USART_ENABLE_RXEIE_INT(void* USART_Number)
 USART_ErrorStatus_t USART_DISABLE_RXEIE_INT(void* USART_Number)
 {
 	USART_ErrorStatus_t USART_Local_error = USART_INT_Disabled;
+	USART_Reg_ptr =  (USART_Registers_t*) USART_Number;
 	if (!USART_CHECK_Number(USART_Number))
 	{
 		USART_Local_error = USART_ERROR;
@@ -503,6 +510,7 @@ USART_ErrorStatus_t USART_TxByte_Async(USART_Request_t USART_TxRequest)
 			USART_TxRequests[USART_TxRequest.USART_ID].USART_Buffer.USART_BufferSize       = USART_TxRequest.USART_DataArraySize;
 			USART_TxRequests[USART_TxRequest.USART_ID]. USART_TxRx_CBFunc                  = USART_TxRequest.USART_CBFunc;
 			USART_TxRequests[USART_TxRequest.USART_ID].USART_Buffer.USART_BufferCurrentIdx = USART_Init_BufferIdx ;
+			USART_Reg_ptr->USART_CR1= USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR1,USART_TE_MASK,USART_SET);
             /*Sening 1st byte to trigger Tx interrupt*/
 			USART_Reg_ptr->USART_DR = USART_TxRequests[USART_TxRequest.USART_ID].USART_Buffer.USART_ByteBufferPtr[0];
 			USART_TxRequests[USART_TxRequest.USART_ID].USART_Buffer.USART_BufferCurrentIdx++;
