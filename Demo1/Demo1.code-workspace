@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "Demo1",
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"demo1_data_cfg.h": "c"
+		}
+	}
+}

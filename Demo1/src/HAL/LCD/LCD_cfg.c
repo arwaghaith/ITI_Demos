@@ -35,9 +35,9 @@
                      
     [Data_Pin1] = {.Port   = GPIO_PORT_A, .Pin    = GPIO_PIN_10},
 
-    [Data_Pin2] = {.Port   = GPIO_PORT_A, .Pin    = GPIO_PIN_9},
+    [Data_Pin2] = {.Port   = GPIO_PORT_A, .Pin    = GPIO_PIN_5},
 
-    [Data_Pin3] = {.Port   = GPIO_PORT_A, .Pin    = GPIO_PIN_8},
+    [Data_Pin3] = {.Port   = GPIO_PORT_A, .Pin    = GPIO_PIN_6},
                      
     [Data_Pin4] = {.Port   = GPIO_PORT_B, .Pin    = GPIO_PIN_15},
 

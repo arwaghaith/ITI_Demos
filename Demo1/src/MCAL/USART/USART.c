@@ -16,12 +16,13 @@
 #include "USART.h"
 #include "GPIO.h"
 #include "RCC.h"
+#include "Typedefs.h"
 
 
 #define USART_CLK_Frequency      16000000UL
 #define USART_DIV_MANTISSA_POS   4U
 #define USART_Init_BufferIdx     0
-
+#define NULL (void*)0
 /*****************************************************/
 /****************   USART   Masks     ****************/
 /*****************************************************/
@@ -43,6 +44,7 @@
 #define USART_TE_MASK         (uint32_t)(1<<TE)
 #define USART_RE_MASK         (uint32_t)(1<<RE)
 #define USART_RXNEIE_MASK     (uint32_t)(1<<RXNEIE)
+#define USART_UE_MASK         (uint32_t)(1<<UE)
 
 
 /*****************************************************/
@@ -147,6 +149,8 @@ USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
         USART_Reg_ptr->USART_CR1 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR1,USART_local_mask,USART_SET);
 		USART_Reg_ptr->USART_CR2 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR2,USART_STOP_MASK,USART_CLEAR);
 		USART_Reg_ptr->USART_CR2 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR2,USART_Cfg->USART_StopBitsNum,USART_SET);
+
+		USART_Reg_ptr->USART_CR1 = USART_EDIT_REG_MASK(USART_Reg_ptr->USART_CR1,USART_UE_MASK,USART_SET);
         
 
 		/*
@@ -206,7 +210,7 @@ USART_ErrorStatus_t USART_Init(USART_CFG_t * USART_Cfg)
 
 
 		}
-		USART_local_mask         = (DIV_Mantissa<<USART_DIV_MANTISSA_POS) | (int) DIV_FRACTION;
+		USART_local_mask         = (0x068<<USART_DIV_MANTISSA_POS) | (int) (0x3);
 		USART_Reg_ptr->USART_BRR = USART_local_mask ;
 
 
@@ -504,6 +508,7 @@ USART_ErrorStatus_t USART_TxByte_Async(USART_Request_t USART_TxRequest)
 		}
 	else
 		{
+			char N =0XFF;
 			/*Assign USART based on Argument USART ID with its request buffer data size and state of this request */
 			USART_TxRequests[USART_TxRequest.USART_ID].USART_RequestState                  = USART_TxRequest_busy ;
 			USART_TxRequests[USART_TxRequest.USART_ID].USART_Buffer.USART_ByteBufferPtr    = USART_TxRequest.USART_Data;

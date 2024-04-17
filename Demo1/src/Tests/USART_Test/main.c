@@ -24,7 +24,7 @@ int main(void)
     USART_TX_CONFIG.USART_Break_Detection_Length = USART_NO_BD;
     USART_TX_CONFIG.USART_Device_mode = USART_Transmitter_mode;
     USART_TX_CONFIG.USART_mode_cfg    = USART_Asynchronous_mode;
-    USART_TX_CONFIG.USART_BaudRate = 115200;
+    USART_TX_CONFIG.USART_BaudRate = 9600;
     USART_TX_CONFIG.USART_wordlength = USART_WORD_LENGTH_9;
     USART_TX_CONFIG.USART_StopBitsNum = USART_StopBits_2;
     GPIO_InitPin(&USART_TX_PIN);
