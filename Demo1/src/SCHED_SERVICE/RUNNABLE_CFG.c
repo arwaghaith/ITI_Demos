@@ -22,7 +22,6 @@
 /******************    eterns for runnables callback functions  **********************/
 /*************************************************************************************/
 
-extern void APP_TRAFFIC_LIGHT(void);
 extern void APP_UPDATESWITCH_STATE(void);
 extern void APP_READSWITCH(void);
 extern void Clock_Runnable(void);
@@ -35,13 +34,6 @@ extern void Display_Runnable(void);
 
 const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
 {
-   /* [TRAFFIC_LIGHT]={
-                        .runnable_name        = "Traffic Light",
-                        .SCHED_delayTime_ms   = 0,
-                        .SCHED_periodicity_ms = 50,
-                        .SCHED_Runnable_CBF   = APP_TRAFFIC_LIGHT
-             
-                    },*/
 
     [UPDATESWITCH_STATE]={
                                 .runnable_name        = "APP_UPDATESWITCH_STATE",
@@ -59,21 +51,21 @@ const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
                             },
     [Clock_Runnable_]       ={
                                 .runnable_name        = "LCD clock",
-                                .SCHED_delayTime_ms   = 0,
-                                .SCHED_periodicity_ms = 50,
+                                .SCHED_delayTime_ms   = 30,
+                                .SCHED_periodicity_ms = 1000,
                                 .SCHED_Runnable_CBF   = Clock_Runnable
                     
                            },
     [Display_Runnable_]={
                                 .runnable_name        = "LCD Screen Display",
                                 .SCHED_delayTime_ms   = 0,
-                                .SCHED_periodicity_ms = 50,
+                                .SCHED_periodicity_ms = 85,
                                 .SCHED_Runnable_CBF   = Display_Runnable
              
                           },
     [StopWatch_Runnable_]={
                                 .runnable_name        = "StopWatch_Runnable_",
-                                .SCHED_delayTime_ms   = 0,
+                                .SCHED_delayTime_ms   = 35,
                                 .SCHED_periodicity_ms = 50,
                                 .SCHED_Runnable_CBF   = Display_Runnable
              

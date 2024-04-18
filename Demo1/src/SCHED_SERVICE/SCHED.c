@@ -43,7 +43,7 @@ typedef struct
 
 }SCHED_runnable_Info_t;
 
-const uint32_t SCHED_TICK_TIME_ms = 500;
+const uint32_t SCHED_TICK_TIME_ms = 1;
 
 typedef enum
 {
