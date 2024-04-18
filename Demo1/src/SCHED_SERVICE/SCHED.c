@@ -42,7 +42,12 @@ typedef struct
    uint32_t runnable_remaing_time;
 
 }SCHED_runnable_Info_t;
+<<<<<<< HEAD
+/*Because lowest periodicity for our system task is 2ms - > "LCD"
+ Based on nyquist theory -> SCHED_TICK_TIME_ms = half lowest periodicty of runnable*/
+=======
 
+>>>>>>> b96e4f7cade6ffbbc4ee05d3de7d45424c24c2b7
 const uint32_t SCHED_TICK_TIME_ms = 1;
 
 typedef enum
@@ -54,7 +59,7 @@ typedef enum
 
 extern SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables];
 static volatile uint32_t SCHED_PendingTicks = 0;
-static SCHED_runnable_Info_t SCHED_Runables_INFO[__SCHED_MAX_Runnables_ptr];
+//static SCHED_runnable_Info_t SCHED_Runables_INFO[__SCHED_MAX_Runnables_ptr];
 
 /*****************************************************************************************************/
 /********************         Static Functions Prototypes Region       *******************************/
@@ -65,19 +70,21 @@ static void SCHED_PendingTicksCB(void);
 
 void SCHED_Init()
 {
-    uint32_t local_runn_iterator = 0;
+   // uint32_t local_runn_iterator = 0;
     /*select clk for systick timer  */
     SYSTICK_SELECT_CLKSRC(SCHED_SYSTICK_CLK);
     /*how often scheduler will be called*/
     SYSTICK_SetTimeMS(SCHED_TICK_TIME_ms);
     /*    Set call back fnction for systick   */
     SYSTICK_SetCallBack(SCHED_PendingTicksCB);
-    for ( local_runn_iterator = 0; local_runn_iterator < __SCHED_MAX_Runnables_ptr; local_runn_iterator++)
+ /* 
+   for ( local_runn_iterator = 0; local_runn_iterator < __SCHED_MAX_Runnables_ptr; local_runn_iterator++)
     {
         SCHED_Runables_INFO[local_runn_iterator].myrunnable = &SCHED_myrunnbles[local_runn_iterator];
-        /*Init all runnables with required delay once system start*/
-        SCHED_Runables_INFO[local_runn_iterator].runnable_remaing_time = SCHED_myrunnbles[local_runn_iterator].SCHED_delayTime_ms; 
-    }
+       // /*Init all runnables with required delay once system start*/
+        //SCHED_Runables_INFO[local_runn_iterator].runnable_remaing_time = SCHED_myrunnbles[local_runn_iterator].SCHED_delayTime_ms; 
+   // }
+ //*/
     
 }
 
@@ -87,6 +94,7 @@ void SCHED_Start()
     /*strart */
     SYSTICK_START();
     /*polling till next tick*/
+    
     while(1)
 	{
 		if(SCHED_PendingTicks)
@@ -116,10 +124,10 @@ static void SCHED(void)
             
             if((SCHED_myrunnbles[Current_Runnable_idx].SCHED_Runnable_CBF)&&(!(SCHED_Runables_INFO[Current_Runnable_idx].runnable_remaing_time)))
             */
-        if((SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_Runnable_CBF)&&(!(SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_periodicity_ms)))
+        if((SCHED_myrunnbles[Current_Runnable_idx].SCHED_Runnable_CBF) && (!(SCHED_time%(SCHED_myrunnbles[Current_Runnable_idx].SCHED_periodicity_ms))))
         {
            // SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_Runnable_CBF;
-            SCHED_Runables_INFO[Current_Runnable_idx].runnable_remaing_time = SCHED_Runables_INFO[Current_Runnable_idx].myrunnable->SCHED_periodicity_ms;
+            SCHED_myrunnbles[Current_Runnable_idx].SCHED_Runnable_CBF();
 
         }
     }

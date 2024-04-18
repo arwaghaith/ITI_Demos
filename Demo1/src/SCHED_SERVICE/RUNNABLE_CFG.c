@@ -26,6 +26,9 @@ extern void APP_UPDATESWITCH_STATE(void);
 extern void APP_READSWITCH(void);
 extern void Clock_Runnable(void);
 extern void Display_Runnable(void);
+extern void blinkled_init(void);
+extern void app_blinkled_on(void);
+extern void app_blinkled_off(void);
 /**************************************************************************************/
 
 /*************************************************************************************/
@@ -35,40 +38,53 @@ extern void Display_Runnable(void);
 const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
 {
 
-    [UPDATESWITCH_STATE]={
-                                .runnable_name        = "APP_UPDATESWITCH_STATE",
+    [app_blinkled_on_]={
+                                .runnable_name        = "app_blinkled_on_",
                                 .SCHED_delayTime_ms   = 0,
-                                .SCHED_periodicity_ms = 50,
-                                .SCHED_Runnable_CBF   = APP_UPDATESWITCH_STATE
+                                .SCHED_periodicity_ms = 100,
+                                .SCHED_Runnable_CBF   = &app_blinkled_on
                     
                              },
-    [READSWITCH]       ={
-                                .runnable_name        = "APP READSWITCH",
-                                .SCHED_delayTime_ms   = 0,
-                                .SCHED_periodicity_ms = 50,
-                                .SCHED_Runnable_CBF   = APP_READSWITCH
+    [app_blinkled_off_]       ={
+                                .runnable_name        = "app_blinkled_off_",
+                                .SCHED_delayTime_ms   = 100,
+                                .SCHED_periodicity_ms = 200,
+                                .SCHED_Runnable_CBF   = &app_blinkled_off
                     
                             },
+<<<<<<< HEAD
+    [UPDATESWITCH_STATE]       ={
+                                .runnable_name        = "APP_UPDATESWITCH_STATE",
+                                .SCHED_delayTime_ms   = 0,
+                                .SCHED_periodicity_ms = 200,
+                                .SCHED_Runnable_CBF   = &APP_UPDATESWITCH_STATE
+=======
     [Clock_Runnable_]       ={
                                 .runnable_name        = "LCD clock",
                                 .SCHED_delayTime_ms   = 30,
                                 .SCHED_periodicity_ms = 1000,
                                 .SCHED_Runnable_CBF   = Clock_Runnable
+>>>>>>> b96e4f7cade6ffbbc4ee05d3de7d45424c24c2b7
                     
                            },
-    [Display_Runnable_]={
-                                .runnable_name        = "LCD Screen Display",
+    [READSWITCH]            = {
+                                .runnable_name        = "APP READSWITCH",
                                 .SCHED_delayTime_ms   = 0,
+<<<<<<< HEAD
+                                .SCHED_periodicity_ms = 100,
+                                .SCHED_Runnable_CBF   = &APP_READSWITCH
+=======
                                 .SCHED_periodicity_ms = 85,
                                 .SCHED_Runnable_CBF   = Display_Runnable
+>>>>>>> b96e4f7cade6ffbbc4ee05d3de7d45424c24c2b7
              
                           },
-    [StopWatch_Runnable_]={
+    /*[StopWatch_Runnable_]={
                                 .runnable_name        = "StopWatch_Runnable_",
                                 .SCHED_delayTime_ms   = 35,
                                 .SCHED_periodicity_ms = 100,
                                 .SCHED_Runnable_CBF   = Display_Runnable
              
-                          }
+                          }*/
 
 };

@@ -26,11 +26,23 @@
 /************************************************Types***************************************************/
 
  /*List of the Switches wanted in the system, you can add any Switch with any name*/
- typedef enum{
-   PowerON_HSwitch,       /*An Example*/
-   PowerOFF_HSwitch,      /*An Example*/
-   _HSwitch_num           /*MUST KEEP IT AS IT IS*/
+  typedef enum
+ {
+    SW_MODE,
+    SW_Start_Stop,
+    SW_Pause_Continue,
+    SW_Edit,
+    SW_Up,
+    SW_Down,
+    SW_Left,
+    SW_Right,
+    SW_OK,
+    PowerON_HSwitch,       /*An Example*/
+    PowerOFF_HSwitch, 
+   _DEMO_SW_NUM           /*MUST KEEP IT AS IT IS*/
+
  }HSwitches_t;
+
 
 /********************************************************************************************************/
 

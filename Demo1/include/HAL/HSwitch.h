@@ -31,16 +31,19 @@
  /**
  *@brief: A struct used to create a new switch in the system, contains all the attributes that every switch must have defined.
  */
- typedef struct{
- uint32_t Port;
- uint32_t Pin;
- uint32_t Connection;
+ typedef struct
+ {
+  uint32_t Port;
+  uint32_t Pin;
+  uint32_t Connection;
+
  }HSwitchcfg_t;
  
  /**
  *@brief: enum of the states that a switch can be on them.
  */
- typedef enum{
+ typedef enum
+ {
    enuHSwitch_Released,
    enuHSwitch_Pressed,
 
