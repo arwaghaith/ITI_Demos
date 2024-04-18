@@ -1,6 +1,6 @@
 /***********************************/
 /*	Author 	  : Nour Abd-elaziz    */
-/*	Swc		  : APP_READSWITCH       */
+/*	Swc		     : APP_READSWITCH    */
 /*	Layer	     : APP               */
 /*	Version    : 1.0               */
 /*	Date	     : April 14 , 2024   */
