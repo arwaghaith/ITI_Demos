@@ -12,7 +12,7 @@
 #include "LCD.h"
 #include "CLOCK/Clock.h"
 #include "STOPWATCH/StopWatch.h"
-#include "DEMO1_Data_cfg.h"
+#include "HSwitch_cfg.h"
 /********************************************************************************************************/
 
 

@@ -21,7 +21,6 @@
 #define USART_CLK_Frequency      16000000UL
 #define USART_DIV_MANTISSA_POS   4U
 #define USART_Init_BufferIdx     0
-#define NULL (void*)0
 /*****************************************************/
 /****************   USART   Masks     ****************/
 /*****************************************************/

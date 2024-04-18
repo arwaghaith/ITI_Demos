@@ -49,7 +49,6 @@
 
 
 
-typedef unsigned int uint32_t;
 typedef enum
 {
     USART_Asynchronous_mode,

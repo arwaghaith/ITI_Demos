@@ -42,12 +42,8 @@ typedef struct
    uint32_t runnable_remaing_time;
 
 }SCHED_runnable_Info_t;
-<<<<<<< HEAD
 /*Because lowest periodicity for our system task is 2ms - > "LCD"
  Based on nyquist theory -> SCHED_TICK_TIME_ms = half lowest periodicty of runnable*/
-=======
-
->>>>>>> b96e4f7cade6ffbbc4ee05d3de7d45424c24c2b7
 const uint32_t SCHED_TICK_TIME_ms = 1;
 
 typedef enum
@@ -81,7 +77,7 @@ void SCHED_Init()
    for ( local_runn_iterator = 0; local_runn_iterator < __SCHED_MAX_Runnables_ptr; local_runn_iterator++)
     {
         SCHED_Runables_INFO[local_runn_iterator].myrunnable = &SCHED_myrunnbles[local_runn_iterator];
-       // /*Init all runnables with required delay once system start*/
+       // Init all runnables with required delay once system start*/
         //SCHED_Runables_INFO[local_runn_iterator].runnable_remaing_time = SCHED_myrunnbles[local_runn_iterator].SCHED_delayTime_ms; 
    // }
  //*/

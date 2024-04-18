@@ -20,9 +20,8 @@
 /************************************************Defines*************************************************/
  #define IS_VALID_CONNECTION(CONNECTION)        (((CONNECTION) == HSwitch_CONNECTION_FORWARD)||\
                                                  ((CONNECTION) == HSwitch_CONNECTION_REVERSE))
-#define  _HSwitch_num   _DEMO_SW_NUM
- #define IS_VALID_HSwitch(HSwitch)                      ((HSwitch) < _HSwitch_num)
- #define NULL   (void*)0
+
+ #define IS_VALID_HSwitch(HSwitch)                      ((HSwitch) < _DEMO_SW_NUM)
 
 /********************************************************************************************************/
 
@@ -33,9 +32,9 @@
 
 
 /************************************************Variables***********************************************/
- extern const HSwitchcfg_t HSwitches[_HSwitch_num];
+ extern const HSwitchcfg_t HSwitches[_DEMO_SW_NUM];
 
- static uint32_t HSwitches_PinStates[_HSwitch_num];
+ static uint32_t HSwitches_PinStates[_DEMO_SW_NUM];
 /********************************************************************************************************/
 
 
@@ -47,19 +46,18 @@
 /*********************************************APIs Implementation****************************************/
  enuErrorStatus_t HSwitch_init(void)
  {
-
    enuErrorStatus_t Ret_enuErrorStatus = enuErrorStatus_Ok;
    uint16_t Loc_u16Counter = 0;
-   GPIO_pin_Confguration_V2 Loc_CurrentHSwitch;
-   Loc_CurrentHSwitch.GPIO_MODE  = GPIO_INPUT_PULLDOWN_V2;
-   Loc_CurrentHSwitch.GPIO_Speed = GPIO_HIGH_SPEED;
-   for(Loc_u16Counter = 0;Loc_u16Counter < _HSwitch_num; Loc_u16Counter++)
+   GPIO_PinCfg_t Loc_CurrentHSwitch;
+   Loc_CurrentHSwitch.GPIO_MODE = GPIO_MODE_IN;
+   Loc_CurrentHSwitch.GPIO_OSPEED = GPIO_OSPEED_HIGH;
+   for(Loc_u16Counter = 0;Loc_u16Counter < _DEMO_SW_NUM; Loc_u16Counter++)
    {
       if(IS_VALID_CONNECTION(HSwitches[Loc_u16Counter].Connection))
       {
         Loc_CurrentHSwitch.GPIO_PORT = HSwitches[Loc_u16Counter].Port;
         Loc_CurrentHSwitch.GPIO_PIN  = HSwitches[Loc_u16Counter].Pin;
-        Loc_CurrentHSwitch.GPIO_MODE = HSwitches[Loc_u16Counter].Connection + GPIO_INPUT_PULLUP_V2;
+        Loc_CurrentHSwitch.GPIO_PUPD = HSwitches[Loc_u16Counter].Connection + GPIO_PUPD_PU;
         Ret_enuErrorStatus = GPIO_InitPin(&Loc_CurrentHSwitch);
         if (Ret_enuErrorStatus != enuErrorStatus_Ok)
         { break; }
@@ -71,7 +69,6 @@
       }
    }
    return Ret_enuErrorStatus;
-
  }
  
  enuErrorStatus_t HSwitch_GetStatus(uint32_t Copy_u32HSwitch, enuHSwitchState_t * Add_enuHSwitchState)
@@ -96,12 +93,11 @@
  /*This Runnable should come every 5ms*/
  void HSwitch_Runnable(void)
  {
-
-    static uint32_t HSwitches_PrevStates[_HSwitch_num] = {0};
-    static uint32_t HSwitches_Counts[_HSwitch_num] = {0};
+    static uint32_t HSwitches_PrevStates[_DEMO_SW_NUM] = {0};
+    static uint32_t HSwitches_Counts[_DEMO_SW_NUM] = {0};
     static uint32_t Loc_u32HSwitchCurState =0;
     uint16_t Loc_u16Counter = 0;
-    for(Loc_u16Counter=0; Loc_u16Counter < _HSwitch_num; Loc_u16Counter++)
+    for(Loc_u16Counter=0; Loc_u16Counter < _DEMO_SW_NUM; Loc_u16Counter++)
     {
       GPIO_GetPinValue(HSwitches[Loc_u16Counter].Pin, HSwitches[Loc_u16Counter].Port, &Loc_u32HSwitchCurState);
       if(Loc_u32HSwitchCurState == HSwitches_PrevStates[Loc_u16Counter])
@@ -120,6 +116,5 @@
 
       HSwitches_PrevStates[Loc_u16Counter] = Loc_u32HSwitchCurState;
     }
-
  }
 /********************************************************************************************************/
