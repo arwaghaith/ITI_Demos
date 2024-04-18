@@ -66,7 +66,7 @@ const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
     [StopWatch_Runnable_]={
                                 .runnable_name        = "StopWatch_Runnable_",
                                 .SCHED_delayTime_ms   = 35,
-                                .SCHED_periodicity_ms = 50,
+                                .SCHED_periodicity_ms = 100,
                                 .SCHED_Runnable_CBF   = Display_Runnable
              
                           }
