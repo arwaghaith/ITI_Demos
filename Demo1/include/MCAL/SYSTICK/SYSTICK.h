@@ -1,17 +1,15 @@
 /***********************************/
 /*	Author 	  : Nour Abd-elaziz    */
 /*	Swc		  : SYSTICK   	        */
-/*	Layer	  : MCAL                  */
-/*	Version   : 1.0                 */
-/*	Date	  : March 9 , 2024        */
-/*	Last Edit : N/A                 */
+/*	Layer	     : MCAL               */
+/*	Version    : 1.0                */
+/*	Date	     : March 9 , 2024     */
+/*	Last Edit  : N/A                */
 /***********************************/
 
 
 #ifndef SYSTICK_H_
 #define SYSTICK_H_
-
-#include "Typedefs.h"
 
 /****************************************************************************************/
 /**********************      SYSTICK  DRIVER          ***********************************/
@@ -22,6 +20,7 @@
 /********************         SYSTICK   datatypes      *******************************/
 /*************************************************************************************/
 
+typedef unsigned int uint32_t;
 typedef enum 
 {
    SYSTICK_NOK,
@@ -147,7 +146,7 @@ SYSTICK_ErrorStatus SYSTICK_SetFrequencyHZ(uint32_t SYSTICK_Frequency_hz);
    * NOTE             :   
  
  **************************************************************/
-SYSTICK_ErrorStatus SysTick_Handler(SYSTICK_MODE_t SYSTICK_INPUT_MODE);
+void SysTick_Handler(void);
 /******************** SYSTICK_SetCallBack **************************/
 /* 
    

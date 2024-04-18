@@ -22,11 +22,13 @@
 typedef enum
 {
     //TRAFFIC_LIGHT,
+    app_blinkled_on_,
+    app_blinkled_off_,
     UPDATESWITCH_STATE,
     READSWITCH,
-    Clock_Runnable_,
-    Display_Runnable_,
-    StopWatch_Runnable_,
+   // Clock_Runnable_,
+   // Display_Runnable_,
+   // StopWatch_Runnable_,
     __SCHED_MAX_Runnables
 
 }SCHED_runnables_list_t;

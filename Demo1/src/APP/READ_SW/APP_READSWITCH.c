@@ -52,7 +52,7 @@
 /***************************************************/
 /*               Datatypes Region                  */
 /***************************************************/
-
+typedef unsigned char uint8_t;
 uint8_t SW_Pressed_ID = NO_SW_PRESSED;
 USART_Request_t SW_update_RX_Request;
 uint16_t SW_RX_Message;
@@ -105,7 +105,7 @@ void APP_RX_MSG_Init(void)
 }
 void READ_RX_SWITCH_CB(void)
 {
-  uint8_t EXTRACTED_ID = 0;
+  uint8_t EXTRACTED_ID= 0;
   /*filter data to get ID ->STILL NOT HANDLED */
   //SW_update_RX_Request.USART_Data -> EXTRACTED ID;
   Received_SW_Pressed_ID = EXTRACTED_ID;

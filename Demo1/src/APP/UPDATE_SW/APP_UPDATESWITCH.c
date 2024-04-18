@@ -15,7 +15,7 @@
 /***************************************************/
 /*                Includes Region                  */
 /***************************************************/
-#include "DEMO1_Data_cfg.h"
+#include "HSwitch.h"
 #include "APP_UPDATESWITCH.h"
 #include "USART.h"
 
@@ -33,7 +33,7 @@
 *****************************************************/
 #define SW_USART_CHANNEL_TX      USART1
 #define SW_USART_CHANNEL_ID_TX   USART1_ID
-#define NO_SW_PRESSED         0xFF
+#define NO_SW_PRESSED            0xFF
 
 
 /***************************************************/
@@ -44,7 +44,7 @@
   SW_Pause_Continue -> pressed
     */
 extern uint16_t SW_Pressed_ID;
-char SW_Message = 0;
+uint8_t SW_Message = 0;
 USART_Request_t SW_update_TX_Request;
 
 

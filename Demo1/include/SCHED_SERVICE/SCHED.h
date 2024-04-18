@@ -14,13 +14,11 @@
 #ifndef SCHED_H_
 #define SCHED_H_
 
-#include "Typedefs.h"
-
 /*************************************************************************************/
 /********************         Scheduler  datatypes     *******************************/
 /*************************************************************************************/
 
-
+typedef unsigned int uint32_t;
 typedef  void (*runnable_CBF_t)(void);
 
 /*Features defined for each runnable */
