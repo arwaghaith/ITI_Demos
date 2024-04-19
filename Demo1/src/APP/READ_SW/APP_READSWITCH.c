@@ -56,9 +56,11 @@
 
 uint8_t SW_Pressed_ID = NO_SW_PRESSED;
 USART_Request_t SW_update_RX_Request;
-uint16_t SW_RX_Message;
+uint8_t SW_RX_Message;
 uint8_t  Received_SW_Pressed_ID;
 
+
+extern void APP_TX_MSG_Init(void);
 /***************************************************/
 /*       Functions Implementation Region           */
 /***************************************************/
@@ -93,7 +95,7 @@ void APP_READSWITCH(void)
 */
 void APP_RX_MSG_Init(void)
 {
-   
+   /*Size of the sent message which is 1Byte*/
    SW_update_RX_Request.USART_DataArraySize = sizeof(SW_RX_Message);
    SW_update_RX_Request.USART_ID            = SW_USART_CHANNEL_ID_RX;
    SW_update_RX_Request.USART_Number        = SW_USART_CHANNEL_RX ;
@@ -107,8 +109,9 @@ void APP_RX_MSG_Init(void)
 void READ_RX_SWITCH_CB(void)
 {
   uint8_t EXTRACTED_ID= 0;
-  /*filter data to get ID ->STILL NOT HANDLED */
-  //SW_update_RX_Request.USART_Data -> EXTRACTED ID;
-  Received_SW_Pressed_ID = EXTRACTED_ID;
+  /*Read ID part from the received message*/
+  SW_update_RX_Request.USART_Data[0] &= 0X0F;
+  
+  Received_SW_Pressed_ID = SW_update_RX_Request.USART_Data[0];
 
 }  
