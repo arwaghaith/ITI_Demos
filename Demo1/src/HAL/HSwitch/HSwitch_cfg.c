@@ -56,25 +56,25 @@
 
     [SW_Up]             = {
                             .Port         = GPIO_PORT_B,
-                            .Pin          = GPIO_PIN_4,
+                            .Pin          = GPIO_PIN_11,
                             .Connection   = HSwitch_CONNECTION_REVERSE
                             
                           },
     [SW_Down]           = {
                             .Port         = GPIO_PORT_B,
-                            .Pin          = GPIO_PIN_5,
+                            .Pin          = GPIO_PIN_12,
                             .Connection   = HSwitch_CONNECTION_REVERSE
                           },
 
     [SW_Left]           = {
                             .Port         = GPIO_PORT_B,
-                            .Pin          = GPIO_PIN_6,
+                            .Pin          = GPIO_PIN_13,
                             .Connection   = HSwitch_CONNECTION_REVERSE
                           },
 
     [SW_Right]          = {
                             .Port         = GPIO_PORT_B,
-                            .Pin          = GPIO_PIN_7,
+                            .Pin          = GPIO_PIN_8,
                             .Connection   = HSwitch_CONNECTION_REVERSE
                           },
 
