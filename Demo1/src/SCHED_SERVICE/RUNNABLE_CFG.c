@@ -46,15 +46,15 @@ const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
                                 .SCHED_Runnable_CBF   = LCD_Runnable
                     
                            },
-    [HSwitch_Runnable_]     ={
+    /*[HSwitch_Runnable_]     ={
                                 .runnable_name        = "HSwitch Runnable",
                                 .SCHED_delayTime_ms   = 0,
                                 .SCHED_periodicity_ms = 5,
                                 .SCHED_Runnable_CBF   = HSwitch_Runnable
-                            },
+                            },*/
     [Display_Runnable_]    ={
                                 .runnable_name        = "Display Runnable",
-                                .SCHED_delayTime_ms   = 35,
+                                .SCHED_delayTime_ms   = 0,
                                 .SCHED_periodicity_ms = 85,
                                 .SCHED_Runnable_CBF   = Display_Runnable
                             },
@@ -70,7 +70,7 @@ const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
                                 .SCHED_periodicity_ms = 100,
                                 .SCHED_Runnable_CBF   = StopWatch_Runnable
                             },
-    [UPDATESWITCH_STATE]       ={
+   /* [UPDATESWITCH_STATE]       ={
                                 .runnable_name        = "APP_UPDATESWITCH_STATE",
                                 .SCHED_delayTime_ms   = 0,
                                 .SCHED_periodicity_ms = 200,
@@ -84,5 +84,5 @@ const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
                                 .SCHED_Runnable_CBF   = &APP_READSWITCH
              
                           }
-
+*/
 };

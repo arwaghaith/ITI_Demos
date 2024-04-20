@@ -39,7 +39,7 @@ extern volatile Time_t StopWatch;
 extern volatile EditState_t Edit_State;
 extern uint8_t Received_SW_Pressed_ID;
 extern volatile uint8_t Edit_Position;
-volatile DispalyMode_t DisplayMode = StopWatch_Mode;
+volatile DispalyMode_t DisplayMode = Clock_Mode;
 volatile DispalyMode_t Prev_DisplayMode;
 static DisplayState_t Display_State = Display_Row1;
 extern uint8_t Received_SW_Pressed_ID;
@@ -74,9 +74,9 @@ void Display_Runnable(void)
     	LCD_ClearScreanAsynch(NULL);
 	}
 
-    if(DisplayMode)
+    if(!DisplayMode)
     {
-    	switch (!Display_State)
+    	switch (Display_State)
     	{
     		case(Display_Row1):
     			LCD_SetCursorAsynch(ROW_1,COLUMN_1,NULL);
@@ -87,7 +87,9 @@ void Display_Runnable(void)
         		LCD_WriteDataAsynch((Date.Months/10)+48,NULL);
         		LCD_WriteDataAsynch((Date.Months%10)+48,NULL);
         		LCD_WriteDataAsynch('/',NULL);
-        		LCD_WriteDataAsynch((Date.Years/10)+48,NULL);
+        		LCD_WriteDataAsynch((Date.Years/1000)+48,NULL);
+				LCD_WriteDataAsynch(((Date.Years%1000)/100)+48,NULL);
+				LCD_WriteDataAsynch(((Date.Years%100)/10)+48,NULL);
         		LCD_WriteDataAsynch((Date.Years%10)+48,NULL);
         		Display_State = Display_Row2;
         		break;
