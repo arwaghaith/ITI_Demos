@@ -17,8 +17,9 @@
 /**************************************************/
 /**            APP_READSWITCH APIs               **/
 /**************************************************/
+void APP_TX_MSG_Init(void);
 void APP_READSWITCH(void);
-void READ_RX_SWITCH_CB(void);
-void APP_RX_MSG_Init(void);
+void APP_UPDATESWITCH_STATE(void);
+void SW_TX_Done_CB(void);
 
 #endif

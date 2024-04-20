@@ -26,8 +26,8 @@ typedef enum
     Clock_Runnable_,
     StopWatch_Runnable_,
     Display_Runnable_,
-    //UPDATESWITCH_STATE,
-    //READSWITCH,
+    UPDATESWITCH_STATE,
+    READSWITCH,
     __SCHED_MAX_Runnables
 
 }SCHED_runnables_list_t;

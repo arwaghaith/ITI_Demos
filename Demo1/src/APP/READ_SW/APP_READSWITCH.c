@@ -26,15 +26,19 @@
 /*               Macros Region                     */
 /***************************************************/
 #define NO_SW_PRESSED 0XFF
+#define SW_CHECK_ID(ID) ((ID >= 0) && (ID <=_DEMO_SW_NUM))
+#define SW_PASSWORD_CHECK  0X50
 /***************************************************/
 /*                   OPTIONS                       */
 /***************************************************/
 /*  USART_Number        : USART1 - USART2 - USART6.
     USART_ID            : USART1_ID - USART2_ID -
                                 USART6_ID.
-****************************************************/
-#define SW_USART_CHANNEL_RX      USART1
-#define SW_USART_CHANNEL_ID_RX   USART1_ID
+*****************************************************/
+#define SW_USART_CHANNEL_TX      USART1
+#define SW_USART_CHANNEL_ID_TX   USART1_ID
+
+
 /*
   1 - Need to know periodicity of readding sw
   2 - Need to know mechaanism of pressed SW periority to be updated 
@@ -55,15 +59,26 @@
 /***************************************************/
 
 uint8_t SW_Pressed_ID = NO_SW_PRESSED;
-USART_Request_t SW_update_RX_Request;
-uint8_t SW_RX_Message;
-uint8_t  Received_SW_Pressed_ID;
+uint8_t SW_Message = 0;
 
 
-extern void APP_TX_MSG_Init(void);
+USART_Request_t SW_update_TX_Request;
+
+
+
 /***************************************************/
 /*       Functions Implementation Region           */
 /***************************************************/
+
+void APP_TX_MSG_Init(void)
+{
+   
+   SW_update_TX_Request.USART_DataArraySize = sizeof(SW_Message);
+   SW_update_TX_Request.USART_ID            = SW_USART_CHANNEL_ID_TX;
+   SW_update_TX_Request.USART_Number        = SW_USART_CHANNEL_TX ;
+   SW_update_TX_Request.USART_CBFunc        = SW_TX_Done_CB ;
+
+}
 
 void APP_READSWITCH(void)
 {
@@ -86,32 +101,47 @@ void APP_READSWITCH(void)
       /*Zero values means no SW is pressed*/
       SW_Pressed_ID = NO_SW_PRESSED;
    }
-
+   /*Prepare message then send it async*/
+   APP_UPDATESWITCH_STATE();
+ 
 }
-/*
-
-  Received message 
-
-*/
-void APP_RX_MSG_Init(void)
+void APP_UPDATESWITCH_STATE(void)
 {
-   /*Size of the sent message which is 1Byte*/
-   SW_update_RX_Request.USART_DataArraySize = sizeof(SW_RX_Message);
-   SW_update_RX_Request.USART_ID            = SW_USART_CHANNEL_ID_RX;
-   SW_update_RX_Request.USART_Number        = SW_USART_CHANNEL_RX ;
-   SW_update_RX_Request.USART_CBFunc        = READ_RX_SWITCH_CB;
+   USART_ErrorStatus_t USART_CHECK;
+   /*Filter ID part*/
+   SW_Message = 0X0F & SW_Pressed_ID;
+   /*Check ID part*/
+   if(SW_CHECK_ID(SW_Message))
+   {
+     /*Assign Password Check bits */
+      SW_Message |= SW_PASSWORD_CHECK ;
+      /*Assign Tx Request*/
+      SW_update_TX_Request.USART_Data = &SW_Message;
+      USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
 
-   USART_RxByte_Async(SW_update_RX_Request);
-   /*I will filter this message here to get the ID of the pressed SW */
 
+   }
+   else if(SW_Pressed_ID == NO_SW_PRESSED)
+   {
+      /* F "1111" ID part means NO sw pressed all in released MODE*/
+      SW_Message = SW_Pressed_ID & 0x0F;
+      /*Assign Password Check bits */
+      SW_Message |= SW_PASSWORD_CHECK ;
+      /*Assign Tx Request*/
+      SW_update_TX_Request.USART_Data = &SW_Message;
+       USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
+   }
+   if(USART_CHECK)
+   {
 
-}
-void READ_RX_SWITCH_CB(void)
-{
-  uint8_t EXTRACTED_ID= 0;
-  /*Read ID part from the received message*/
-  SW_update_RX_Request.USART_Data[0] &= 0X0F;
+   }
   
-  Received_SW_Pressed_ID = SW_update_RX_Request.USART_Data[0];
+}
 
-}  
+
+
+void SW_TX_Done_CB(void)
+{
+
+
+}

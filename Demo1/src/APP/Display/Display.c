@@ -64,10 +64,10 @@ void Display_Init(void)
  /*Comes every 85ms تقريباً*/
 void Display_Runnable(void)
 {
-	if(Received_SW_Pressed_ID == SW_MODE)
+	/*if(Received_SW_Pressed_ID == SW_MODE)
 	{
 		DisplayMode = !DisplayMode;
-	}
+	}*/
 
 	if(DisplayMode != Prev_DisplayMode)
 	{
@@ -171,7 +171,7 @@ void Display_Runnable(void)
     			break;
     	}
     }
-	Prev_DisplayMode = DisplayMode;
+	//Prev_DisplayMode = DisplayMode;
 }
 
 /*
