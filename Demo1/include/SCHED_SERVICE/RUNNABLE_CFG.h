@@ -26,7 +26,7 @@ typedef enum
     Clock_Runnable_,
     StopWatch_Runnable_,
     Display_Runnable_,
-    UPDATESWITCH_STATE,
+    APP_RECEIVE_SW_ID_,
     READSWITCH,
     __SCHED_MAX_Runnables
 

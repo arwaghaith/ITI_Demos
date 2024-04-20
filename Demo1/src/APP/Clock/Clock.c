@@ -26,7 +26,7 @@
 
 /************************************************Variables***********************************************/
 volatile Time_t Clock;
-volatile Date_t Date = {17, 4, 2024};
+volatile Date_t Date = {20, 4,2024};
 volatile EditState_t Edit_State = EditState_Done;
 //volatile EditControl_t Edit_Signal = EditControl_NoSignal;
 volatile uint8_t Edit_Position = 1;

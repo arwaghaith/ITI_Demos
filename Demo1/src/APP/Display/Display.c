@@ -39,7 +39,7 @@ extern volatile Time_t StopWatch;
 extern volatile EditState_t Edit_State;
 extern uint8_t Received_SW_Pressed_ID;
 extern volatile uint8_t Edit_Position;
-volatile DispalyMode_t DisplayMode = StopWatch_Mode;
+volatile DispalyMode_t DisplayMode = Clock_Mode;
 volatile DispalyMode_t Prev_DisplayMode;
 static DisplayState_t Display_State = Display_Row1;
 extern uint8_t Received_SW_Pressed_ID;
@@ -64,10 +64,10 @@ void Display_Init(void)
  /*Comes every 85ms تقريباً*/
 void Display_Runnable(void)
 {
-	if(Received_SW_Pressed_ID == SW_MODE)
+	/*if(Received_SW_Pressed_ID == SW_MODE)
 	{
 		DisplayMode = !DisplayMode;
-	}
+	}*/
 
 	if(DisplayMode != Prev_DisplayMode)
 	{
@@ -76,7 +76,7 @@ void Display_Runnable(void)
 
     if(DisplayMode)
     {
-    	switch (!Display_State)
+    	switch (Display_State)
     	{
     		case(Display_Row1):
     			LCD_SetCursorAsynch(ROW_1,COLUMN_1,NULL);
@@ -169,7 +169,7 @@ void Display_Runnable(void)
     			break;
     	}
     }
-	Prev_DisplayMode = DisplayMode;
+	//Prev_DisplayMode = DisplayMode;
 }
 
 /*

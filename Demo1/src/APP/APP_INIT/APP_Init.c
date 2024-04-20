@@ -23,7 +23,7 @@
 void APP_Init(void)
 {
     RCC_AHB1EnablePeri(PERI_AHB1_GPIOA);
-    RCC_AHB1EnablePeri(PERI_AHB1_GPIOA);
+    RCC_AHB1EnablePeri(PERI_AHB1_GPIOB);
     RCC_APB2EnablePeri(PERI_APB2_USART1);
 
     NVIC_EnableIRQ(NVIC_USART1);

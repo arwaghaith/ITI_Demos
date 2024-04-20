@@ -14,7 +14,7 @@
 /*************************************************************************************/
 /********************         Scheduler  includes      *******************************/
 /*************************************************************************************/
-#include "SCHED.h"
+#include "../../SCHED_SERVICE/SCHED.h"
 #include "RUNNABLE_CFG.h"
 #include "SYSTICK.h"
 /*************************************************************************************/
@@ -23,7 +23,7 @@
 
 /**************************************************************************************/
 /*
-** options : 1 - SYTK_AHB_8_CLK
+** options : 1 - SYSTICK_AHB_8_CLK
              2 - SYTK_Processor_AHB_CLK
   
 */
@@ -42,8 +42,7 @@ typedef struct
    uint32_t runnable_remaing_time;
 
 }SCHED_runnable_Info_t;
-/*Because lowest periodicity for our system task is 2ms - > "LCD"
- Based on nyquist theory -> SCHED_TICK_TIME_ms = half lowest periodicty of runnable*/
+/*Because lowest periodicity for our system task is 2ms - > "LCD"*/
 const uint32_t SCHED_TICK_TIME_ms = 1;
 
 typedef enum

@@ -15,14 +15,14 @@
 /*************************************************************************************/
 
 #include "RUNNABLE_CFG.h"
-#include "SCHED.h"
+#include "../../SCHED_SERVICE/SCHED.h"
 
 
 /*************************************************************************************/
 /******************    eterns for runnables callback functions  **********************/
 /*************************************************************************************/
 
-extern void APP_UPDATESWITCH_STATE(void);
+extern void APP_RECEIVE_SW_ID(void);
 extern void APP_READSWITCH(void);
 extern void Clock_Runnable(void);
 extern void Display_Runnable(void);
@@ -43,38 +43,40 @@ const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
                                 .runnable_name        = "LCD Runnable",
                                 .SCHED_delayTime_ms   = 0,
                                 .SCHED_periodicity_ms = 2,
-                                .SCHED_Runnable_CBF   = LCD_Runnable
+                                .SCHED_Runnable_CBF   = &LCD_Runnable
                     
                            },
+    
+    [Display_Runnable_]    ={
+                                .runnable_name        = "Display Runnable",
+                                .SCHED_delayTime_ms   = 0,
+                                .SCHED_periodicity_ms = 100,
+                                .SCHED_Runnable_CBF   = &Display_Runnable
+                            },
+    [Clock_Runnable_]       ={
+                                .runnable_name        = "Clock Runnable",
+                                .SCHED_delayTime_ms   = 0,
+                                .SCHED_periodicity_ms = 100,
+                                .SCHED_Runnable_CBF   = &Clock_Runnable
+                            }
+    /*
     [HSwitch_Runnable_]     ={
                                 .runnable_name        = "HSwitch Runnable",
                                 .SCHED_delayTime_ms   = 0,
                                 .SCHED_periodicity_ms = 5,
-                                .SCHED_Runnable_CBF   = HSwitch_Runnable
-                            },
-    [Display_Runnable_]    ={
-                                .runnable_name        = "Display Runnable",
-                                .SCHED_delayTime_ms   = 35,
-                                .SCHED_periodicity_ms = 85,
-                                .SCHED_Runnable_CBF   = Display_Runnable
-                            },
-    [Clock_Runnable_]       ={
-                                .runnable_name        = "Clock Runnable",
-                                .SCHED_delayTime_ms   = 35,
-                                .SCHED_periodicity_ms = 1000,
-                                .SCHED_Runnable_CBF   = Clock_Runnable
+                                .SCHED_Runnable_CBF   = &HSwitch_Runnable
                             },
     [StopWatch_Runnable_]  ={
                                 .runnable_name        = "StopWatch_Runnable_",
                                 .SCHED_delayTime_ms   = 35,
                                 .SCHED_periodicity_ms = 100,
-                                .SCHED_Runnable_CBF   = StopWatch_Runnable
+                                .SCHED_Runnable_CBF   = &StopWatch_Runnable
                             },
-    [UPDATESWITCH_STATE]       ={
-                                .runnable_name        = "APP_UPDATESWITCH_STATE",
+    [APP_RECEIVE_SW_ID_]       ={
+                                .runnable_name        = "APP_SEND_SW_ID",
                                 .SCHED_delayTime_ms   = 0,
                                 .SCHED_periodicity_ms = 200,
-                                .SCHED_Runnable_CBF   = &APP_UPDATESWITCH_STATE
+                                .SCHED_Runnable_CBF   = &APP_RECEIVE_SW_ID
                     
                            },
     [READSWITCH]           = {
@@ -83,6 +85,6 @@ const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
                                 .SCHED_periodicity_ms = 100,
                                 .SCHED_Runnable_CBF   = &APP_READSWITCH
              
-                          }
+                          }*/
 
 };
