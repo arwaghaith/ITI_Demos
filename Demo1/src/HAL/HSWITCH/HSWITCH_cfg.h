@@ -10,7 +10,7 @@
 typedef enum
 {
 
-  START_STOP =1 ,
+  START_STOP ,
     PAUSE_CONT,
     EDIT ,
     MODE ,
