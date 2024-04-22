@@ -1,3 +1,5 @@
+
+
 #ifndef ERROR_STATUS_H_
 #define ERROR_STATUS_H_
 
@@ -23,12 +25,6 @@ typedef enum {
     E_NumOfErrors  //to represent the total number of error states
 } E_ErrorStatus_t;
 
+#endif // LIB_ERROR_STATUS_H_
 
 
-
-
-
-
-
-
-#endif  /*ERROR_STATUS_H_*/

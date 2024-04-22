@@ -4,8 +4,9 @@
 /********************************************************************************************************/
 /************************************************Includes************************************************/
 /********************************************************************************************************/
-#include "../../LIB/STD_TYPES.h"
-#include"../../LIB/Error_Status.h"
+#include"LIB/Error_Status.h"
+#include"LIB/STD_TYPES.h"
+
 
 
 /********************************************************************************************************/
@@ -15,7 +16,7 @@
 #define READY                                      0
 #define BUSY                                       1
 #define     BAUD_RATE                              9600
-#define     SYS_FREQUENCY_UART                         16000000
+#define     SYS_FREQUENCY                          16000000
 //#define     SYS_FREQUENCY                        25000000UL
 
 #define USART_1_BaseAddress                    ((volatile USART_t*)0x40011000)
@@ -26,6 +27,12 @@
 
 
 typedef void (*CBF)(void);
+/********************************************************************************************************/
+/************************************************Types***************************************************/
+/********************************************************************************************************/
+
+typedef void (*CBF)(void);
+
 /********************************************************************************************************/
 /************************************************Types***************************************************/
 /********************************************************************************************************/
@@ -48,7 +55,7 @@ typedef struct
 
    struct{
 			uint32_t DATA:9;
-			uint32_t:23;
+			uint32_t :23;
 		}USART_DR;
 
    struct{
@@ -78,7 +85,6 @@ typedef struct
 		}USART_CR1;
 
   struct{
-            /*(CPOL, CPHA, LBCL) should not be written while the transmitter is enabled*/
 			uint32_t ADD   :4; //Address of the USART node
 			uint32_t       :1;
 			uint32_t LBDL  :1; //lin break detection length
@@ -109,22 +115,17 @@ typedef struct
 			uint32_t       :20;
 		}USART_CR3;
     
-  
-}USART_t;
-
+} USART_t;
 
 #define USART_1    ((volatile USART_t*) USART_1_BaseAddress)
 #define USART_2    ((volatile USART_t*) USART_2_BaseAddress)
 #define USART_6    ((volatile USART_t*) USART_6_BaseAddress)
-
-
 
 typedef enum {
     USART_Channel_1,
     USART_Channel_2,
     USART_Channel_6
 } USART_Channel;
-
 
 typedef struct
 {
@@ -140,14 +141,12 @@ typedef struct
     uint32_t BaudRate;
 } USART_Config;
 
-
 typedef struct 
 {
 	uint16_t *data;
-	uint32_t size;
-	uint16_t position;
-}Buffer_t;
-
+	uint32_t volatile size;
+	uint16_t volatile position;
+} Buffer_t;
 
 typedef struct 
 {
@@ -155,12 +154,7 @@ typedef struct
 	USART_Channel Channel;
 	uint32_t state;
 	CBF TX_callBack;
-    
-}Uart_TXRequest_t;
-
-
-
-
+} Uart_TXRequest_t;
 
 typedef struct 
 {
@@ -168,22 +162,22 @@ typedef struct
 	USART_Channel Channel;
 	uint32_t state;
 	CBF RX_callBack;
-
-}Uart_RXRequest_t;
+} Uart_RXRequest_t;
 
 /********************************************************************************************************/
 /************************************************APIs****************************************************/
 /********************************************************************************************************/
 
+E_ErrorStatus_t USART_Init(const USART_Config * Copy_addCFG);
 
-E_ErrorStatus_t  USART_Init(const USART_Config * Copy_addCFG);
+E_ErrorStatus_t USART_SendByteSynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_u8Data);
 
-E_ErrorStatus_t USART_SendByteSynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_uint8_tData);
 
-E_ErrorStatus_t USART_GetByteSynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_uint8_tData);
+E_ErrorStatus_t USART_SendByteAsynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_u8Data);
+E_ErrorStatus_t USART_GetByteASynchronous(USART_Channel Copy_enuChannel, uint8_t *  Copy_u8Data);
 
 /*Asynch function*/
-E_ErrorStatus_t  USART_ReceiveBuffer( Uart_RXRequest_t * Copy_addRequest);
+E_ErrorStatus_t USART_ReceiveBuffer(Uart_RXRequest_t * Copy_addRequest);
 
 /*Asynch function*/
 E_ErrorStatus_t USART_SendBufferZeroCopy(Uart_TXRequest_t * Copy_addRequest);

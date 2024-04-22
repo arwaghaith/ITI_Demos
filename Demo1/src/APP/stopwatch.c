@@ -1,97 +1,58 @@
+
 #include "../HAL/LCD/LCD.h"
 #include "../LIB/STD_TYPES.h"
 #include "../HAL/HSWITCH/HSWITCH.h"
 #include  "DEMO.h"
-extern uint8_t DISPLAY_MODE;
+
+extern volatile uint8_t DISPLAY_MODE ;
+volatile StopWatch_State_t SW_State = SWstate_Running;
 
 
-stopwatch_time G_stopwatch_current_time=
+volatile stopwatch_time G_stopwatch_current_time=
 
 {
 0,0,0,0
+
 };
-extern uint16_t buttonConditions;
-
-uint8_t start_flag=0;
-uint8_t stop_flag=1;
-uint8_t pause_flag=0;
-uint8_t continue_flag=0;
-
-
-
-
-
-
-
+extern volatile uint8_t buttonConditions;
 void stopwatch()
 
 
 {
 
 
+volatile static StopWatch_State_t SW_State = SWstate_Running;
 
 
-
-
-    #if DISPLAY_MODE== STOPWATCH
-
-
-    if(buttonConditions &(1<<START_STOP))
-    {
-    start_flag^=1;
-      stop_flag^=1;;
-       
-    }
-
-    else if(buttonConditions &(1<<PAUSE_CONT))
-
-    {
-        pause_flag!=pause_flag;
-        continue_flag!=continue_flag;
-
-
-    }
-
-    else if(buttonConditions &(1<<MODE))
-    
-
-
-
-    {
-
-        G_stopwatch_current_time.hours=0;
-        G_stopwatch_current_time.minutes=0;
-        G_stopwatch_current_time.seconds=0;
-        G_stopwatch_current_time.milliseconds=0;
-        start_flag=0;
-        stop_flag=0;
-        pause_flag=0;
-        continue_flag=0;
-
-        DISPLAY_MODE!=DISPLAY_MODE;
-        return;
-    }
-    
-
-
-
-
-
-    if(start_flag==1  ||continue_flag==1)
-    {
-        G_stopwatch_current_time.milliseconds+=100;
-    }
-
-    else if (stop_flag ==1)
-    {
+        switch(SW_State)
+        {
+            case(SWstate_Initial):
+            
         G_stopwatch_current_time.milliseconds=0;
         G_stopwatch_current_time.seconds=0;
         G_stopwatch_current_time.minutes=0;
         G_stopwatch_current_time.hours=0;
         
-    }
+                
 
-    if(G_stopwatch_current_time.milliseconds==1000)
+
+                if( DISPLAY_MODE==STOPWATCH)
+                {
+                if ((buttonConditions &(1<<START_STOP) ))
+                {
+                    SW_State      = SWstate_Running  ;
+                    buttonConditions=0;
+                }
+                }
+                
+
+             break;
+
+            case(SWstate_Running):
+            
+                       G_stopwatch_current_time.milliseconds+=100;
+
+               if(G_stopwatch_current_time.milliseconds==1000)
     {
         G_stopwatch_current_time.milliseconds=0;
         G_stopwatch_current_time.seconds++;
@@ -109,14 +70,48 @@ void stopwatch()
         G_stopwatch_current_time.hours++;
     }
 
-   
+                if( DISPLAY_MODE==STOPWATCH)
+                {
+                if(buttonConditions &(1<<START_STOP)) 
+                {
+                    SW_State      = SWstate_Initial;
+                                        buttonConditions=0;
 
-    
+                }
+                
+                else if ( buttonConditions &(1<<PAUSE_CONT)  ) 
+                {
+                    SW_State      = SWstate_Paused;
+                                        buttonConditions=0;
 
+                }
+                }
   
 
-#endif
+             break;
+            case(SWstate_Paused):
+            
+               
+              if( DISPLAY_MODE==STOPWATCH)
+                {
+                if (buttonConditions &(1<<PAUSE_CONT) )
+                {
+                    SW_State      = SWstate_Running;
+                                        buttonConditions=0;
 
+                }
+                else if(buttonConditions &(1<<START_STOP)) 
+                {
+                    SW_State      = SWstate_Initial;
+                                        buttonConditions=0;
 
+                }
+                }
 
+            break;
+            default:
+                /*Do Nothing*/
+                break;
+
+        }
 }

@@ -1,18 +1,20 @@
+
 #include "../HAL/LCD/LCD.h"
 #include "../LIB/STD_TYPES.h"
 #include "../HAL/HSWITCH/HSWITCH.h"
 #include "../MCAL/UART/UART.h"
 #include"../LIB/Error_Status.h"
+#include "Demo.h"
 
 
 
-
-uint16_t updateSwitches_Buffer=0;
+uint8_t updateSwitches_Buffer=0;
 
 
 void updateSwitch()
 
 {
+  
 
     uint8_t loc_Switch_counter=0;
     static uint8_t loc_visit_counter=0;
@@ -36,12 +38,17 @@ void updateSwitch()
         loc_Switch_Status=Switch_GetState(loc_Switch_counter, &switchState);
         
 
-        if(loc_Switch_Status==SWITCH_OK  &&  switchState==SWITCH_PRESSED)
+        if(/*loc_Switch_Status==SWITCH_OK  && */ switchState==SWITCH_PRESSED)
         {
+            updateSwitches_Buffer=CHECKSUM;
 
-            updateSwitches_Buffer|=(1<<loc_Switch_counter);
+            updateSwitches_Buffer+=loc_Switch_counter+1;
+            loc_Switch_counter=Switch_NUM;
 
         }
+       else{
+        updateSwitches_Buffer=0;
+       }
 
 
 
@@ -58,21 +65,15 @@ void updateSwitch()
     
 
 
-        loc_UART_TX_REQ.TX_Buffer.data=&updateSwitches_Buffer;
-        loc_UART_TX_REQ.TX_Buffer.size=sizeof(updateSwitches_Buffer);
-        loc_UART_TX_REQ.TX_Buffer.position=0;
-        loc_UART_TX_REQ.Channel=USART_Channel_1;
-        loc_UART_TX_REQ.state=0;
-        loc_UART_TX_REQ.TX_callBack=NULL;
+     
   
 
 
+if(updateSwitches_Buffer)
+USART_SendByteAsynchronous(USART_Channel_2, updateSwitches_Buffer);
 
-
-   
     loc_visit_counter++;
 
-    loc_UART_ERROR_Status=USART_SendBufferZeroCopy(&loc_UART_TX_REQ);
     }
 
 
@@ -89,11 +90,69 @@ void updateSwitch()
 
 
 
-
-
-
-
-
-
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

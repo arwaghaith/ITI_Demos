@@ -9,14 +9,15 @@
 #define  Switch_NUM 8
 typedef enum
 {
-  START_STOP,
-  PAUSE_CONT,
-  EDIT,
-  MODE,
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT
+
+  START_STOP =1 ,
+    PAUSE_CONT,
+    EDIT ,
+    MODE ,
+    UP ,
+    DOWN ,
+    LEFT ,
+    RIGHT 
 }Switch_ChannelType;
 /******************************************************/
 /*               Switch Configuration                */

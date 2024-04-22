@@ -1,10 +1,9 @@
 /********************************************************************************************************/
 /************************************************Includes************************************************/
-/********************************************************************************************************/
-#include "UART.h"
-#include "../GPIO/GPIO.h"
-#include  "../../LIB/STD_TYPES.h"
+/*******************************************************************************************************/
 
+#include"MCAL/GPIO/GPIO.h"
+#include"UART.h"
 /********************************************************************************************************/
 /************************************************Defines*************************************************/
 /********************************************************************************************************/
@@ -30,8 +29,7 @@ Uart_RXRequest_t recievebuffer[5];
 /********************************************************************************************************/
 
 static void configure_USART_registers(USART_t *USART, const USART_Config *config);
-
-
+ uint8_t *Copy_u8Data_global = 0;
 
 /********************************************************************************************************/
 /*********************************************APIs Implementation****************************************/
@@ -45,7 +43,7 @@ E_ErrorStatus_t USART_Init(const USART_Config *Copy_addCFG)
 
  
     /*clac Baud Rate */
- float USARTDIV = (float)SYS_FREQUENCY_UART / (Copy_addCFG->BaudRate * (16 * (2 - 1)));
+ float USARTDIV = (float)SYS_FREQUENCY / (Copy_addCFG->BaudRate * (16 * (2 - 1)));
 
  uint16_t mantissa = (uint16_t)USARTDIV;
 
@@ -111,11 +109,37 @@ static void configure_USART_registers(USART_t *USART, const USART_Config *config
 
 
 
+E_ErrorStatus_t USART_SendByteAsynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_u8Data)
+{
+
+
+ E_ErrorStatus_t UART_ErrorStatus_t = E_NOK;
+
+switch (Copy_enuChannel)
+{
+        case USART_Channel_1:
+        USART_1 ->USART_DR.DATA = Copy_u8Data;
+
+        break;
+        case USART_Channel_2:
+        USART_2 ->USART_DR.DATA = Copy_u8Data;
+
+        break;
+        case USART_Channel_6:
+        USART_6 ->USART_DR.DATA = Copy_u8Data;
+        break;
+        default:
+            return UART_ErrorStatus_t; // Invalid channel
+}
+return UART_ErrorStatus_t;
+}
+
+
 
 E_ErrorStatus_t USART_SendByteSynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_u8Data)
   
 {      E_ErrorStatus_t UART_ErrorStatus_t = E_NOK;
-        uint16_t  TimeOut = 6000;
+        uint16_t TimeOut = 6000;
     switch (Copy_enuChannel)
     { 
       case USART_Channel_1:
@@ -134,9 +158,9 @@ E_ErrorStatus_t USART_SendByteSynchronous(USART_Channel Copy_enuChannel, uint8_t
         USART_2 ->USART_DR.DATA = Copy_u8Data;
         USART_2->USART_CR1.TXEIE  = 1;
         USART_2 ->USART_CR1.TCIE = 1; 
-        while (TimeOut)
+       while (TimeOut)
         {
-            TimeOut--;
+           TimeOut--;
         }
         USART_2->USART_CR1.TXEIE  = 0;
         USART_2 ->USART_CR1.TCIE = 0;
@@ -156,31 +180,27 @@ return UART_ErrorStatus_t;
 
 
 
-E_ErrorStatus_t USART_GetByteSynchronous(USART_Channel Copy_enuChannel, uint8_t Copy_u8Data)
+
+E_ErrorStatus_t USART_GetByteASynchronous(USART_Channel Copy_enuChannel,  uint8_t* Copy_u8Data)
 {  E_ErrorStatus_t UART_ErrorStatus_t = E_NOK;
-        uint16_t  TimeOut = 60000;
-        Copy_u8Data =0;
+       
+    
     switch (Copy_enuChannel)
     { 
       case USART_Channel_1:
-        USART_1->USART_CR1.RXNEIE  = 1; 
-        while (TimeOut)
-        {
-            TimeOut--;
-        }
-        Copy_u8Data = USART_1->USART_DR.DATA;
-        USART_1->USART_CR1.RXNEIE  = 0; 
+       USART_1->USART_CR1.RXNEIE = 0; 
+        USART_1->USART_CR1.RE=1;
+       *(Copy_u8Data)= USART_1->USART_DR.DATA;
+        USART_1->USART_CR1.RE=1; 
+       USART_1->USART_CR1.RXNEIE  = 1; 
         break;
 
         case USART_Channel_2:
+       USART_2->USART_CR1.RXNEIE = 0; 
+        USART_2->USART_CR1.RE=1;
+       (Copy_u8Data_global) = (Copy_u8Data);
+      USART_2->USART_CR1.RE=1; 
         USART_2->USART_CR1.RXNEIE  = 1; 
-        while (TimeOut)
-        {
-            TimeOut--;
-        }
-        Copy_u8Data = USART_2 ->USART_DR.DATA;
-
-        USART_2->USART_CR1.RXNEIE  = 0; 
         break;
 
         case USART_Channel_6:
@@ -281,7 +301,94 @@ return UART_ErrorStatus_t;
 }
 
 
+E_ErrorStatus_t  USART_ReceiveBuffer( Uart_RXRequest_t * Copy_addRequest)
+{
+	E_ErrorStatus_t UART_ErrorStatus_t = E_NOK;
+	
+	if(Copy_addRequest->RX_Buffer.data == NULL){return UART_ErrorStatus_t;}
+	
+	switch ( Copy_addRequest ->Channel)
+	{
+		 case USART_Channel_1:
+            if (recievebuffer[0].state == READY) {
+                recievebuffer[0].state = BUSY;
+                USART_1->USART_CR1.RXNEIE = 0;
+                USART_1->USART_CR1.RE = 1;
+                recievebuffer[0].RX_Buffer.data = Copy_addRequest->RX_Buffer.data;
+                recievebuffer[0].RX_Buffer.size = Copy_addRequest->RX_Buffer.size;
+                recievebuffer[0].RX_Buffer.position = 0;
+                recievebuffer[0].RX_callBack = Copy_addRequest->RX_callBack;
 
+                // Wait for data to be received
+                while (!(USART_1->USART_SR.RXNE)) {
+                    // Optionally, you can implement a timeout mechanism here
+                }
+
+                recievebuffer[0].RX_Buffer.data[0] = USART_1->USART_DR.DATA;
+                recievebuffer[0].RX_Buffer.position++;
+
+                // Re-enable USART receiver and receive interrupt
+                USART_1->USART_CR1.RE = 1;
+                USART_1->USART_CR1.RXNEIE = 1;
+            }
+            break;
+
+		case USART_Channel_2:
+		
+		if (recievebuffer[Copy_addRequest->Channel].state == READY) {
+    recievebuffer[Copy_addRequest->Channel].state = BUSY;
+    USART_2->USART_CR1.RXNEIE = 0;
+    USART_2->USART_CR1.RE = 1;
+    recievebuffer[Copy_addRequest->Channel].RX_Buffer.data = Copy_addRequest->RX_Buffer.data;
+    recievebuffer[Copy_addRequest->Channel].RX_Buffer.size = Copy_addRequest->RX_Buffer.size;
+    //recievebuffer[Copy_addRequest->Channel].RX_Buffer.size = 5;
+    recievebuffer[Copy_addRequest->Channel].RX_Buffer.position = 0;
+    recievebuffer[Copy_addRequest->Channel].RX_callBack = Copy_addRequest->RX_callBack;
+
+    // Wait for data to be received
+    while (!(USART_2->USART_SR.RXNE)) {
+        // Optionally, you can implement a timeout mechanism here
+    }
+   
+recievebuffer[Copy_addRequest->Channel].RX_Buffer.data[0] = USART_2->USART_DR.DATA;
+//recievebuffer[Copy_addRequest->Channel].RX_Buffer.position++;
+
+    // Re-enable USART receiver and receive interrupt
+   USART_2->USART_CR1.RE = 1;
+    USART_2->USART_CR1.RXNEIE = 1;
+}
+		break;
+		case USART_Channel_6:
+	 if (recievebuffer[0].state == READY) {
+                recievebuffer[0].state = BUSY;
+                USART_6->USART_CR1.RXNEIE = 0;
+                USART_6->USART_CR1.RE = 1;
+                recievebuffer[0].RX_Buffer.data = Copy_addRequest->RX_Buffer.data;
+                recievebuffer[0].RX_Buffer.size = Copy_addRequest->RX_Buffer.size;
+                recievebuffer[0].RX_Buffer.position = 0;
+                recievebuffer[0].RX_callBack = Copy_addRequest->RX_callBack;
+
+                // Wait for data to be received
+                while (!(USART_6->USART_SR.RXNE)) {
+                    // Optionally, you can implement a timeout mechanism here
+                }
+
+                recievebuffer[0].RX_Buffer.data[0] = USART_6->USART_DR.DATA;
+                recievebuffer[0].RX_Buffer.position++;
+
+                // Re-enable USART receiver and receive interrupt
+                USART_6->USART_CR1.RE = 1;
+                USART_6->USART_CR1.RXNEIE = 1;
+            }
+		break;
+		default:
+		return UART_ErrorStatus_t; // Invalid channel
+	}
+
+	return UART_ErrorStatus_t;
+
+	
+}
 
 
 
@@ -314,7 +421,7 @@ void USART1_IRQHandler(void)
     if (USART_1->USART_SR.RXNE)
    {
     if(recievebuffer[0].RX_Buffer.position < recievebuffer[0].RX_Buffer.size)
-       USART_1 ->USART_DR.DATA = recievebuffer[0].RX_Buffer.data[recievebuffer[0].RX_Buffer.position];
+       recievebuffer[0].RX_Buffer.data[recievebuffer[0].RX_Buffer.position] =  USART_2->USART_DR.DATA ;
        recievebuffer[0].RX_Buffer.position++;
 
    }
@@ -352,21 +459,31 @@ void USART2_IRQHandler(void)
 
    /*RXNE*/
    //If content of the RDR shift register has been transferred to the USART_DR register
-    if (USART_2->USART_SR.RXNE)
-   {
-    if(recievebuffer[0].RX_Buffer.position < recievebuffer[0].RX_Buffer.size)
-       USART_2 ->USART_DR.DATA = recievebuffer[0].RX_Buffer.data[recievebuffer[0].RX_Buffer.position];
-       recievebuffer[0].RX_Buffer.position++;
-
-   }
-   else 
-   {  
-    recievebuffer[0].state = READY;
-    if (recievebuffer[0].RX_callBack)
-    {
-        recievebuffer[0].RX_callBack();
+   if (USART_2->USART_SR.RXNE) {
+        // Check if the receive buffer is in the BUSY state and there is data to be received
+             *(Copy_u8Data_global)= USART_2->USART_DR.DATA;
+        
+            // Check if there is space in the transmit buffer to store the received data
+           if (recievebuffer[0].RX_Buffer.position < recievebuffer[0].RX_Buffer.size) 
+            {
+                // Store received data in the transmit buffer
+            
+                recievebuffer[0].RX_Buffer.data[recievebuffer[0].RX_Buffer.position] = USART_2->USART_DR.DATA;
+               
+                recievebuffer[0].RX_Buffer.position++;
+            } 
+           else {
+                // Set the state to READY and invoke the callback function if buffer is full
+                recievebuffer[0].state = READY;
+                if (recievebuffer[0].RX_callBack) {
+                    recievebuffer[0].RX_callBack();
+                }
+                // Clear the receive interrupt flag
+              
+               USART_2->USART_CR1.RXNEIE=0;
+          }
+        
     }
-   }
 
 }
 

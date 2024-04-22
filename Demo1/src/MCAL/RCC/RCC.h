@@ -46,6 +46,7 @@
 #define TIM4RST 2
 #define TIM3RST 1
 #define TIM2RST 0
+#define USART2RST 17
 /*****************************************************************************************/
 
 /*RCC_APB2 peripheral register*/
@@ -155,7 +156,6 @@
 #define TIM4LPEN 2
 #define TIM3LPEN 1
 #define TIM2LPEN 0
-#define USART2RST 17
 /*****************************************************************************************/
 
 /*RCC_APB2 peripheral register*/

@@ -1,8 +1,8 @@
 /********************************************************************************************************/
 /************************************************Includes************************************************/
 /********************************************************************************************************/
-#include"../../LIB/STD_TYPES.h"
-#include "NVIC.h"
+
+#include"NVIC.h"
 
 /********************************************************************************************************/
 /************************************************Defines*************************************************/
@@ -41,8 +41,8 @@ typedef struct
 /********************************************************************************************************/
 /******************************************* Static Functions *******************************************/
 /********************************************************************************************************/
-static uint8_t GetPriorityAndGroupConfig(uint8_t  local_u8Group  ,uint8_t  local_u8SubGroup ){
-		uint8_t localconfigReturnValue = 0 ;
+/*static  GetPriorityAndGroupConfig(uint8_t local_u8Group  ,uint8_t  local_u8SubGroup ){
+		u8 localconfigReturnValue = 0 ;
 		#if  GROUP_SUB_PRIORITY  == GROUP_16_SUB_0
 		localconfigReturnValue = local_u8Group ;
 		#elif GROUP_SUB_PRIORITY == GROUP_8_SUB_2
@@ -55,7 +55,7 @@ static uint8_t GetPriorityAndGroupConfig(uint8_t  local_u8Group  ,uint8_t  local
 		localconfigReturnValue =  local_u8SubGroup ;
 		#endif
 		return (localconfigReturnValue<<4);
-}
+}*/
 
 
 /********************************************************************************************************/
@@ -91,7 +91,7 @@ E_ErrorStatus_t NVIC_DisableInterrupt(uint8_t NVIC_InterruptID)
     }
     else
     {
-        NVIC_Core_peripheral->ICER[NVIC_InterruptID/32] = ((NVIC_InterruptID % 32 )<< 1) ;
+        NVIC_Core_peripheral->ICER[NVIC_InterruptID/32] = (1UL <<(NVIC_InterruptID % 32 )) ;
          NVIC_E_ErrorStatus_t = E_OK;
 
     }
@@ -112,7 +112,7 @@ E_ErrorStatus_t NVIC_SetPending(uint8_t NVIC_InterruptID)
     }
     else
     {
-        NVIC_Core_peripheral->ISPR[NVIC_InterruptID/32] = ((NVIC_InterruptID % 32 )<< 1) ;
+        NVIC_Core_peripheral->ISPR[NVIC_InterruptID/32] = (1UL <<(NVIC_InterruptID % 32 )) ;
          NVIC_E_ErrorStatus_t = E_OK;
 
     }
@@ -134,7 +134,7 @@ E_ErrorStatus_t NVIC_ClearPending(uint8_t NVIC_InterruptID)
     }
     else
     {
-        NVIC_Core_peripheral-> ICPR[NVIC_InterruptID/32] = ((NVIC_InterruptID % 32 )<< 1) ;
+        NVIC_Core_peripheral-> ICPR[NVIC_InterruptID/32] = (1UL <<(NVIC_InterruptID % 32 )) ;
          NVIC_E_ErrorStatus_t = E_OK;
 
     }

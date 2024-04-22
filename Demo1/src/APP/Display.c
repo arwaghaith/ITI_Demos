@@ -1,17 +1,20 @@
+
+
 #include "../HAL/LCD/LCD.h"
 #include "../LIB/STD_TYPES.h"
 #include "DEMO.h"
 
 
-#define  CLOCK     1
-#define  STOPWATCH 0
+
+
 
 
 extern Clk_t current_time;
 extern Date_t current_date;
-extern stopwatch_time G_stopwatch_current_time;
+extern volatile stopwatch_time G_stopwatch_current_time;
+extern volatile uint8_t buttonConditions;
 
-
+volatile uint8_t DISPLAY_MODE;
 
 
 
@@ -20,12 +23,11 @@ void Display()
 
 {
 //will be externed from readswitch_app
-static uint8_t DISPLAY_MODE=  STOPWATCH;
+
 
 static uint8_t loc_visit_counter=0;
 static uint8_t row1[16];
 static uint8_t row2[16];
-
 
 
    
@@ -50,7 +52,7 @@ static uint8_t row2[16];
      row1[12]=(current_date.year/100)%10+'0';
      row1[13]=(current_date.year/10)%10+'0';
      row1[14]=current_date.year%10+'0';
-     row1[15]='\0';
+     row1[15]=' ';
 
 
      //2- printing the row2
@@ -67,7 +69,9 @@ static uint8_t row2[16];
      row2[10]=':';
      row2[11]=current_time.seconds/10+'0';
      row2[12]=current_time.seconds%10+'0';
-     row2[13]='\0';
+     row2[13]=' ';
+     row2[14]=' ';
+     row2[15]=' ';
 
 
 
@@ -114,38 +118,51 @@ static uint8_t row2[16];
      // 1- print the row1
      if (loc_visit_counter==0)
      {
-     row1[0]='S';
-     row1[1]='T';
-     row1[2]='O';
-     row1[3]='P';
-     row1[4]='W';
-     row1[5]='A';
-     row1[6]='T';
-     row1[7]='C';
-     row1[8]='H';
-     row1[9]=' ';
-     row1[10]=' ';
-     row1[11]=' ';
+    row1[0]=' ';
+        row1[1]=' ';
+    row1[2]=' ';
+    row1[3]='S';
+
+     row1[4]='T';
+     row1[5]='O';
+     row1[6]='P';
+     row1[3]='S';
+     row1[4]='T';
+     row1[5]='O';
+     row1[6]='P';
+     row1[7]='W';
+     row1[8]='A';
+     row1[9]='T';
+     row1[10]='C';
+     row1[11]='H';
+     row1[12]=' ';
+     row1[13]=' ';
+     row1[14]=' ';
+     row1[15]=' ';
+
    
    
 
 
      //2- printing the row2
-    
-     row2[0]=G_stopwatch_current_time.hours/10+'0';
-     row2[1]=G_stopwatch_current_time.hours%10+'0';
-     row2[2]=':';
-     row2[3]=G_stopwatch_current_time.minutes/10+'0';
-     row2[4]=G_stopwatch_current_time.minutes%10+'0';
-     row2[5]=':';
-     row2[6]=G_stopwatch_current_time.seconds/10+'0';
-     row2[7]=G_stopwatch_current_time.seconds%10+'0';
-      row2[8]=':';
-     row2[9]=G_stopwatch_current_time.milliseconds/10+'0';
-     row2[10]=G_stopwatch_current_time.milliseconds%10+'0';
-     row2[11]='\0';
+          row2[0]=' ';
+          row2[1]='S';
 
-
+     row2[2]=G_stopwatch_current_time.hours/10+'0';
+     row2[3]=G_stopwatch_current_time.hours%10+'0';
+     row2[4]=':';
+     row2[5]=G_stopwatch_current_time.minutes/10+'0';
+     row2[6]=G_stopwatch_current_time.minutes%10+'0';
+     row2[7]=':';
+     row2[8]=G_stopwatch_current_time.seconds/10+'0';
+     row2[9]=G_stopwatch_current_time.seconds%10+'0';
+     row2[10]=':';
+     row2[11]=G_stopwatch_current_time.milliseconds/100+'0';
+     row2[12]=(G_stopwatch_current_time.milliseconds%100)/10+'0';
+     row2[13]=G_stopwatch_current_time.milliseconds%10+'0';
+   
+     row2[14] = ' ';  // units place 
+     row2[15] = ' ';
 
      
 
@@ -162,7 +179,7 @@ static uint8_t row2[16];
         
 
 
-    LCD_Write_String_POS_ASYNC(row1, 12, 1, 4);
+    LCD_Write_String_POS_ASYNC(row1, 16, 1, 0);
     loc_visit_counter++;
 
     }
@@ -170,7 +187,7 @@ static uint8_t row2[16];
     else if (loc_visit_counter==2)
     {
         
-    LCD_Write_String_POS_ASYNC(row2, 12, 2, 3);
+    LCD_Write_String_POS_ASYNC(row2, 16, 2, 0);
     loc_visit_counter++;
     }
 
@@ -180,6 +197,8 @@ static uint8_t row2[16];
 
             }
     }
+
+
 }
             
     
@@ -187,7 +206,6 @@ static uint8_t row2[16];
 
 
     
-
 
 
 

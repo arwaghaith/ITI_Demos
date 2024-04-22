@@ -1,6 +1,6 @@
 #include"DEMO.h"
-
 #include "../HAL/HSWITCH/HSWITCH.h"
+
 
 
 
@@ -12,19 +12,19 @@
 #define day_pos                  5
 #define month_pos                8
 #define year_pos                 11
-
-#define first_line               0
-#define Sec_line                 1
-
-
-#define pressed                   0
-#define NotPressed                1
+#define  max_Y                   15
+#define  min_Y                   4
+#define first_line               1
+#define Sec_line                 2
 
 
+extern uint8_t DISPLAY_MODE ;
+volatile uint8_t current_edit_position = hr_pos;
 
-uint8_t arr[9]= {1,1,0,1,0,1,0,1,};
+extern uint8_t buttonConditions;
 
-Clk_t current_time = {0, 0, 0};
+
+Clk_t current_time = {23,59, 0};
 Date_t current_date = {11, 4, 2024};
 
 uint8_t isLeapYear(uint16_t year) {
@@ -57,77 +57,60 @@ static void updateDate() {
     }
 }
 
+
 void Clock(void) {
 
-    uint8_t current_X = 0; // rows
-    uint8_t Current_Y = start_Edit_pos_inLCD  ; // cols  start 4 :
-
-    uint8_t current_edit_position = hr_pos ; 
-
-
-if (arr[MODE] == 1) { //default mode 
-
-
-      current_time.seconds++;
-    if (current_time.seconds == 60) {
-        current_time.seconds = 0;
-        current_time.minutes++;
-    }
-    if (current_time.minutes == 60) {
-        current_time.minutes = 0;
-        current_time.hours++;
-    }
-    if (current_time.hours == 24) 
-    {
-        current_time.hours = 0;
-        current_date.day++;
-        int daysInCurrMonth = daysInMonth(current_date.month, current_date.year);
-        // Check if the current day exceeds the maximum days in the current month
-        if (current_date.day >= daysInCurrMonth) 
-        {
-            // Move to the next month
-            current_date.day = 1;
-            current_date.month++;
-
-            // If the month exceeds 12, reset to 1 and increment the year
-            if (current_date.month > 12) 
-            {
-                current_date.month = 1;
-                current_date.year++;
-            }
-         
-        }
     
-    }
+    uint8_t current_Y = start_Edit_pos_inLCD; // Assuming start_Edit_pos_inLCD is defined
 
-        
-     if (arr[EDIT] == 0)
-      { //edit mode 
-           LCD_SET_CURSOR_POS_ASYNC(1, Current_Y); // sec row "the clock"  hours / min / sec 
-           
-           if(arr[RIGHT] ==0){
-             LCD_SET_CURSOR_POS_ASYNC(1, Current_Y+1); 
-             //current_edit_position++;
-           }
-           if(arr[LEFT] ==0)
-           {
-              LCD_SET_CURSOR_POS_ASYNC(1, Current_Y-1);
-              current_edit_position--;
-           }
-            if (arr[UP] == 0) { // UP button pressed
-                if (current_edit_position ==  hr_pos) { // Editing hours
-                    current_time.hours = (current_time.hours + 1) % 24; // Increment hours, looping from 23 to 0
-                    if(current_time.hours ==0 )
-                    {
-                        updateDate();
-                    }
-                } else if (current_edit_position ==min_pos) { // Editing minutes
-                    current_time.minutes = (current_time.minutes + 1) % 60; // Increment minutes, looping from 59 to 0
-                } else if (current_edit_position == sec_pos) { // Editing seconds
-                    current_time.seconds = (current_time.seconds + 1) % 60; // Increment seconds, looping from 59 to 0
+        // Timekeeping operations
+        current_time.seconds++;
+        if (current_time.seconds == 60) {
+            current_time.seconds = 0;
+            current_time.minutes++;
+        }
+        if (current_time.minutes == 60) {
+            current_time.minutes = 0;
+            current_time.hours++;
+        }
+        if (current_time.hours == 24) {
+            current_time.hours = 0;
+            current_date.day++;
+            int daysInCurrMonth = daysInMonth(current_date.month, current_date.year);
+            if (current_date.day > daysInCurrMonth) {
+                current_date.day = 1;
+                current_date.month++;
+                if (current_date.month > 12) {
+                    current_date.month = 1;
+                    current_date.year++;
                 }
-            } else if (arr[DOWN] == 0) { // DOWN button pressed
-                if (current_edit_position ==  hr_pos) { // Editing hours
+            }
+        }
+   
+   
+
+ if((DISPLAY_MODE== CLOCK))
+ {
+    
+
+
+     if ((buttonConditions & (1 << UP))) { // Check UP button
+     if (current_edit_position ==  hr_pos) { // Editing hours
+       current_time.hours = (current_time.hours + 1) % 24; // Increment hours, looping from 23 to 0
+        if(current_time.hours ==0 )
+        {
+            updateDate();
+        }
+        } else if (current_edit_position ==min_pos) { // Editing minutes
+            current_time.minutes = (current_time.minutes + 1) % 60; // Increment minutes, looping from 59 to 0
+        } else if (current_edit_position == sec_pos) { // Editing seconds
+            current_time.seconds = (current_time.seconds + 1) % 60; // Increment seconds, looping from 59 to 0
+        }
+        
+     }
+
+     if ((buttonConditions & (1 << DOWN))) { // Check DOWN button
+      if (current_edit_position ==  hr_pos) { // Editing hours
                     current_time.hours = (current_time.hours - 1 + 24) % 24; // Decrement hours, looping from 0 to 23
                     if(current_time.hours == 0){updateDate();}
                 } else if (current_edit_position == min_pos) { // Editing minutes
@@ -135,28 +118,13 @@ if (arr[MODE] == 1) { //default mode
                 } else if (current_edit_position == sec_pos) { // Editing seconds
                     current_time.seconds = (current_time.seconds - 1 + 60) % 60; // Decrement seconds, looping from 0 to 59
                 }
-            }
-        }
+     }
 
      
-}
 
-else 
-    {
-        return;
-    }
-
-
-}
-
-
-
-void LCD_APP()
-
-{
-
-
-LCD_Write_String_POS_ASYNC("ARWA",4,1,1);
+ }
+   
+buttonConditions =0;
 
 
 }
