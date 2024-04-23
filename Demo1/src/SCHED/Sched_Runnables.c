@@ -25,13 +25,13 @@ void UART_init();
 ={
 
 
-     [0]={LCD_APP_1,1,0,LCD_TASK},
-     [1]={display_app,85,0,Display},
-     [4]={ Clock_app,1000,0,Clock},
+     [0]={LCD_TASK_fun,2,0,LCD_TASK},
+     [1]={display_app,10,0,Display},
+     [4]={ Clock_app,500,0,Clock},
      [5]={ stopWatch_app,100,0,stopwatch},
-     [2]={ Switch_GetInstant_fun,5,0,Switch_GetInstant},
-    [6]={updateSwitch_fun,500,0,updateSwitch},
-   [3]={read_fun,1000,0,ReadSwitch},
+     [2]={ Switch_GetInstant_fun,10,0,Switch_GetInstant},
+    [6]={update_States,5,0,updateSwitch},
+   [3]={Send_SW_States,10,30,ReadSwitch},
    // [7]={ Uart_app, 1000 , 0 ,UART_init}
 
 

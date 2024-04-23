@@ -6,15 +6,13 @@
 
  typedef enum {
 
-       LCD_APP_1,
+       LCD_TASK_fun,
        display_app,
        Clock_app,
        stopWatch_app,
        Switch_GetInstant_fun,
-       updateSwitch_fun,
-       readSwitch_fun,
-       read_fun,
-       Uart_app,
+       update_States,
+       Send_SW_States,
        MAX_RUNNABLES
        
 
