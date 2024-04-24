@@ -10,6 +10,7 @@
 /************************************************Includes************************************************/
  #include "CLOCK/Clock.h"
  #include "HSwitch_cfg.h"
+ #include "HSwitch.h"
 /********************************************************************************************************/
 
 
@@ -27,7 +28,7 @@
 /************************************************Variables***********************************************/
 volatile Time_t Clock;
 volatile Date_t Date = {20, 4,2024};
-volatile EditState_t Edit_State = EditState_Done;
+volatile EditState_t Edit_State = EditState_Editing;
 //volatile EditControl_t Edit_Signal = EditControl_NoSignal;
 volatile uint8_t Edit_Position = 1;
 extern uint8_t Received_SW_Pressed_ID;
@@ -51,7 +52,18 @@ void Clock_Runnable(void)
     //if(counter % 2 == 0)
     //{
         /*Clock Editing Code*/
-        switch(Received_SW_Pressed_ID)
+    enuHSwitchState_t var,x;
+	HSwitch_GetStatus(SW_Edit,&var);
+    HSwitch_GetStatus(SW_OK,&x);
+	if(var == enuHSwitch_Pressed)
+	{
+		Edit_State = EditState_Editing;
+	}
+    if(x == enuHSwitch_Pressed)
+	{
+		Edit_State = EditState_Done;
+	}
+    /*    switch(Received_SW_Pressed_ID)
         {
             case(SW_Edit):
                 Edit_State = EditState_Editing;
@@ -62,7 +74,8 @@ void Clock_Runnable(void)
             default:
                 break;
         }
-
+    
+    */
         if(Edit_State == EditState_Editing)
         {
             switch(Received_SW_Pressed_ID)

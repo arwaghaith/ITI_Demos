@@ -7,7 +7,7 @@ int main(void)
 {
 
     
-    APP_Init();
+    APP_Init(); 
     SCHED_Init();
     SCHED_Start();
     

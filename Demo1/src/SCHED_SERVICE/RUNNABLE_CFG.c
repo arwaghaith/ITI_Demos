@@ -55,41 +55,34 @@ const SCHED_runnable_t SCHED_myrunnbles[__SCHED_MAX_Runnables] =
     [Display_Runnable_]    ={
                                 .runnable_name        = "Display Runnable",
                                 .SCHED_delayTime_ms   = 35,
-                                .SCHED_periodicity_ms = 85,
+                                .SCHED_periodicity_ms = 80,
                                 .SCHED_Runnable_CBF   = Display_Runnable
                             },
     [Clock_Runnable_]       ={
                                 .runnable_name        = "Clock Runnable",
-                                .SCHED_delayTime_ms   = 0,
-                                .SCHED_periodicity_ms = 100,
+                                .SCHED_delayTime_ms   = 35,
+                                .SCHED_periodicity_ms = 750,
                                 .SCHED_Runnable_CBF   = &Clock_Runnable
-                            }
-    /*
-    [HSwitch_Runnable_]     ={
-                                .runnable_name        = "HSwitch Runnable",
-                                .SCHED_delayTime_ms   = 0,
-                                .SCHED_periodicity_ms = 5,
-                                .SCHED_Runnable_CBF   = &HSwitch_Runnable
                             },
     [StopWatch_Runnable_]  ={
                                 .runnable_name        = "StopWatch_Runnable_",
                                 .SCHED_delayTime_ms   = 35,
-                                .SCHED_periodicity_ms = 100,
+                                .SCHED_periodicity_ms = 80,
                                 .SCHED_Runnable_CBF   = &StopWatch_Runnable
                             },
-    [UPDATESWITCH_STATE]       ={
+   /* [UPDATESWITCH_STATE]       ={
                                 .runnable_name        = "APP_UPDATESWITCH_STATE",
                                 .SCHED_delayTime_ms   = 0,
-                                .SCHED_periodicity_ms = 200,
-                                .SCHED_Runnable_CBF   = &APP_RECEIVE_SW_ID
+                                .SCHED_periodicity_ms = 1000,
+                                .SCHED_Runnable_CBF   = APP_RECEIVE_SW_ID
                     
                            },
     [READSWITCH]           = {
                                 .runnable_name        = "APP READSWITCH",
-                                .SCHED_delayTime_ms   = 0,
-                                .SCHED_periodicity_ms = 100,
-                                .SCHED_Runnable_CBF   = &APP_READSWITCH
+                                .SCHED_delayTime_ms   = 50,
+                                .SCHED_periodicity_ms = 1000,
+                                .SCHED_Runnable_CBF   = APP_READSWITCH
              
-                          }
+                          } */
 
 };

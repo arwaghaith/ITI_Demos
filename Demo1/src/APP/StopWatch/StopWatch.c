@@ -48,7 +48,7 @@ extern uint8_t  Received_SW_Pressed_ID;
 /*This runnable comes every 100ms*/
 void StopWatch_Runnable(void)
 {
-        static StopWatch_State_t SW_State = SWstate_Initial;
+        static StopWatch_State_t SW_State = SWstate_Running;
         static StopWatch_State_t SW_PREV_STATE    = SWstate_Initial;
 
 

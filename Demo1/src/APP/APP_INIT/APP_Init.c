@@ -44,10 +44,10 @@ void APP_Init(void)
     USART_RX_PIN.GPIO_PUPD = GPIO_PUPD_NONE;
     USART_RX_PIN.GPIO_OSPEED = GPIO_OSPEED_HIGH;
 
-    //GPIO_InitPin(&USART_TX_PIN);
-    //GPIO_InitPin(&USART_RX_PIN);
+    GPIO_InitPin(&USART_TX_PIN);
+    GPIO_InitPin(&USART_RX_PIN);
 
-   /* USART_CFG_t APP_USART_Init;
+    USART_CFG_t APP_USART_Init;
     APP_USART_Init.USART_Number        = USART1;
     APP_USART_Init.USART_BaudRate      = 9600;
     APP_USART_Init.USART_Device_mode   = USART_FullDuplex_mode_;
@@ -56,12 +56,12 @@ void APP_Init(void)
     APP_USART_Init.USART_Parity_mode   = USART_Parity_Disable;
     APP_USART_Init.USART_wordlength    = USART_WORD_LENGTH_8;
     APP_USART_Init.USART_StopBitsNum   = USART_StopBits_0_5;
-    USART_Init(&APP_USART_Init);*/
+    USART_Init(&APP_USART_Init);
     
     Display_Init();
-   // APP_RX_MSG_Init();
-    //APP_TX_MSG_Init();
-   // HSwitch_init();
+    APP_RX_MSG_Init();
+    APP_TX_MSG_Init();
+    HSwitch_init();
 
 }
 

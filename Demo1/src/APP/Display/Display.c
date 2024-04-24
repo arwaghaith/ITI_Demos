@@ -13,6 +13,7 @@
 #include "CLOCK/Clock.h"
 #include "STOPWATCH/StopWatch.h"
 #include "HSwitch_cfg.h"
+#include "HSwitch.h"
 /********************************************************************************************************/
 
 
@@ -64,6 +65,13 @@ void Display_Init(void)
  /*Comes every 85ms تقريباً*/
 void Display_Runnable(void)
 {
+
+	enuHSwitchState_t var;
+	HSwitch_GetStatus(SW_MODE,&var);
+	if(var == enuHSwitch_Pressed)
+	{
+		DisplayMode = !DisplayMode;
+	}
 	/*if(Received_SW_Pressed_ID == SW_MODE)
 	{
 		DisplayMode = !DisplayMode;
@@ -74,7 +82,7 @@ void Display_Runnable(void)
     	LCD_ClearScreanAsynch(NULL);
 	}
 
-    if(!DisplayMode)
+    if(DisplayMode == Clock_Mode)
     {
     	switch (Display_State)
     	{
@@ -106,44 +114,51 @@ void Display_Runnable(void)
 		    	LCD_WriteDataAsynch((Clock.Sec%10)+48,NULL);
         		Display_State = Display_Row1;
         		break;
-    	}
-
-        if(Edit_State == EditState_Editing)
+			if(Edit_State == EditState_Editing)
         {
             switch(Edit_Position)
             {
                 case 1:
-                    LCD_SetCursorAsynch(ROW_1,COLUMN_7,NULL);
-                    LCD_DisplayCursorAsynch(NULL);
+                    LCD_SetCursorAsynch(ROW_1,COLUMN_6,NULL);
+					LCD_WriteDataAsynch(0xff,NULL);
+					LCD_WriteDataAsynch(0xff,NULL);
                     break;
                 case 2:
-                    LCD_SetCursorAsynch(ROW_1,COLUMN_10,NULL);
-                    LCD_DisplayCursorAsynch(NULL);
+                    LCD_SetCursorAsynch(ROW_1,COLUMN_9,NULL);
+                    LCD_WriteDataAsynch(0xff,NULL);
+					LCD_WriteDataAsynch(0xff,NULL);
                     break;
                 case 3:
-                    LCD_SetCursorAsynch(ROW_1,COLUMN_15,NULL);
-                    LCD_DisplayCursorAsynch(NULL);
+                    LCD_SetCursorAsynch(ROW_1,COLUMN_14,NULL);
+                    LCD_WriteDataAsynch(0xff,NULL);
+					LCD_WriteDataAsynch(0xff,NULL);
                     break;
                 case 4:
-                    LCD_SetCursorAsynch(ROW_2,COLUMN_7,NULL);
-                    LCD_DisplayCursorAsynch(NULL);
+                    LCD_SetCursorAsynch(ROW_2,COLUMN_6,NULL);
+                    LCD_WriteDataAsynch(0xff,NULL);
+					LCD_WriteDataAsynch(0xff,NULL);
                     break;
                 case 5:
-                    LCD_SetCursorAsynch(1,COLUMN_10,NULL);
-                    LCD_DisplayCursorAsynch(NULL);
+                    LCD_SetCursorAsynch(1,COLUMN_9,NULL);
+                    LCD_WriteDataAsynch(0xff,NULL);
+					LCD_WriteDataAsynch(0xff,NULL);
                     break;
                 case 6:
-                    LCD_SetCursorAsynch(1,COLUMN_13,NULL);
-                    LCD_DisplayCursorAsynch(NULL);
+                    LCD_SetCursorAsynch(1,COLUMN_12,NULL);
+                    LCD_WriteDataAsynch(0xff,NULL);
+					LCD_WriteDataAsynch(0xff,NULL);
                     break;
                 default:
                     break;
             }
+    	}
+
+        
         }
-        else
+        /*else
         {
             LCD_HideCursorAsynch(NULL);
-        }
+        }*/
     }
     else
     {
@@ -169,9 +184,10 @@ void Display_Runnable(void)
     			LCD_WriteDataAsynch((StopWatch._100ms%10)+48,NULL);
     			Display_State = Display_Row1;
     			break;
+			
     	}
     }
-	//Prev_DisplayMode = DisplayMode;
+	Prev_DisplayMode = DisplayMode;
 }
 
 /*

@@ -22,7 +22,7 @@
  #define CMD_RETURN_HOME               0x02
  #define CMD_DISP_SHIFT_LEFT           0x18
  #define CMD_DISP_SHIFT_RIGHT          0x1C
- #define CMD_DISPLAY_CURSOR            0x0f
+ #define CMD_DISPLAY_CURSOR            0x0e
  #define CMD_HIDE_CURSOR               0x0c
 
  #define REQ_TYPE_NONE                 0x00

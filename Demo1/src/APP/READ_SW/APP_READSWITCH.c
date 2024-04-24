@@ -87,13 +87,14 @@ void APP_READSWITCH(void)
    uint8_t SW_Current_Pressed = NO_SW_PRESSED;
    uint8_t local_flag=1;
    /*First taken ID is first pirority ID for SW updated*/
-   for(APP_local_idx = 0 ;local_flag && (APP_local_idx < _DEMO_SW_NUM ); APP_local_idx++)
+   for(APP_local_idx = 0 ;/*local_flag &&*/ (APP_local_idx < _DEMO_SW_NUM ); APP_local_idx++)
    {
        HSwitch_GetStatus(APP_local_idx,&SW_Current_Pressed);
        if(SW_Current_Pressed == enuHSwitch_Pressed)
        {
          SW_Pressed_ID      = APP_local_idx;
-         local_flag         = 0;
+         break;
+        // local_flag         = 0;
        }
    }
    if(SW_Current_Pressed == enuHSwitch_Released)
@@ -111,8 +112,8 @@ void APP_UPDATESWITCH_STATE(void)
    /*Filter ID part*/
    SW_Message = 0X0F & SW_Pressed_ID;
    /*Check ID part*/
-   if(SW_CHECK_ID(SW_Message))
-   {
+   //if(SW_CHECK_ID(SW_Message))
+   //{
      /*Assign Password Check bits */
       SW_Message |= SW_PASSWORD_CHECK ;
       /*Assign Tx Request*/
@@ -120,21 +121,21 @@ void APP_UPDATESWITCH_STATE(void)
       USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
 
 
-   }
-   else if(SW_Pressed_ID == NO_SW_PRESSED)
-   {
+   //}
+   //else if(SW_Pressed_ID == NO_SW_PRESSED)
+   //{
       /* F "1111" ID part means NO sw pressed all in released MODE*/
-      SW_Message = SW_Pressed_ID & 0x0F;
+     // SW_Message = SW_Pressed_ID & 0x0F;
       /*Assign Password Check bits */
-      SW_Message |= SW_PASSWORD_CHECK ;
+    //  SW_Message |= SW_PASSWORD_CHECK ;
       /*Assign Tx Request*/
-      SW_update_TX_Request.USART_Data = &SW_Message;
-       USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
-   }
+    //  SW_update_TX_Request.USART_Data = &SW_Message;
+     //  USART_CHECK = USART_TxByte_Async(SW_update_TX_Request);
+  /* }
    if(USART_CHECK)
    {
 
-   }
+   }*/
   
 }
 
